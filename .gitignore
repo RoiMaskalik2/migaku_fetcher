@@ -1,0 +1,12 @@
+# Migaku raw dumps — large and contain personal account data
+migaku_data/pull_sync.json
+migaku_data/srs.db
+
+# Epub text + tokenisation caches — large, regenerated automatically
+data/epub_text_*.txt
+data/word_counts_*.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
