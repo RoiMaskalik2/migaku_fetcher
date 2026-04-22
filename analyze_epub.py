@@ -13,7 +13,7 @@ Changes applied:
   - Tokenisation cache (word_counts.json) to skip re-tokenising unchanged epubs
 """
 
-import sys, json, re, time, hashlib
+import sys, json, time, hashlib
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 from pathlib import Path
@@ -54,17 +54,6 @@ def kata_to_hira(text: str) -> str:
         chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c
         for c in text
     )
-
-
-def extract_scene_hook(mnemonic_text: str) -> str | None:
-    """Extract the first meaningful sentence from a WaniKani mnemonic."""
-    if not mnemonic_text:
-        return None
-    clean = re.sub(r'<[^>]+>', '', mnemonic_text).strip()
-    # Split on sentence-ending punctuation
-    parts = re.split(r'(?<=[.!?])\s+', clean)
-    hook = parts[0].strip() if parts else ''
-    return hook[:200] if len(hook) > 15 else None
 
 
 # ── Step 1: Extract text from epub ────────────────────────────────────────────
@@ -145,7 +134,6 @@ def tokenize(text: str, epub_path: Path):
 
 def filter_known(word_count: Counter, word_reading: dict) -> list[tuple[str, int]]:
     known_file = MIGAKU_DATA / 'known_words.json'
-    top1k_file = DATA_DIR / 'jp_top1000.txt'
 
     known = set()
     if known_file.exists():
@@ -160,15 +148,9 @@ def filter_known(word_count: Counter, word_reading: dict) -> list[tuple[str, int
     else:
         print('[warn] known_words.json not found — run migaku_fetch.py first')
 
-    top1000 = set()
-    if top1k_file.exists():
-        top1000 = {l.strip() for l in top1k_file.read_text(encoding='utf-8').splitlines() if l.strip()}
-    else:
-        top1k_file.write_text('', encoding='utf-8')
-
     candidates = [
         (w, cnt) for w, cnt in word_count.most_common()
-        if w not in known and w not in top1000 and cnt >= MIN_FREQ and has_kanji(w)
+        if w not in known and cnt >= MIN_FREQ and has_kanji(w)
     ]
     print(f'[ok] {len(candidates)} unknown kanji-words with freq >= {MIN_FREQ}')
     return candidates
@@ -265,15 +247,11 @@ def build_result(words: list[tuple[str, int]], wk_kanji: dict, wk_vocab: dict,
             readings  = d.get('readings', [])
             pm = next((m['meaning'] for m in meanings if m.get('primary')), None)
             pr = next((r['reading'] for r in readings if r.get('primary')), None)
-            mm = d.get('meaning_mnemonic')
-            rm = d.get('reading_mnemonic')
             kanji_list.append({
                 'character':        c,
                 'meaning':          pm,
                 'reading':          pr,
-                'meaning_mnemonic': mm,
-                'reading_mnemonic': rm,
-                'scene_hook':       extract_scene_hook(mm),
+                'meaning_mnemonic': d.get('meaning_mnemonic'),
             })
 
         result.append({

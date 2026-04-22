@@ -8,7 +8,7 @@ description: Extract Migaku language learning data — known words, book progres
 Extracts three things from a Migaku account in one pass:
 1. **Known words** — full WordList dump (dictForm, POS, knownStatus, etc.)
 2. **Spider book position** — progressGroupIndex, progressPercentage, comprehension data
-3. **Next ~10 pages of text** — ~5,000 Japanese characters starting from current position
+3. **Next ~20 pages of text** — ~16,000 Japanese characters starting from current position
 
 All data is consolidated into `migaku_data/summary.md` for easy reading.
 
@@ -61,14 +61,13 @@ python migaku_fetch.py <EPUB_PATH>
 
 Expected output:
 ```
-[skip] srs.db already present   # or downloads fresh on first run
+[skip] cached data present   # or downloads fresh on first run
 [ok] known words: ~7000
 [ok] Spider book: 蜘蛛ですが、なにか？...
      progress  : 32.x%
      groupIdx  : 3116
-     sentIdx   : ...
-[ok] EPUB: <N> lines, starting at 3116
-[ok] saved <N> chars → migaku_data/spider_next_10_pages.txt
+[ok] EPUB: <N> non-empty lines, next pages from line 3116
+[ok] saved <N> chars → migaku_data/spider_next_pages.txt
 [ok] summary written → migaku_data/summary.md
 ```
 
@@ -98,11 +97,11 @@ Then re-run step 3.
 
 | File | Contents |
 |------|----------|
-| `migaku_data/summary.md` | Book position, word stats, word list, next pages |
+| `migaku_data/summary.md` | Book position and word stats |
 | `migaku_data/known_words.json` | Array of word objects — **see schema below** |
 | `migaku_data/spider_book.json` | Full library row for the Spider book |
-| `migaku_data/spider_next_10_pages.txt` | Raw ~5,000 char reading text |
-| `migaku_data/srs.db` | Cached SQLite DB (delete to force re-download) |
+| `migaku_data/spider_next_pages.txt` | ~16,000 chars (~20 pages) of upcoming reading text |
+| `migaku_data/pull_sync.json` | Cached Migaku data (24h TTL) |
 
 ## known_words.json Schema
 

@@ -190,16 +190,17 @@ def extract_epub_text(epub_path: Path, spider_book: dict | None) -> None:
         item = book.get_item_with_id(item_id)
         if item and item.get_type() == ITEM_DOCUMENT:
             t = BeautifulSoup(item.get_content(), 'lxml').get_text()
-            lines.extend(t.splitlines())
+            # Only non-empty lines — Migaku's progressGroupIndex counts sentences, not blank lines
+            lines.extend(l for l in t.splitlines() if l.strip())
 
     total = len(lines)
     start = gidx if gidx < total else max(0, int(total * pct / 100))
-    chunk = '\n'.join(lines[start:start + 500])[:5000]
+    chunk = '\n'.join(lines[start:start + 1000])[:16000]  # ~20 pages
 
-    out = MIGAKU_DATA / 'spider_next_10_pages.txt'
+    out = MIGAKU_DATA / 'spider_next_pages.txt'
     out.write_text(chunk, encoding='utf-8')
-    print(f'[ok] EPUB: {total} lines, next pages from line {start}')
-    print(f'[ok] saved {len(chunk)} chars → migaku_data/spider_next_10_pages.txt')
+    print(f'[ok] EPUB: {total} non-empty lines, next pages from line {start}')
+    print(f'[ok] saved {len(chunk)} chars → migaku_data/spider_next_pages.txt')
 
 
 def write_summary(words: list[dict], spider_book: dict | None) -> None:

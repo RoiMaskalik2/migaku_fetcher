@@ -7,7 +7,7 @@ description: Analyze a Japanese epub file to find the top 100 high-frequency unk
 
 Given a Japanese epub and Migaku known-words data, produce a ranked JSON list of
 the **top 100** unknown words (kanji must be in WaniKani) with frequency, reading,
-WaniKani kanji mnemonics, and scene hooks.
+and WaniKani kanji meaning mnemonics.
 
 ## Prerequisites
 
@@ -22,6 +22,8 @@ Ask the user for:
 - **Two WaniKani API calls**: one for kanji, one for vocabulary (meanings).
 - Use the tokenisation cache (`data/word_counts_<hash>.json`) — skip re-tokenising if it exists.
 - Do NOT echo `result.json` back to the user — it is too large. Report stats only.
+- **result.json schema is lean**: only store `character`, `meaning`, `reading`, `meaning_mnemonic` per kanji. No `reading_mnemonic`, no `scene_hook`.
+- Filter known words using **only** `migaku_data/known_words.json` — do NOT use `jp_top1000.txt`.
 
 ---
 
@@ -42,7 +44,6 @@ Locate in `<BASE_DIR>`:
 - `migaku_data/known_words.json` — output from `migaku-fetch` skill
 - `data/epub_text_<hash>.txt` — epub text cache (auto-created on first run)
 - `data/word_counts_<hash>.txt` — tokenisation cache (auto-created on first run)
-- `data/jp_top1000.txt` — common words to exclude (create empty if missing)
 
 ### 2. Extract text from epub (cached by epub MD5 hash)
 
@@ -105,24 +106,23 @@ else:
     )
 ```
 
-### 4. Filter against known words
+### 4. Filter against known words (Migaku only)
 
 ```python
 with open('migaku_data/known_words.json', encoding='utf-8') as f:
     raw = json.load(f)
 # migaku-fetch outputs objects with dictForm as the word key — NOT 'word'
 known = {item['dictForm'] if isinstance(item, dict) else item for item in raw}
-
-with open('data/jp_top1000.txt', encoding='utf-8') as f:
-    top1000 = set(l.strip() for l in f if l.strip())
+known.discard('')
 
 def has_kanji(word):
     return any(ord('一') <= ord(c) <= ord('鿿') for c in word)
 
-# Keep only kanji-containing words with freq >= 2 (kana-only words excluded)
+# Filter: not in Migaku known words, has kanji, freq >= 2
+# Do NOT filter against jp_top1000.txt — Migaku known words is the sole filter
 candidates = [
     (w, cnt) for w, cnt in word_count.most_common()
-    if w not in known and w not in top1000 and cnt >= 2 and has_kanji(w)
+    if w not in known and cnt >= 2 and has_kanji(w)
 ]
 ```
 
@@ -178,23 +178,13 @@ resp_vocab.raise_for_status()
 wk_vocab = {s['data']['characters']: s['data'] for s in resp_vocab.json()['data']}
 ```
 
-### 7. Build result.json — all fields required by japanese-vocab-learner
+### 7. Build result.json — lean schema
 
-Extract scene hooks from mnemonic first sentences for visualization:
+Only store what the UI actually needs. Do NOT store `reading_mnemonic` or `scene_hook` — they bloat the file and are not displayed.
 
 ```python
-import re
-
-def extract_scene_hook(mnemonic_text):
-    if not mnemonic_text: return None
-    clean = re.sub(r'<[^>]+>', '', mnemonic_text).strip()
-    parts = re.split(r'(?<=[.!?])\s+', clean)
-    hook = parts[0].strip() if parts else ''
-    return hook[:200] if len(hook) > 15 else None
-
 result = []
 for word, freq in final_words:
-    # Word meaning: WK vocab first, Jisho fallback (step 7.5)
     wv = wk_vocab.get(word, {})
     meaning = next((m['meaning'] for m in wv.get('meanings', []) if m.get('primary')), None)
 
@@ -206,20 +196,16 @@ for word, freq in final_words:
         readings = d.get('readings', [])
         pm = next((m['meaning'] for m in meanings if m.get('primary')), None)
         pr = next((r['reading'] for r in readings if r.get('primary')), None)
-        mm = d.get('meaning_mnemonic')
-        rm = d.get('reading_mnemonic')
         kanji_list.append({
             'character':        c,
             'meaning':          pm,
             'reading':          pr,
-            'meaning_mnemonic': mm,
-            'reading_mnemonic': rm,
-            'scene_hook':       extract_scene_hook(mm),
+            'meaning_mnemonic': d.get('meaning_mnemonic'),
         })
     result.append({
         'word':                 word,
         'reading':              word_reading.get(word, ''),
-        'meaning':              meaning,   # populated by step 7.5 if WK vocab misses
+        'meaning':              meaning,
         'frequency_in_section': freq,
         'kanji':                kanji_list,
     })
@@ -280,9 +266,7 @@ index.html written to <path>
         "character": "取",
         "meaning": "take",
         "reading": "しゅ",
-        "meaning_mnemonic": "<radical>ear</radical> on a <radical>stool</radical>...",
-        "reading_mnemonic": "...",
-        "scene_hook": "An ear on a stool is how you TAKE notes by listening."
+        "meaning_mnemonic": "<radical>ear</radical> on a <radical>stool</radical>..."
       }
     ]
   }
@@ -292,18 +276,11 @@ index.html written to <path>
 - Sorted by `frequency_in_section` descending within WK tier
 - `kanji: []` never happens (kana-only words are excluded)
 - `meaning: null` if neither WK vocab nor Jisho have an entry
-- `reading_mnemonic: null` if kanji not in WaniKani
-- `scene_hook: null` if mnemonic is absent or too short
+- No `reading_mnemonic` field — not stored, not needed
+- No `scene_hook` field — not stored, not needed
 
 ## Dependencies
 
 ```
 ebooklib  beautifulsoup4  lxml  janome  requests
-```
-
-## data/jp_top1000.txt
-
-Must exist at `<BASE_DIR>/data/jp_top1000.txt`. Create empty if missing:
-```bash
-mkdir -p data && touch data/jp_top1000.txt
 ```

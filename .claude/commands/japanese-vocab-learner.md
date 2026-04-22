@@ -31,9 +31,7 @@ python build_html.py result.json index.html
         "character": "取",
         "meaning": "take",
         "reading": "しゅ",
-        "meaning_mnemonic": "There's an <radical>ear</radical> on a <radical>stool</radical>…",
-        "reading_mnemonic": "...",
-        "scene_hook": "First-sentence visual summary extracted from the mnemonic."
+        "meaning_mnemonic": "There's an <radical>ear</radical> on a <radical>stool</radical>…"
       }
     ]
   }
@@ -41,22 +39,26 @@ python build_html.py result.json index.html
 ```
 
 Word-level keys: `word`, `reading`, `meaning` (may be `null`), `frequency_in_section`, `kanji[]`
-Kanji-level keys: `character`, `meaning`, `reading`, `meaning_mnemonic`, `reading_mnemonic`, `scene_hook`
+Kanji-level keys: `character`, `meaning`, `reading`, `meaning_mnemonic`
+
+**No `reading_mnemonic` field** — not stored (bloats data, not useful).
+**No `scene_hook` field** — not stored (not displayed).
 
 **Null handling:**
 - `meaning: null` → display `—`
-- `reading_mnemonic: null` → hide that block entirely
-- `scene_hook: null` → omit the visual summary block
+- `meaning_mnemonic: null` → show "No mnemonic available." in muted style
 
 ## UI Design Principles
 
-### Reading is inside the dropdown only
-The collapsed card row shows: rank · word (JP) · English meaning · kanji chips · freq · Learn button
-**Reading is NOT shown in the collapsed row.** It appears only in the expanded card body under a "Reading" label. This lets the user attempt recall before revealing it.
+### Reading AND meaning are inside the dropdown only
+The collapsed card row shows: rank · word (JP) · kanji chips · freq · Learn button
+**Reading is NOT shown in the collapsed row.** It appears only in the expanded card body.
+**Meaning is NOT shown in the collapsed row.** It appears only in the expanded card body.
+This forces the user to attempt recall before revealing reading and meaning.
 
 ### Card structure (collapsed)
 ```
-[rank] [word-jp]  [english meaning]       [chips] [freq] [Learn] [v]
+[rank] [word-jp]       [chips] [freq] [Learn] [v]
 ```
 
 ### Card structure (expanded)
@@ -69,12 +71,10 @@ The collapsed card row shows: rank · word (JP) · English meaning · kanji chip
 
 [大 kanji-glyph]  MEANING: take    READING: しゅ
   MEANING MNEMONIC
-  💡 Scene hook (accent-bordered italic box)
   Full mnemonic text with coloured tags...
-
-  READING MNEMONIC
-  Full mnemonic text...
 ```
+
+No scene hook box. No reading mnemonic block.
 
 ### Fonts
 ```html
@@ -103,21 +103,6 @@ The collapsed card row shows: rank · word (JP) · English meaning · kanji chip
   font-size: 3.8rem; font-weight: 900;
   color: var(--text);
   /* NO gradient, NO border, NO shadow */
-}
-```
-
-### Scene hook (mnemonic visualization)
-A `scene_hook` is the first sentence of the mnemonic extracted at build time.
-Display it as an accented italic block before the full mnemonic:
-```css
-.scene-hook {
-  background: var(--accent-l);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 6px 6px 0;
-  padding: 7px 11px;
-  font-style: italic;
-  color: var(--dim);
-  margin-bottom: 7px;
 }
 ```
 
@@ -262,7 +247,8 @@ html = HTML_TEMPLATE.replace('const WORDS = [];', f'const WORDS = {j};')
 ## Common Pitfalls
 - **`</script>` in JSON**: always escape before embedding
 - **Reading shown in row**: do NOT show reading in collapsed row — only in expanded view
+- **Meaning shown in row**: do NOT show meaning in collapsed row — only in expanded view
 - **`meaning: null`**: render as `—`, never show "null"
-- **`reading_mnemonic: null`**: omit that block entirely
-- **`scene_hook: null`**: omit the scene hook box
+- **`reading_mnemonic`**: do NOT add this field — removed from schema
+- **`scene_hook`**: do NOT add this field — removed from schema
 - **Radical `？`**: always show RDESC description too, never just `？` alone
