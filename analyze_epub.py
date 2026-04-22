@@ -134,6 +134,7 @@ def tokenize(text: str, epub_path: Path):
 
 def filter_known(word_count: Counter, word_reading: dict) -> list[tuple[str, int]]:
     known_file = MIGAKU_DATA / 'known_words.json'
+    top1k_file = DATA_DIR / 'jp_top1000.txt'
 
     known = set()
     if known_file.exists():
@@ -148,9 +149,15 @@ def filter_known(word_count: Counter, word_reading: dict) -> list[tuple[str, int
     else:
         print('[warn] known_words.json not found — run migaku_fetch.py first')
 
+    # jp_top1000.txt covers basic vocabulary the user knows but hasn't tracked in Migaku SRS
+    common = set()
+    if top1k_file.exists():
+        common = {l.strip() for l in top1k_file.read_text(encoding='utf-8').splitlines() if l.strip()}
+        print(f'[ok] loaded {len(common)} common words from jp_top1000.txt')
+
     candidates = [
         (w, cnt) for w, cnt in word_count.most_common()
-        if w not in known and cnt >= MIN_FREQ and has_kanji(w)
+        if w not in known and w not in common and cnt >= MIN_FREQ and has_kanji(w)
     ]
     print(f'[ok] {len(candidates)} unknown kanji-words with freq >= {MIN_FREQ}')
     return candidates

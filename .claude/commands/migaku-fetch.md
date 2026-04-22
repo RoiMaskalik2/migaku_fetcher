@@ -22,12 +22,20 @@ The following must be provided in the initial prompt before running this skill:
 
 ## How It Works
 
-### Key Insight
-Logging into `study.migaku.com` automatically triggers a network call to
-`srs-db-presigned-url-service-api.migaku.com/db-force-sync-download-url`
-which returns a signed Google Cloud Storage URL for `{uid}/srs.db.gz` — the
-entire SQLite database containing all user data. One Playwright login → one
-download → everything.
+### Key Insight — Two separate network calls
+Logging into `study.migaku.com` triggers two useful calls:
+
+1. **`srs-db-presigned-url-service-api.migaku.com/db-force-sync-download-url`**
+   Returns a signed GCS URL for `{uid}/srs.db.gz` — the **full** SQLite word database
+   (6000+ known words). This is the authoritative source for all SRS vocabulary.
+
+2. **`core-server.migaku.com/pull-sync`**
+   Returns `libraryItems` which contains the book reading position
+   (`progressGroupIndex`, `progressPercentage`). The `words` array in this
+   response is only a small recent batch (~183) — **do NOT use it for filtering**.
+
+The script intercepts both, downloads and reads srs.db via sqlite3, and
+combines words + library position into a single cached JSON.
 
 ### Book Content
 Firebase Storage security rules block all web-authenticated access to book
@@ -61,8 +69,13 @@ python migaku_fetch.py <EPUB_PATH>
 
 Expected output:
 ```
-[skip] cached data present   # or downloads fresh on first run
-[ok] known words: ~7000
+[skip] cached data present   # or fresh login on first run / after cache expiry
+[ok] srs.db presigned URL captured
+[ok] pull-sync captured (8 libraryItems)
+[ok] downloading srs.db.gz...
+[ok] srs.db saved (NNN KB)
+[ok] extracted ~6000 words from srs.db
+[ok] known words: ~6000
 [ok] Spider book: 蜘蛛ですが、なにか？...
      progress  : 32.x%
      groupIdx  : 3116
@@ -126,24 +139,26 @@ The `epub-word-analysis` skill reads `item['dictForm']`, not `item['word']`.
 
 ## Troubleshooting
 
-**Presigned URL not captured**: Login failed or the network intercept missed the
-response. Check credentials. The URL fires within ~10 s of submitting the login
-form; the script waits up to 20 s.
+**SRS URL not captured**: Login failed or Migaku changed its API URL. Check credentials.
+The presigned-URL call fires within ~10 s of login form submit; script waits up to 30 s.
 
-**Spider book not found**: The query searches for `蜘蛛`, `spider`, `Spider`, or
-`kumo` in the JSON-serialised library row. If the book uses different metadata,
-add the relevant keyword to `spider_books` filter in `extract_from_db()`.
-
-**Wrong book selected (WN vs LN)**: The script picks `max(spider_books,
-key=lambda b: b.get("progressPercentage") or 0)` — the book with the most
-reading progress. If that selects the wrong one, filter by `b['title']`
-instead.
-
-**EPUB position off**: `progressGroupIndex` maps to a line number in the
-flattened EPUB text. If it overshoots total lines, the script falls back to
-`progressPercentage`. Verify with:
-```python
-import json
-d = json.load(open('migaku_data/spider_book.json'))
-print(d['progressGroupIndex'], d['progressPercentage'])
+**Known words low (~183 instead of 6000+)**: The cache (pull_sync.json) was built with
+the old pull-sync-only code. Delete it to force a fresh download with the SQLite approach:
+```bash
+rm migaku_data/pull_sync.json
+python migaku_fetch.py <epub>
 ```
+
+**Word table not found in srs.db**: SQLite schema changed. Run:
+```python
+import sqlite3
+conn = sqlite3.connect('migaku_data/srs.db')
+print([r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")])
+```
+Then update `_read_words_from_db()` with the correct table name.
+
+**Spider book not found**: The query searches for `蜘蛛`, `spider`, `Spider`, or `kumo`
+in the JSON-serialised library row. Add the relevant keyword if the title differs.
+
+**EPUB position off**: `progressGroupIndex` counts non-empty EPUB lines. Falls back to
+`progressPercentage` if the index exceeds total lines.

@@ -23,7 +23,7 @@ Ask the user for:
 - Use the tokenisation cache (`data/word_counts_<hash>.json`) — skip re-tokenising if it exists.
 - Do NOT echo `result.json` back to the user — it is too large. Report stats only.
 - **result.json schema is lean**: only store `character`, `meaning`, `reading`, `meaning_mnemonic` per kanji. No `reading_mnemonic`, no `scene_hook`.
-- Filter known words using **only** `migaku_data/known_words.json` — do NOT use `jp_top1000.txt`.
+- Filter uses **two sources**: `migaku_data/known_words.json` (primary — 6000+ SRS words from srs.db) AND `data/jp_top1000.txt` (secondary — ~850 common vocab the user knows but hasn't tracked in Migaku). The jp_top1000.txt catches basic words like 思う, 食べる, 言う that any intermediate learner knows.
 
 ---
 
