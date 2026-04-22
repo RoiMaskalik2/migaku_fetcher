@@ -1,0 +1,1649 @@
+[
+  {
+    "dictForm": "ナルニア",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1766041253054
+  },
+  {
+    "dictForm": "姿見",
+    "secondary": "すがたみ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1766643762208
+  },
+  {
+    "dictForm": "パジャマ",
+    "secondary": "ぱじゃま",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1766643814136
+  },
+  {
+    "dictForm": "捉える",
+    "secondary": "とらえる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "チャレンジ",
+    "secondary": "ちゃれんじ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767250402225
+  },
+  {
+    "dictForm": "ペンネーム",
+    "secondary": "ぺんねーむ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767334045976
+  },
+  {
+    "dictForm": "帰り",
+    "secondary": "かえり",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767334346188
+  },
+  {
+    "dictForm": "こぼす",
+    "secondary": "こぼす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767334429148
+  },
+  {
+    "dictForm": "シチュエーション",
+    "secondary": "しちゅえーしょん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767334437089
+  },
+  {
+    "dictForm": "勢い",
+    "secondary": "いきおい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767388477499
+  },
+  {
+    "dictForm": "眠れる",
+    "secondary": "ねむれる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "決まり",
+    "secondary": "きまり",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767423269088
+  },
+  {
+    "dictForm": "ささげる",
+    "secondary": "ささげる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767794639354
+  },
+  {
+    "dictForm": "マフラー",
+    "secondary": "まふらー",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767795225095
+  },
+  {
+    "dictForm": "描く",
+    "secondary": "かく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 0
+  },
+  {
+    "dictForm": "できるだけ",
+    "secondary": "できるだけ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "続行",
+    "secondary": "ぞっこう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "繰り返す",
+    "secondary": "くりかえす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "直前",
+    "secondary": "ちょくぜん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "ある程度",
+    "secondary": "あるていど",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 0
+  },
+  {
+    "dictForm": "長",
+    "secondary": "ちょう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1767855233651
+  },
+  {
+    "dictForm": "隊長",
+    "secondary": "たいちょう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770055316592
+  },
+  {
+    "dictForm": "伸ばす",
+    "secondary": "のばす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770495126702
+  },
+  {
+    "dictForm": "城の前",
+    "secondary": "しろのまえ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1770495580529
+  },
+  {
+    "dictForm": "ホール",
+    "secondary": "ほーる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1770495845179
+  },
+  {
+    "dictForm": "髪型",
+    "secondary": "かみがた",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770566838713
+  },
+  {
+    "dictForm": "偽り",
+    "secondary": "いつわり",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770569036031
+  },
+  {
+    "dictForm": "エル",
+    "secondary": "える",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1770658202400
+  },
+  {
+    "dictForm": "ビン",
+    "secondary": "びん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1770658204400
+  },
+  {
+    "dictForm": "憎い",
+    "secondary": "にくい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770744509801
+  },
+  {
+    "dictForm": "総員",
+    "secondary": "そういん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770748354675
+  },
+  {
+    "dictForm": "落とせる",
+    "secondary": "おとせる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770788721535
+  },
+  {
+    "dictForm": "王家",
+    "secondary": "おうけ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770789163829
+  },
+  {
+    "dictForm": "防げる",
+    "secondary": "ふせげる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770873431878
+  },
+  {
+    "dictForm": "役立てる",
+    "secondary": "やくだてる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770873458710
+  },
+  {
+    "dictForm": "焼け死ぬ",
+    "secondary": "やけしぬ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770873525607
+  },
+  {
+    "dictForm": "飲み込む",
+    "secondary": "のみこむ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770873776261
+  },
+  {
+    "dictForm": "出口",
+    "secondary": "でぐち",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770873887381
+  },
+  {
+    "dictForm": "立ち話",
+    "secondary": "たちばなし",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770874077973
+  },
+  {
+    "dictForm": "民衆",
+    "secondary": "みんしゅう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1770874648232
+  },
+  {
+    "dictForm": "我が",
+    "secondary": "わが",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771048490844
+  },
+  {
+    "dictForm": "仕留める",
+    "secondary": "しとめる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771048510627
+  },
+  {
+    "dictForm": "地下室",
+    "secondary": "ちかしつ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771054281923
+  },
+  {
+    "dictForm": "捕獲",
+    "secondary": "ほかく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771215899017
+  },
+  {
+    "dictForm": "ベルトルトラ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771216518735
+  },
+  {
+    "dictForm": "外門",
+    "secondary": "ともん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771216536578
+  },
+  {
+    "dictForm": "生き残り",
+    "secondary": "いきのこり",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771217102060
+  },
+  {
+    "dictForm": "鎧",
+    "secondary": "よろい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771217963235
+  },
+  {
+    "dictForm": "獣",
+    "secondary": "しし",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771294117832
+  },
+  {
+    "dictForm": "策",
+    "secondary": "さく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771294463932
+  },
+  {
+    "dictForm": "虫",
+    "secondary": "ちゅう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771294494859
+  },
+  {
+    "dictForm": "どの道",
+    "secondary": "どのみち",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771294965799
+  },
+  {
+    "dictForm": "導ける",
+    "secondary": "みちびける",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771380347929
+  },
+  {
+    "dictForm": "抱きしめる",
+    "secondary": "だきしめる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771381964905
+  },
+  {
+    "dictForm": "導く",
+    "secondary": "みちびく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771464507261
+  },
+  {
+    "dictForm": "翌年",
+    "secondary": "よくねん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771464687178
+  },
+  {
+    "dictForm": "楽園",
+    "secondary": "らくえん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771464930268
+  },
+  {
+    "dictForm": "憎しみ",
+    "secondary": "にくしみ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771465945847
+  },
+  {
+    "dictForm": "ソフィア",
+    "secondary": "そふぃあ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771619606675
+  },
+  {
+    "dictForm": "マガト",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1772038552949
+  },
+  {
+    "dictForm": "ジーク",
+    "secondary": "じーく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771682881531
+  },
+  {
+    "dictForm": "引き継げる",
+    "secondary": "ひきつげる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771682996158
+  },
+  {
+    "dictForm": "コルト",
+    "secondary": "こると",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771683261677
+  },
+  {
+    "dictForm": "ピーク",
+    "secondary": "ぴーく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771684085155
+  },
+  {
+    "dictForm": "盗む",
+    "secondary": "ぬすむ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771684405566
+  },
+  {
+    "dictForm": "ガビ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771684474855
+  },
+  {
+    "dictForm": "ガビー",
+    "secondary": "がびー",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771684512847
+  },
+  {
+    "dictForm": "ハネ",
+    "secondary": "はね",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771686374172
+  },
+  {
+    "dictForm": "ドレス",
+    "secondary": "どれす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771779531615
+  },
+  {
+    "dictForm": "めがね",
+    "secondary": "めがね",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771779744082
+  },
+  {
+    "dictForm": "やって来る",
+    "secondary": "やってくる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771829205665
+  },
+  {
+    "dictForm": "ファルコ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771829350547
+  },
+  {
+    "dictForm": "クルーガー",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771867865818
+  },
+  {
+    "dictForm": "イェーガー",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771867944669
+  },
+  {
+    "dictForm": "いびき",
+    "secondary": "いびき",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771868513641
+  },
+  {
+    "dictForm": "バー",
+    "secondary": "ばー",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771953685457
+  },
+  {
+    "dictForm": "タイ",
+    "secondary": "たい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771953687890
+  },
+  {
+    "dictForm": "アズマビト",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771953707862
+  },
+  {
+    "dictForm": "ブラウン",
+    "secondary": "ぶらうん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771954001541
+  },
+  {
+    "dictForm": "お呼び",
+    "secondary": "および",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1771954012238
+  },
+  {
+    "dictForm": "カール",
+    "secondary": "かーる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1771959868802
+  },
+  {
+    "dictForm": "ガリアード",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1772291833193
+  },
+  {
+    "dictForm": "オニャンコポン",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1772292007588
+  },
+  {
+    "dictForm": "コニー",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1772292205441
+  },
+  {
+    "dictForm": "聞かす",
+    "secondary": "きかす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1772379928197
+  },
+  {
+    "dictForm": "ようこそ",
+    "secondary": "ようこそ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1772380017872
+  },
+  {
+    "dictForm": "長生き",
+    "secondary": "ながいき",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1772622137048
+  },
+  {
+    "dictForm": "化す",
+    "secondary": "かす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 0
+  },
+  {
+    "dictForm": "イェレナ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1772626757437
+  },
+  {
+    "dictForm": "ニコロ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1772804567801
+  },
+  {
+    "dictForm": "一秒",
+    "secondary": "いちびょう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1772805152307
+  },
+  {
+    "dictForm": "観る",
+    "secondary": "みる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773092096210
+  },
+  {
+    "dictForm": "延びる",
+    "secondary": "のびる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773092175160
+  },
+  {
+    "dictForm": "オオカミ",
+    "secondary": "おおかみ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1773092899719
+  },
+  {
+    "dictForm": "ポニーテール",
+    "secondary": "ぽにーてーる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1773093172156
+  },
+  {
+    "dictForm": "見合わせる",
+    "secondary": "みあわせる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773178295764
+  },
+  {
+    "dictForm": "メロディー",
+    "secondary": "めろでぃー",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "城",
+    "secondary": "じょう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773251888940
+  },
+  {
+    "dictForm": "見開く",
+    "secondary": "みひらく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773264162872
+  },
+  {
+    "dictForm": "通り",
+    "secondary": "どおり",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773264973598
+  },
+  {
+    "dictForm": "キモイ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773265995269
+  },
+  {
+    "dictForm": "アナウンス",
+    "secondary": "あなうんす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773564179858
+  },
+  {
+    "dictForm": "そうなると",
+    "secondary": "そうなると",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773564194635
+  },
+  {
+    "dictForm": "テンション",
+    "secondary": "てんしょん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "異世界",
+    "secondary": "いせかい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773564601780
+  },
+  {
+    "dictForm": "転生",
+    "secondary": "てんせい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773564603955
+  },
+  {
+    "dictForm": "鑑定",
+    "secondary": "かんてい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773564609191
+  },
+  {
+    "dictForm": "スキル",
+    "secondary": "すきる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1773563894058
+  },
+  {
+    "dictForm": "ｌｖ１",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1773565342767
+  },
+  {
+    "dictForm": "空中",
+    "secondary": "くうちゅう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1773695036924
+  },
+  {
+    "dictForm": "むちゃくちゃ",
+    "secondary": "むちゃくちゃ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774125890222
+  },
+  {
+    "dictForm": "オンラインゲーム",
+    "secondary": "おんらいんげーむ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774248421508
+  },
+  {
+    "dictForm": "叩く",
+    "secondary": "はたく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774249323538
+  },
+  {
+    "dictForm": "ステータス",
+    "secondary": "すてーたす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774249332749
+  },
+  {
+    "dictForm": "あたし",
+    "secondary": "あたし",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774253137163
+  },
+  {
+    "dictForm": "ダンジョン",
+    "secondary": "だんじょん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774341202366
+  },
+  {
+    "dictForm": "魔物",
+    "secondary": "まもの",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774341915114
+  },
+  {
+    "dictForm": "牙",
+    "secondary": "きば",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 0
+  },
+  {
+    "dictForm": "ハードル",
+    "secondary": "はーどる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774342236456
+  },
+  {
+    "dictForm": "無意識",
+    "secondary": "むいしき",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774345002828
+  },
+  {
+    "dictForm": "掛かる",
+    "secondary": "かかる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774389139193
+  },
+  {
+    "dictForm": "渇き",
+    "secondary": "かわき",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1774511973078
+  },
+  {
+    "dictForm": "プリーズ",
+    "secondary": "ぷりーず",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774512664483
+  },
+  {
+    "dictForm": "喋れる",
+    "secondary": "しゃべれる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774512828352
+  },
+  {
+    "dictForm": "始祖",
+    "secondary": "しそ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774541198148
+  },
+  {
+    "dictForm": "継承",
+    "secondary": "けいしょう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774541316349
+  },
+  {
+    "dictForm": "シガンシナ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774541934623
+  },
+  {
+    "dictForm": "民",
+    "secondary": "みん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774542841917
+  },
+  {
+    "dictForm": "安楽死",
+    "secondary": "あんらくし",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774542906508
+  },
+  {
+    "dictForm": "液",
+    "secondary": "えき",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774543152045
+  },
+  {
+    "dictForm": "ワイン",
+    "secondary": "わいん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774544863259
+  },
+  {
+    "dictForm": "踊る",
+    "secondary": "おどる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "嚙む",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774727425766
+  },
+  {
+    "dictForm": "毒液",
+    "secondary": "どくえき",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774727467220
+  },
+  {
+    "dictForm": "獲得",
+    "secondary": "かくとく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774727606614
+  },
+  {
+    "dictForm": "王国",
+    "secondary": "おうこく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1774902443141
+  },
+  {
+    "dictForm": "愛す",
+    "secondary": "あいす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775041492624
+  },
+  {
+    "dictForm": "故郷",
+    "secondary": "こきょう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": true,
+    "created": 1754848492000
+  },
+  {
+    "dictForm": "車力",
+    "secondary": "しゃりき",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775149975592
+  },
+  {
+    "dictForm": "救い",
+    "secondary": "すくい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "虐殺",
+    "secondary": "ぎゃくさつ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775150673572
+  },
+  {
+    "dictForm": "滅びる",
+    "secondary": "ほろびる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775150718052
+  },
+  {
+    "dictForm": "フロック",
+    "secondary": "ふろっく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1775156239765
+  },
+  {
+    "dictForm": "ヒィズル",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775157084662
+  },
+  {
+    "dictForm": "裏切る",
+    "secondary": "うらぎる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775157229435
+  },
+  {
+    "dictForm": "裏切り者",
+    "secondary": "うらぎりもの",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775157635920
+  },
+  {
+    "dictForm": "滅ぶ",
+    "secondary": "ほろぶ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775158762908
+  },
+  {
+    "dictForm": "帝国",
+    "secondary": "ていこく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775159402128
+  },
+  {
+    "dictForm": "立ち上がる",
+    "secondary": "たちあがる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775161841139
+  },
+  {
+    "dictForm": "スクリーン",
+    "secondary": "すくりーん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775162231020
+  },
+  {
+    "dictForm": "隠せる",
+    "secondary": "かくせる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "飛行艇",
+    "secondary": "ひこうてい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775156451121
+  },
+  {
+    "dictForm": "飛行船",
+    "secondary": "ひこうせん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775414658108
+  },
+  {
+    "dictForm": "レベルアップ",
+    "secondary": "れべるあっぷ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 0
+  },
+  {
+    "dictForm": "貴族",
+    "secondary": "きぞく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775419325786
+  },
+  {
+    "dictForm": "前世",
+    "secondary": "ぜんせい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775505564900
+  },
+  {
+    "dictForm": "それなのに",
+    "secondary": "それなのに",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775506158383
+  },
+  {
+    "dictForm": "らしく",
+    "secondary": "らしく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775506226612
+  },
+  {
+    "dictForm": "吹き出す",
+    "secondary": "ふきだす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775555241311
+  },
+  {
+    "dictForm": "耐性",
+    "secondary": "たいせい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775601425228
+  },
+  {
+    "dictForm": "渡る",
+    "secondary": "わたる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775601555684
+  },
+  {
+    "dictForm": "酸",
+    "secondary": "さん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775601583057
+  },
+  {
+    "dictForm": "マシ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 0
+  },
+  {
+    "dictForm": "マイホーム",
+    "secondary": "まいほーむ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775602749416
+  },
+  {
+    "dictForm": "熟練",
+    "secondary": "じゅくれん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775684273688
+  },
+  {
+    "dictForm": "一定",
+    "secondary": "いってい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "達す",
+    "secondary": "たっす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775684285870
+  },
+  {
+    "dictForm": "天の声",
+    "secondary": "てんのこえ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775684847346
+  },
+  {
+    "dictForm": "ゲーマー",
+    "secondary": "げーまー",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1775685184838
+  },
+  {
+    "dictForm": "張る",
+    "secondary": "はる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775686709121
+  },
+  {
+    "dictForm": "巣",
+    "secondary": "す",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "猿",
+    "secondary": "さる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 0
+  },
+  {
+    "dictForm": "でっかい",
+    "secondary": "でっかい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 0
+  },
+  {
+    "dictForm": "視界",
+    "secondary": "しかい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775753775908
+  },
+  {
+    "dictForm": "竜",
+    "secondary": "りゅう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 0
+  },
+  {
+    "dictForm": "響き",
+    "secondary": "ひびき",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775907224370
+  },
+  {
+    "dictForm": "都合",
+    "secondary": "つごう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 0
+  },
+  {
+    "dictForm": "逃げ出せる",
+    "secondary": "にげだせる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775907698421
+  },
+  {
+    "dictForm": "フェイルーン",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775907839043
+  },
+  {
+    "dictForm": "フェイ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1775907843433
+  },
+  {
+    "dictForm": "蜘蛛の巣",
+    "secondary": "くものす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1775936990144
+  },
+  {
+    "dictForm": "種",
+    "secondary": "しゅ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1776232701860
+  },
+  {
+    "dictForm": "毒牙",
+    "secondary": "どくが",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1776233258696
+  }
+]

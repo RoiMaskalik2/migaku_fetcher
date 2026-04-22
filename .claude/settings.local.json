@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip list *)",
+      "Bash(pip3 list *)",
+      "Bash(pip install *)",
+      "Bash(python -m playwright install chromium)",
+      "Bash(where python *)",
+      "Bash(python -c \"import playwright; print\\('ok'\\)\")",
+      "Bash(C:\\\\Python311\\\\python.exe -m pip install playwright janome ebooklib beautifulsoup4 lxml)",
+      "Bash(python.exe -m pip install playwright janome ebooklib beautifulsoup4 lxml)",
+      "Bash(python.exe -c \"import playwright; print\\('playwright ok'\\)\")",
+      "Bash(python.exe -m playwright install chromium)",
+      "Bash(python.exe -m pip list)",
+      "Bash(python.exe -m pip install playwright ebooklib beautifulsoup4)",
+      "Bash(python.exe -m pip install --no-warn-script-location playwright ebooklib beautifulsoup4)",
+      "Bash(python.exe -c \"import ebooklib; print\\('ebooklib ok'\\)\")",
+      "Bash(python.exe migaku_fetch.py some_book.epub)",
+      "Bash(python.exe -c ' *)"
+    ]
+  }
+}
