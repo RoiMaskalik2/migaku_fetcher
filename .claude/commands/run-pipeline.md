@@ -15,20 +15,19 @@ Runs the three-stage pipeline:
 Collect from the user before running:
 - `BASE_DIR` — e.g. `C:\Users\mueu2\Desktop\JapaneseBookRecommender`
 - `EPUB_PATH` — path to the epub file
-- `EMAIL` — Migaku account email
-- `PASSWORD` — Migaku account password
-- `WK_TOKEN` — WaniKani API token (v2)
+- `EMAIL` / `PASSWORD` — Migaku account (stored as constants in `migaku_fetch.py`)
+- `WK_TOKEN` — WaniKani API token v2 (stored as `WK_TOKEN` constant in `analyze_epub.py`; only needed if changing accounts)
 
-## Full pipeline (3 commands)
+## Full pipeline (2 commands)
 
 ```bash
 cd <BASE_DIR>
 
-# Stage 1: Migaku → known_words.json
+# Stage 1: Migaku → known_words.json  (credentials stored in migaku_fetch.py)
 python migaku_fetch.py <EPUB_PATH>
 
-# Stage 2: epub analysis → result.json + index.html (all-in-one)
-python analyze_epub.py <EPUB_PATH> <WK_TOKEN>
+# Stage 2: epub analysis → result.json + index.html  (WK_TOKEN stored in analyze_epub.py)
+python analyze_epub.py <EPUB_PATH>
 ```
 
 `analyze_epub.py` calls `build_html.py` internally, so no third command needed.
