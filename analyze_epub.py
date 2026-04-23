@@ -357,70 +357,9 @@ def enrich_jisho(result: list[dict]) -> list[dict]:
     enriched = sum(1 for e in missing if e['meaning'] is not None)
     print(f'[jisho] enriched {enriched}/{len(missing)} words')
 
-    # Last-resort fallback: ask Claude for real meanings
-    still_missing = [e for e in missing if e['meaning'] is None]
+    still_missing = [e['word'] for e in missing if e['meaning'] is None]
     if still_missing:
-        _enrich_claude(still_missing)
-
-    return result
-
-
-def _enrich_claude(entries: list[dict]) -> None:
-    """Use Claude to get real English meanings for Japanese words with no meaning yet."""
-    import os
-    api_key = os.environ.get('ANTHROPIC_API_KEY')
-    if not api_key:
-        print('[claude] ANTHROPIC_API_KEY not set — skipping Claude fallback')
-        return
-
-    try:
-        import anthropic
-    except ImportError:
-        print('[claude] anthropic package not installed — run: pip install anthropic')
-        return
-
-    words = [e['word'] for e in entries]
-    print(f'[claude] fetching meanings for {len(words)} words via Claude...')
-
-    word_list = '\n'.join(f'- {w}' for w in words)
-    system_prompt = (
-        'You are a Japanese dictionary assistant. '
-        'The user is reading the light novel 蜘蛛ですが、なにか？ (So I\'m a Spider, So What?). '
-        'For each Japanese word provided, give a concise English meaning (2-5 words). '
-        'Reply ONLY with a JSON object mapping each word to its English meaning. '
-        'Example: {"経験値": "experience points", "魔力": "magic power"}'
-    )
-
-    client = anthropic.Anthropic(api_key=api_key)
-    try:
-        response = client.messages.create(
-            model='claude-haiku-4-5',
-            max_tokens=1024,
-            system=[{
-                'type': 'text',
-                'text': system_prompt,
-                'cache_control': {'type': 'ephemeral'},
-            }],
-            messages=[{
-                'role': 'user',
-                'content': f'Provide English meanings for these Japanese words:\n{word_list}',
-            }],
-        )
-        raw = response.content[0].text.strip()
-        # Strip markdown code fences if present
-        if raw.startswith('```'):
-            raw = raw.split('\n', 1)[1] if '\n' in raw else raw[3:]
-            raw = raw.rsplit('```', 1)[0].strip()
-        meanings = json.loads(raw)
-        filled = 0
-        for entry in entries:
-            m = meanings.get(entry['word'])
-            if m:
-                entry['meaning'] = m
-                filled += 1
-        print(f'[claude] filled {filled}/{len(entries)} meanings')
-    except Exception as exc:
-        print(f'[claude] error: {exc}')
+        print(f'[warn] {len(still_missing)} words still have no meaning: {still_missing}')
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────

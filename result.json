@@ -28,7 +28,7 @@
   {
     "word": "迷宮",
     "reading": "めいきゅう",
-    "meaning": null,
+    "meaning": "labyrinth / dungeon",
     "frequency_in_section": 20,
     "kanji": [
       {
@@ -48,7 +48,7 @@
   {
     "word": "令嬢",
     "reading": "れいじょう",
-    "meaning": null,
+    "meaning": "young lady / noblewoman",
     "frequency_in_section": 19,
     "kanji": [
       {
@@ -68,7 +68,7 @@
   {
     "word": "石化",
     "reading": "いしか",
-    "meaning": null,
+    "meaning": "petrification",
     "frequency_in_section": 17,
     "kanji": [
       {
@@ -202,7 +202,7 @@
   {
     "word": "鑑定石",
     "reading": "かんていせき",
-    "meaning": null,
+    "meaning": "appraisal stone",
     "frequency_in_section": 10,
     "kanji": [
       {
@@ -394,7 +394,7 @@
   {
     "word": "ゴム糸",
     "reading": "ごむいと",
-    "meaning": null,
+    "meaning": "rubber thread",
     "frequency_in_section": 8,
     "kanji": [
       {
@@ -962,7 +962,7 @@
   {
     "word": "食材",
     "reading": "しょくざい",
-    "meaning": null,
+    "meaning": "food ingredients",
     "frequency_in_section": 5,
     "kanji": [
       {
@@ -1274,7 +1274,7 @@
   {
     "word": "リホ子",
     "reading": "こ",
-    "meaning": null,
+    "meaning": "Riho-ko (character name)",
     "frequency_in_section": 4,
     "kanji": [
       {
@@ -1408,7 +1408,7 @@
   {
     "word": "魔道具",
     "reading": "まどうぐ",
-    "meaning": null,
+    "meaning": "magical tool / magic item",
     "frequency_in_section": 4,
     "kanji": [
       {
@@ -1434,7 +1434,7 @@
   {
     "word": "転生者",
     "reading": "てんせいしゃ",
-    "meaning": null,
+    "meaning": "reincarnated person",
     "frequency_in_section": 4,
     "kanji": [
       {
@@ -1500,7 +1500,7 @@
   {
     "word": "種族名",
     "reading": "しゅぞくめい",
-    "meaning": null,
+    "meaning": "species / race name",
     "frequency_in_section": 4,
     "kanji": [
       {
@@ -1592,7 +1592,7 @@
   {
     "word": "壁紙糸",
     "reading": "かべがみいと",
-    "meaning": null,
+    "meaning": "wallpaper silk thread",
     "frequency_in_section": 4,
     "kanji": [
       {
@@ -1698,7 +1698,7 @@
   {
     "word": "魔物殺し",
     "reading": "まものごろし",
-    "meaning": null,
+    "meaning": "monster slayer",
     "frequency_in_section": 4,
     "kanji": [
       {
