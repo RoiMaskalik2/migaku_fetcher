@@ -226,13 +226,13 @@ for word, freq in final_words:
     })
 ```
 
-### 7.5. Jisho fallback for words not in WK vocabulary (top 50 only)
+### 7.5. Jisho fallback for words not in WK vocabulary
 
 ```python
 import time
 
-for entry in result[:50]:
-    if entry['meaning'] is not None: continue
+missing = [e for e in result if e['meaning'] is None]
+for entry in missing:
     try:
         r = requests.get('https://jisho.org/api/v1/search/words',
                          params={'keyword': entry['word']}, timeout=10)
@@ -243,8 +243,28 @@ for entry in result[:50]:
         pass
     time.sleep(0.25)
 
+still_missing = [e['word'] for e in result if e['meaning'] is None]
+if still_missing:
+    print(f'[warn] {len(still_missing)} words still have no meaning: {still_missing}')
+
 with open('result.json', 'w', encoding='utf-8') as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
+```
+
+**If words are still null after Jisho**: do NOT use a kanji-composition fallback and do NOT
+call an external API. Instead, just report the list to the user. Claude (in conversation)
+can instantly generate real meanings — paste the `[warn]` list and ask Claude to fill them:
+
+```python
+# After the pipeline, patch result.json directly:
+meanings = {
+    "迷宮": "labyrinth / dungeon",
+    "転生者": "reincarnated person",
+    # ...
+}
+for e in result:
+    if not e['meaning'] and e['word'] in meanings:
+        e['meaning'] = meanings[e['word']]
 ```
 
 ### 8. Generate index.html
