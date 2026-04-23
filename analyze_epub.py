@@ -27,7 +27,6 @@ DATA_DIR.mkdir(exist_ok=True)
 TOP_N         = 100   # max words in output
 MIN_FREQ      = 2     # minimum occurrence count
 N_SECTIONS    = 20    # epub sections to read (increase for larger coverage)
-JISHO_LIMIT   = 50    # top-N words to enrich via Jisho if not in WK vocab
 
 KANJI_MIN = ord('一')
 KANJI_MAX = ord('鿿')
@@ -103,24 +102,62 @@ def tokenize(text: str, epub_path: Path):
 
     from janome.tokenizer import Tokenizer
     KEEP_POS = {'名詞', '動詞', '形容詞', '副詞'}
+    # Noun sub-types that can start or extend a compound
+    NOUN_COMPOUND_TYPES = {'一般', 'サ変接続', '固有名詞', '副詞可能', '数', 'ナイ形容詞語幹'}
+
+    def _keep(base: str) -> bool:
+        return (base and base != '*' and len(base) >= 2
+                and not all('ぁ' <= c <= 'ゟ' for c in base))
 
     print('[...] tokenising (first run, may take ~60s)...')
     tokenizer = Tokenizer()
     word_count   = Counter()
     word_reading = {}
 
-    for t in tokenizer.tokenize(text):
-        pos  = t.part_of_speech.split(',')[0]
-        base = t.base_form
-        if (
-            pos in KEEP_POS
-            and base and base != '*'
-            and len(base) >= 2
-            and not all('ぁ' <= c <= 'ゟ' for c in base)
-        ):
+    # Buffer for building compound nouns (e.g. 経験 + 値(接尾) → 経験値)
+    noun_buf = None   # (base_str, reading_str) | None
+
+    def flush():
+        nonlocal noun_buf
+        if noun_buf is None:
+            return
+        base, rdg = noun_buf
+        noun_buf = None
+        if _keep(base):
             word_count[base] += 1
-            if base not in word_reading and t.reading and t.reading != '*':
-                word_reading[base] = kata_to_hira(t.reading)
+            if base not in word_reading and rdg:
+                word_reading[base] = rdg
+
+    for t in tokenizer.tokenize(text):
+        pos_parts  = t.part_of_speech.split(',')
+        pos        = pos_parts[0]
+        pos_detail = pos_parts[1] if len(pos_parts) > 1 else '*'
+        base    = t.base_form if (t.base_form and t.base_form != '*') else t.surface
+        reading = kata_to_hira(t.reading) if (t.reading and t.reading != '*') else ''
+
+        if not base:
+            flush()
+            continue
+
+        if pos == '名詞':
+            if pos_detail == '接尾' and noun_buf is not None:
+                # Extend the buffered compound with this suffix (e.g. 値 in 経験値)
+                noun_buf = (noun_buf[0] + base, noun_buf[1] + reading)
+            elif pos_detail in NOUN_COMPOUND_TYPES:
+                flush()
+                noun_buf = (base, reading)
+            else:
+                flush()
+        elif pos in KEEP_POS:
+            flush()
+            if _keep(base):
+                word_count[base] += 1
+                if base not in word_reading and reading:
+                    word_reading[base] = reading
+        else:
+            flush()
+
+    flush()  # end of stream
 
     cache_file.write_text(
         json.dumps({'counts': dict(word_count), 'readings': word_reading}, ensure_ascii=False, indent=2),
@@ -276,7 +313,7 @@ def build_result(words: list[tuple[str, int]], wk_kanji: dict, wk_vocab: dict,
 def enrich_jisho(result: list[dict]) -> list[dict]:
     import requests
 
-    missing = [e for e in result[:JISHO_LIMIT] if e['meaning'] is None]
+    missing = [e for e in result if e['meaning'] is None]
     if not missing:
         return result
 
