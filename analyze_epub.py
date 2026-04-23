@@ -356,6 +356,18 @@ def enrich_jisho(result: list[dict]) -> list[dict]:
 
     enriched = sum(1 for e in missing if e['meaning'] is not None)
     print(f'[jisho] enriched {enriched}/{len(missing)} words')
+
+    # Last-resort fallback: compose meaning from kanji component meanings
+    still_missing = [e for e in missing if e['meaning'] is None]
+    if still_missing:
+        print(f'[fallback] composing meanings from kanji for {len(still_missing)} words...')
+        for entry in still_missing:
+            parts = [k['meaning'].lower() for k in entry['kanji'] if k.get('meaning')]
+            if parts:
+                entry['meaning'] = ' + '.join(parts)
+        composed = sum(1 for e in still_missing if e['meaning'] is not None)
+        print(f'[fallback] composed {composed}/{len(still_missing)} meanings')
+
     return result
 
 
