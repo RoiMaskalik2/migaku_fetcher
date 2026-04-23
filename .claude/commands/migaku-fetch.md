@@ -79,7 +79,7 @@ Expected output:
 [ok] Spider book: 蜘蛛ですが、なにか？...
      progress  : 32.x%
      groupIdx  : 3116
-[ok] EPUB: <N> non-empty lines, next pages from line 3116
+[ok] EPUB: <N> non-empty lines, next pages from line ~1602
 [ok] saved <N> chars → migaku_data/spider_next_pages.txt
 [ok] summary written → migaku_data/summary.md
 ```
@@ -160,5 +160,6 @@ Then update `_read_words_from_db()` with the correct table name.
 **Spider book not found**: The query searches for `蜘蛛`, `spider`, `Spider`, or `kumo`
 in the JSON-serialised library row. Add the relevant keyword if the title differs.
 
-**EPUB position off**: `progressGroupIndex` counts non-empty EPUB lines. Falls back to
-`progressPercentage` if the index exceeds total lines.
+**EPUB position off**: The script uses `progressPercentage` to locate the reading
+position (e.g. 32% → line 1602 of 5009). `progressGroupIndex` reflects Migaku's
+internal grouping format which differs from our EPUB line-splitting and is not used.

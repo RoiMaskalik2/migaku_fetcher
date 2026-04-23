@@ -263,7 +263,9 @@ def extract_epub_text(epub_path: Path, spider_book: dict | None) -> None:
             lines.extend(l for l in t.splitlines() if l.strip())
 
     total = len(lines)
-    start = gidx if gidx < total else max(0, int(total * pct / 100))
+    # progressGroupIndex uses Migaku's internal grouping which differs from our
+    # EPUB line-splitting; progressPercentage is always accurate
+    start = max(0, int(total * pct / 100)) if pct > 0 else gidx
     chunk = '\n'.join(lines[start:start + 1000])[:16000]  # ~20 pages
 
     out = MIGAKU_DATA / 'spider_next_pages.txt'
