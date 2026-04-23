@@ -2,8 +2,12 @@
 """
 migaku_fetch.py — Extract Migaku known words and book progress via Playwright.
 
-The Migaku app calls core-server.migaku.com/pull-sync on login, which returns
-all user data (words, library items) as JSON in one shot.
+On login, Migaku fires two useful network calls:
+  1. srs-db-presigned-url-service-api → signed GCS URL for srs.db.gz (full SQLite word DB)
+  2. core-server.migaku.com/pull-sync → libraryItems for book reading position
+
+The pull-sync JSON only contains recently-synced words (~183); the SQLite database
+contains the full SRS vocabulary (6000+). We intercept both.
 
 Usage:
     python migaku_fetch.py <epub_path>
@@ -40,8 +44,17 @@ def cache_needs_refresh() -> bool:
 
 # ── Playwright download ────────────────────────────────────────────────────────
 
-async def _fetch_pull_sync() -> dict:
+async def _fetch_migaku_data() -> dict:
+    """
+    Intercept two Migaku network calls:
+      1. srs-db-presigned-url-service-api  → signed URL for the full srs.db.gz
+      2. core-server.migaku.com/pull-sync  → libraryItems for book position
+
+    The pull-sync JSON only returns a small batch of recently-synced words.
+    The full SRS word database (6000+ words) lives in srs.db.gz.
+    """
     from playwright.async_api import async_playwright
+    import gzip, sqlite3, tempfile, urllib.request
 
     captured = {}
 
@@ -51,12 +64,25 @@ async def _fetch_pull_sync() -> dict:
         page = await ctx.new_page()
 
         async def on_response(resp):
-            if ('core-server.migaku.com/pull-sync' in resp.url
-                    and 'serverVersion=0' in resp.url):
+            # Presigned URL for the full SQLite word database
+            if 'srs-db-presigned-url-service-api' in resp.url and 'db-force-sync-download-url' in resp.url:
                 try:
                     data = await resp.json()
-                    captured['data'] = data
-                    print('[ok] pull-sync data captured')
+                    captured['srs_url'] = data.get('url') or data.get('downloadUrl') or (
+                        data if isinstance(data, str) else None)
+                    print(f'[ok] srs.db presigned URL captured')
+                except Exception as e:
+                    print(f'[warn] srs URL parse error: {e}')
+
+            # pull-sync for libraryItems (book position) — accept any serverVersion
+            if 'core-server.migaku.com/pull-sync' in resp.url:
+                try:
+                    data = await resp.json()
+                    # Keep the response with the most libraryItems
+                    lib = data.get('libraryItems', [])
+                    if lib and len(lib) > len(captured.get('library_items', [])):
+                        captured['library_items'] = lib
+                        print(f'[ok] pull-sync captured ({len(lib)} libraryItems)')
                 except Exception as e:
                     print(f'[warn] pull-sync parse error: {e}')
 
@@ -79,26 +105,94 @@ async def _fetch_pull_sync() -> dict:
         except Exception as e:
             print(f'[warn] login form: {e}')
 
-        print('[auth] waiting up to 20s for pull-sync...')
-        for _ in range(40):
+        print('[auth] waiting up to 30s for SRS database URL...')
+        for _ in range(60):
             await asyncio.sleep(0.5)
-            if 'data' in captured:
+            if 'srs_url' in captured and 'library_items' in captured:
                 break
 
         await browser.close()
 
-    if 'data' not in captured:
+    if 'srs_url' not in captured:
         raise RuntimeError(
-            'pull-sync data not captured.\n'
-            'Possible causes: wrong credentials, login UI changed, slow network.\n'
+            'SRS database URL not captured. Login may have failed or Migaku changed its API.\n'
             f'Check EMAIL/PASSWORD in {__file__}'
         )
 
-    return captured['data']
+    # Download and read the SQLite database
+    srs_url = captured['srs_url']
+    print(f'[ok] downloading srs.db.gz...')
+    db_path = MIGAKU_DATA / 'srs.db'
+
+    with tempfile.NamedTemporaryFile(suffix='.db.gz', delete=False) as tmp:
+        tmp_gz = tmp.name
+
+    urllib.request.urlretrieve(srs_url, tmp_gz)
+    with gzip.open(tmp_gz, 'rb') as f_in:
+        db_path.write_bytes(f_in.read())
+    print(f'[ok] srs.db saved ({db_path.stat().st_size // 1024} KB)')
+
+    # Extract words from SQLite
+    words = _read_words_from_db(db_path)
+    print(f'[ok] extracted {len(words)} words from srs.db')
+
+    return {
+        'words':        words,
+        'libraryItems': captured.get('library_items', []),
+    }
+
+
+def _read_words_from_db(db_path) -> list[dict]:
+    """Read Japanese words from Migaku's SQLite database."""
+    import sqlite3
+
+    conn = sqlite3.connect(str(db_path))
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+
+    # Discover the word table name
+    tables = {r[0] for r in cur.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+    word_table = next((t for t in ['Word', 'word', 'Words', 'words', 'Vocab', 'vocab'] if t in tables), None)
+
+    if not word_table:
+        print(f'[warn] known tables: {tables}')
+        conn.close()
+        return []
+
+    rows = cur.execute(f'SELECT * FROM {word_table}').fetchall()
+    conn.close()
+
+    words = []
+    for row in rows:
+        d = dict(row)
+        # Handle both camelCase and snake_case column names
+        dict_form = d.get('dictForm') or d.get('dict_form', '')
+        lang      = d.get('language') or d.get('lang', '')
+        deleted   = d.get('del') or d.get('deleted', 0)
+        status    = d.get('knownStatus') or d.get('known_status', '')
+
+        if lang != 'ja' or deleted:
+            continue
+
+        if isinstance(status, str):
+            known_int = 1 if status == 'KNOWN' else 0
+        else:
+            known_int = int(status) if status else 0
+
+        words.append({
+            'dictForm':     dict_form,
+            'secondary':    d.get('secondary', ''),
+            'partOfSpeech': d.get('partOfSpeech') or d.get('part_of_speech', ''),
+            'language':     'ja',
+            'knownStatus':  known_int,
+            'hasCard':      bool(d.get('hasCard') or d.get('has_card', False)),
+            'created':      d.get('created', 0),
+        })
+    return words
 
 
 def fetch_and_cache() -> dict:
-    data = asyncio.run(_fetch_pull_sync())
+    data = asyncio.run(_fetch_migaku_data())
     CACHE_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
     print(f'[ok] data cached -> {CACHE_FILE}')
     return data
@@ -113,33 +207,8 @@ def load_data() -> dict:
 # ── Extraction helpers ─────────────────────────────────────────────────────────
 
 def extract_known_words(data: dict) -> list[dict]:
-    raw_words = data.get('words', [])
-    words = []
-    for w in raw_words:
-        if not isinstance(w, dict):
-            continue
-        if w.get('language') != 'ja':
-            continue
-        if w.get('del', 0):
-            continue
-
-        status_raw = w.get('knownStatus', '')
-        # normalise: API sends strings like "KNOWN", "SEEN", "LEARNING"
-        if isinstance(status_raw, str):
-            known_int = 1 if status_raw == 'KNOWN' else 0
-        else:
-            known_int = int(status_raw) if status_raw else 0
-
-        words.append({
-            'dictForm':     w.get('dictForm', ''),
-            'secondary':    w.get('secondary', ''),
-            'partOfSpeech': w.get('partOfSpeech', ''),
-            'language':     'ja',
-            'knownStatus':  known_int,
-            'hasCard':      bool(w.get('hasCard', False)),
-            'created':      w.get('created', 0),
-        })
-
+    # Words are already normalized by _read_words_from_db
+    words = [w for w in data.get('words', []) if isinstance(w, dict)]
     (MIGAKU_DATA / 'known_words.json').write_text(
         json.dumps(words, ensure_ascii=False, indent=2), encoding='utf-8'
     )
@@ -190,16 +259,17 @@ def extract_epub_text(epub_path: Path, spider_book: dict | None) -> None:
         item = book.get_item_with_id(item_id)
         if item and item.get_type() == ITEM_DOCUMENT:
             t = BeautifulSoup(item.get_content(), 'lxml').get_text()
-            lines.extend(t.splitlines())
+            # Only non-empty lines — Migaku's progressGroupIndex counts sentences, not blank lines
+            lines.extend(l for l in t.splitlines() if l.strip())
 
     total = len(lines)
     start = gidx if gidx < total else max(0, int(total * pct / 100))
-    chunk = '\n'.join(lines[start:start + 500])[:5000]
+    chunk = '\n'.join(lines[start:start + 1000])[:16000]  # ~20 pages
 
-    out = MIGAKU_DATA / 'spider_next_10_pages.txt'
+    out = MIGAKU_DATA / 'spider_next_pages.txt'
     out.write_text(chunk, encoding='utf-8')
-    print(f'[ok] EPUB: {total} lines, next pages from line {start}')
-    print(f'[ok] saved {len(chunk)} chars → migaku_data/spider_next_10_pages.txt')
+    print(f'[ok] EPUB: {total} non-empty lines, next pages from line {start}')
+    print(f'[ok] saved {len(chunk)} chars → migaku_data/spider_next_pages.txt')
 
 
 def write_summary(words: list[dict], spider_book: dict | None) -> None:

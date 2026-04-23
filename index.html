@@ -155,14 +155,6 @@ body {
   color: var(--text);
 }
 
-.meaning-preview {
-  font-size: 0.88rem;
-  color: var(--dim);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .row-right {
   display: flex;
   align-items: center;
@@ -341,19 +333,6 @@ body {
   color: var(--muted);
   font-weight: 600;
   margin-bottom: 5px;
-}
-
-/* Scene hook — the visual summary */
-.scene-hook {
-  background: var(--accent-l);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 6px 6px 0;
-  padding: 7px 11px;
-  font-size: 0.85rem;
-  font-style: italic;
-  color: var(--dim);
-  margin-bottom: 7px;
-  line-height: 1.5;
 }
 
 .mne-text {
@@ -550,8 +529,6 @@ function buildCard(w, i) {
     `<span class="kanji-chip">${k.character}</span>`
   ).join('');
 
-  const meaningPrev = w.meaning ? escHtml(w.meaning) : '<span style="color:var(--muted)">—</span>';
-
   let kanjiHTML = '';
   if (kanji.length) {
     kanjiHTML = `
@@ -566,8 +543,6 @@ function buildCard(w, i) {
 
     for (const k of kanji) {
       const mm = renderMne(k.meaning_mnemonic);
-      const rm = k.reading_mnemonic ? renderMne(k.reading_mnemonic) : null;
-      const hook = k.scene_hook ? `<div class="scene-hook">💡 ${escHtml(k.scene_hook)}</div>` : '';
 
       kanjiHTML += `
         <div class="kanji-entry">
@@ -579,14 +554,8 @@ function buildCard(w, i) {
             </div>
             <div class="mne-block">
               <div class="mne-label">Meaning mnemonic</div>
-              ${hook}
               <div class="mne-text">${mm}</div>
             </div>
-            ${rm ? `
-            <div class="mne-block">
-              <div class="mne-label">Reading mnemonic</div>
-              <div class="mne-text">${rm}</div>
-            </div>` : ''}
           </div>
         </div>
       `;
@@ -600,7 +569,6 @@ function buildCard(w, i) {
         <span class="rank">${i+1}</span>
         <div class="row-main">
           <span class="word-jp">${w.word}</span>
-          <span class="meaning-preview">${meaningPrev}</span>
         </div>
         <div class="row-right">
           <div class="kanji-chips">${chips}</div>

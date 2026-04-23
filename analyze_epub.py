@@ -13,7 +13,7 @@ Changes applied:
   - Tokenisation cache (word_counts.json) to skip re-tokenising unchanged epubs
 """
 
-import sys, json, re, time, hashlib
+import sys, json, time, hashlib
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 from pathlib import Path
@@ -27,7 +27,6 @@ DATA_DIR.mkdir(exist_ok=True)
 TOP_N         = 100   # max words in output
 MIN_FREQ      = 2     # minimum occurrence count
 N_SECTIONS    = 20    # epub sections to read (increase for larger coverage)
-JISHO_LIMIT   = 50    # top-N words to enrich via Jisho if not in WK vocab
 
 KANJI_MIN = ord('一')
 KANJI_MAX = ord('鿿')
@@ -54,17 +53,6 @@ def kata_to_hira(text: str) -> str:
         chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c
         for c in text
     )
-
-
-def extract_scene_hook(mnemonic_text: str) -> str | None:
-    """Extract the first meaningful sentence from a WaniKani mnemonic."""
-    if not mnemonic_text:
-        return None
-    clean = re.sub(r'<[^>]+>', '', mnemonic_text).strip()
-    # Split on sentence-ending punctuation
-    parts = re.split(r'(?<=[.!?])\s+', clean)
-    hook = parts[0].strip() if parts else ''
-    return hook[:200] if len(hook) > 15 else None
 
 
 # ── Step 1: Extract text from epub ────────────────────────────────────────────
@@ -114,24 +102,62 @@ def tokenize(text: str, epub_path: Path):
 
     from janome.tokenizer import Tokenizer
     KEEP_POS = {'名詞', '動詞', '形容詞', '副詞'}
+    # Noun sub-types that can start or extend a compound
+    NOUN_COMPOUND_TYPES = {'一般', 'サ変接続', '固有名詞', '副詞可能', '数', 'ナイ形容詞語幹'}
+
+    def _keep(base: str) -> bool:
+        return (base and base != '*' and len(base) >= 2
+                and not all('ぁ' <= c <= 'ゟ' for c in base))
 
     print('[...] tokenising (first run, may take ~60s)...')
     tokenizer = Tokenizer()
     word_count   = Counter()
     word_reading = {}
 
-    for t in tokenizer.tokenize(text):
-        pos  = t.part_of_speech.split(',')[0]
-        base = t.base_form
-        if (
-            pos in KEEP_POS
-            and base and base != '*'
-            and len(base) >= 2
-            and not all('ぁ' <= c <= 'ゟ' for c in base)
-        ):
+    # Buffer for building compound nouns (e.g. 経験 + 値(接尾) → 経験値)
+    noun_buf = None   # (base_str, reading_str) | None
+
+    def flush():
+        nonlocal noun_buf
+        if noun_buf is None:
+            return
+        base, rdg = noun_buf
+        noun_buf = None
+        if _keep(base):
             word_count[base] += 1
-            if base not in word_reading and t.reading and t.reading != '*':
-                word_reading[base] = kata_to_hira(t.reading)
+            if base not in word_reading and rdg:
+                word_reading[base] = rdg
+
+    for t in tokenizer.tokenize(text):
+        pos_parts  = t.part_of_speech.split(',')
+        pos        = pos_parts[0]
+        pos_detail = pos_parts[1] if len(pos_parts) > 1 else '*'
+        base    = t.base_form if (t.base_form and t.base_form != '*') else t.surface
+        reading = kata_to_hira(t.reading) if (t.reading and t.reading != '*') else ''
+
+        if not base:
+            flush()
+            continue
+
+        if pos == '名詞':
+            if pos_detail == '接尾' and noun_buf is not None:
+                # Extend the buffered compound with this suffix (e.g. 値 in 経験値)
+                noun_buf = (noun_buf[0] + base, noun_buf[1] + reading)
+            elif pos_detail in NOUN_COMPOUND_TYPES:
+                flush()
+                noun_buf = (base, reading)
+            else:
+                flush()
+        elif pos in KEEP_POS:
+            flush()
+            if _keep(base):
+                word_count[base] += 1
+                if base not in word_reading and reading:
+                    word_reading[base] = reading
+        else:
+            flush()
+
+    flush()  # end of stream
 
     cache_file.write_text(
         json.dumps({'counts': dict(word_count), 'readings': word_reading}, ensure_ascii=False, indent=2),
@@ -160,15 +186,15 @@ def filter_known(word_count: Counter, word_reading: dict) -> list[tuple[str, int
     else:
         print('[warn] known_words.json not found — run migaku_fetch.py first')
 
-    top1000 = set()
+    # jp_top1000.txt covers basic vocabulary the user knows but hasn't tracked in Migaku SRS
+    common = set()
     if top1k_file.exists():
-        top1000 = {l.strip() for l in top1k_file.read_text(encoding='utf-8').splitlines() if l.strip()}
-    else:
-        top1k_file.write_text('', encoding='utf-8')
+        common = {l.strip() for l in top1k_file.read_text(encoding='utf-8').splitlines() if l.strip()}
+        print(f'[ok] loaded {len(common)} common words from jp_top1000.txt')
 
     candidates = [
         (w, cnt) for w, cnt in word_count.most_common()
-        if w not in known and w not in top1000 and cnt >= MIN_FREQ and has_kanji(w)
+        if w not in known and w not in common and cnt >= MIN_FREQ and has_kanji(w)
     ]
     print(f'[ok] {len(candidates)} unknown kanji-words with freq >= {MIN_FREQ}')
     return candidates
@@ -265,15 +291,11 @@ def build_result(words: list[tuple[str, int]], wk_kanji: dict, wk_vocab: dict,
             readings  = d.get('readings', [])
             pm = next((m['meaning'] for m in meanings if m.get('primary')), None)
             pr = next((r['reading'] for r in readings if r.get('primary')), None)
-            mm = d.get('meaning_mnemonic')
-            rm = d.get('reading_mnemonic')
             kanji_list.append({
                 'character':        c,
                 'meaning':          pm,
                 'reading':          pr,
-                'meaning_mnemonic': mm,
-                'reading_mnemonic': rm,
-                'scene_hook':       extract_scene_hook(mm),
+                'meaning_mnemonic': d.get('meaning_mnemonic'),
             })
 
         result.append({
@@ -291,7 +313,7 @@ def build_result(words: list[tuple[str, int]], wk_kanji: dict, wk_vocab: dict,
 def enrich_jisho(result: list[dict]) -> list[dict]:
     import requests
 
-    missing = [e for e in result[:JISHO_LIMIT] if e['meaning'] is None]
+    missing = [e for e in result if e['meaning'] is None]
     if not missing:
         return result
 
