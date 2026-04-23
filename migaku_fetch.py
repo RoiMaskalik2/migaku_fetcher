@@ -60,19 +60,36 @@ async def _fetch_migaku_data() -> dict:
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        ctx  = await browser.new_context()
+        ctx  = await browser.new_context(ignore_https_errors=True)
         page = await ctx.new_page()
 
         async def on_response(resp):
             # Presigned URL for the full SQLite word database
             if 'srs-db-presigned-url-service-api' in resp.url and 'db-force-sync-download-url' in resp.url:
                 try:
-                    data = await resp.json()
-                    captured['srs_url'] = data.get('url') or data.get('downloadUrl') or (
-                        data if isinstance(data, str) else None)
-                    print(f'[ok] srs.db presigned URL captured')
+                    text = await resp.text()
+                    if not text.strip():
+                        print(f'[warn] srs URL response empty, status={resp.status}')
+                    elif text.strip().startswith('{'):
+                        data = json.loads(text)
+                        captured['srs_url'] = (data.get('url') or data.get('downloadUrl')
+                                               or data.get('signedUrl') or data.get('presignedUrl'))
+                        print(f'[ok] srs.db presigned URL captured (JSON)')
+                    else:
+                        # Plain-string URL
+                        url = text.strip().strip('"')
+                        if url.startswith('http'):
+                            captured['srs_url'] = url
+                            print(f'[ok] srs.db presigned URL captured (plain)')
+                        else:
+                            print(f'[warn] unexpected srs URL body: {text[:120]}')
                 except Exception as e:
                     print(f'[warn] srs URL parse error: {e}')
+
+            # Catch the actual GCS download when the browser fetches srs.db.gz directly
+            if 'srs_url' not in captured and 'storage.googleapis.com' in resp.url and 'srs' in resp.url.lower():
+                captured['srs_url'] = resp.url
+                print(f'[ok] srs.db GCS URL captured directly')
 
             # pull-sync for libraryItems (book position) — accept any serverVersion
             if 'core-server.migaku.com/pull-sync' in resp.url:
@@ -86,7 +103,14 @@ async def _fetch_migaku_data() -> dict:
                 except Exception as e:
                     print(f'[warn] pull-sync parse error: {e}')
 
+        # Intercept direct GCS requests for .db.gz (handles 302 redirect from presigned-URL service)
+        async def on_request(req):
+            if 'srs_url' not in captured and 'storage.googleapis.com' in req.url and '.db' in req.url:
+                captured['srs_url'] = req.url
+                print(f'[ok] srs.db GCS request URL captured')
+
         page.on('response', on_response)
+        page.on('request', on_request)
 
         print('[auth] navigating to Migaku...')
         try:
@@ -95,9 +119,8 @@ async def _fetch_migaku_data() -> dict:
         except Exception as e:
             print(f'[warn] nav: {e}')
 
-        await asyncio.sleep(2)
-
         try:
+            await page.wait_for_selector('input[type="email"]', timeout=30000)
             await page.fill('input[type="email"]', EMAIL)
             await page.fill('input[type="password"]', PASSWORD)
             await page.click('button[type="submit"]')
@@ -105,8 +128,9 @@ async def _fetch_migaku_data() -> dict:
         except Exception as e:
             print(f'[warn] login form: {e}')
 
-        print('[auth] waiting up to 30s for SRS database URL...')
-        for _ in range(60):
+        # Wait for both signals — the SRS URL fires automatically after login
+        print('[auth] waiting up to 60s for SRS database URL...')
+        for _ in range(120):
             await asyncio.sleep(0.5)
             if 'srs_url' in captured and 'library_items' in captured:
                 break
@@ -152,7 +176,7 @@ def _read_words_from_db(db_path) -> list[dict]:
 
     # Discover the word table name
     tables = {r[0] for r in cur.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
-    word_table = next((t for t in ['Word', 'word', 'Words', 'words', 'Vocab', 'vocab'] if t in tables), None)
+    word_table = next((t for t in ['WordList', 'Word', 'word', 'Words', 'words', 'Vocab', 'vocab'] if t in tables), None)
 
     if not word_table:
         print(f'[warn] known tables: {tables}')
@@ -252,6 +276,10 @@ def extract_epub_text(epub_path: Path, spider_book: dict | None) -> None:
     if spider_book:
         gidx = int(spider_book.get('progressGroupIndex') or 0)
         pct  = float(spider_book.get('progressPercentage') or 0)
+
+    from bs4 import XMLParsedAsHTMLWarning
+    import warnings
+    warnings.filterwarnings('ignore', category=XMLParsedAsHTMLWarning)
 
     book  = epub.read_epub(str(epub_path))
     lines = []

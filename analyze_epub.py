@@ -24,6 +24,8 @@ MIGAKU_DATA = BASE_DIR / 'migaku_data'
 DATA_DIR    = BASE_DIR / 'data'
 DATA_DIR.mkdir(exist_ok=True)
 
+WK_TOKEN = "d80065d9-7717-4d27-948c-2ad657faa924"
+
 TOP_N         = 100   # max words in output
 MIN_FREQ      = 2     # minimum occurrence count
 N_SECTIONS    = 20    # epub sections to read (increase for larger coverage)
@@ -213,14 +215,27 @@ def fetch_wanikani(candidates: list[tuple[str, int]], wk_token: str):
         return {}, {}
 
     print(f'[wk] fetching {len(all_kanji)} kanji subjects...')
-    resp = requests.get(
-        'https://api.wanikani.com/v2/subjects',
-        params={'types': 'kanji', 'slugs': ','.join(all_kanji)},
-        headers=headers,
-        timeout=30
-    )
-    resp.raise_for_status()
-    wk_kanji = {s['data']['characters']: s['data'] for s in resp.json()['data']}
+    wk_kanji = {}
+    batch_size = 100  # stay well under URL length limits
+    for i in range(0, len(all_kanji), batch_size):
+        batch = all_kanji[i:i + batch_size]
+        for attempt in range(4):
+            resp = requests.get(
+                'https://api.wanikani.com/v2/subjects',
+                params={'types': 'kanji', 'slugs': ','.join(batch)},
+                headers=headers,
+                timeout=30
+            )
+            if resp.status_code == 503:
+                wait = 2 ** attempt
+                print(f'[wk] 503, retrying in {wait}s...')
+                time.sleep(wait)
+                continue
+            resp.raise_for_status()
+            for s in resp.json()['data']:
+                wk_kanji[s['data']['characters']] = s['data']
+            time.sleep(0.3)
+            break
     print(f'[wk] got {len(wk_kanji)}/{len(all_kanji)} kanji in WaniKani')
 
     return wk_kanji
@@ -235,12 +250,19 @@ def fetch_wk_vocab(words: list[str], wk_token: str) -> dict:
     slugs   = ','.join(words[:200])  # WK API limit
 
     print(f'[wk] fetching vocabulary meanings for up to {len(words)} words...')
-    resp = requests.get(
-        'https://api.wanikani.com/v2/subjects',
-        params={'types': 'vocabulary', 'slugs': slugs},
-        headers=headers,
-        timeout=30
-    )
+    for attempt in range(4):
+        resp = requests.get(
+            'https://api.wanikani.com/v2/subjects',
+            params={'types': 'vocabulary', 'slugs': slugs},
+            headers=headers,
+            timeout=30
+        )
+        if resp.status_code == 503:
+            wait = 2 ** attempt
+            print(f'[wk] vocab 503, retrying in {wait}s...')
+            time.sleep(wait)
+            continue
+        break
     resp.raise_for_status()
     wk_vocab = {s['data']['characters']: s['data'] for s in resp.json()['data']}
     print(f'[wk] got vocab meanings for {len(wk_vocab)}/{len(words)} words')
@@ -340,12 +362,12 @@ def enrich_jisho(result: list[dict]) -> list[dict]:
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
-    if len(sys.argv) < 3:
-        print('Usage: python analyze_epub.py <epub_path> <wanikani_token> [n_sections]')
+    if len(sys.argv) < 2:
+        print('Usage: python analyze_epub.py <epub_path> [wanikani_token] [n_sections]')
         sys.exit(1)
 
     epub_path = Path(sys.argv[1])
-    wk_token  = sys.argv[2]
+    wk_token  = sys.argv[2] if len(sys.argv) > 2 else WK_TOKEN
     n_sec     = int(sys.argv[3]) if len(sys.argv) > 3 else N_SECTIONS
 
     if not epub_path.exists():
