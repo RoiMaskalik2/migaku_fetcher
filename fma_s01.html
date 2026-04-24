@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FMA Brotherhood S1 · Vocabulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #f0ede8;
+  --surface:  #ffffff;
+  --raised:   #f8f7f5;
+  --border:   rgba(0,0,0,0.09);
+  --border2:  rgba(0,0,0,0.16);
+  --text:     #18160f;
+  --dim:      #6b6456;
+  --muted:    #aaa090;
+  --accent:   #5a4fcf;
+  --accent-l: rgba(90,79,207,0.10);
+  --wk-r:     #0093dd;
+  --wk-k:     #f0a000;
+  --wk-v:     #9820c8;
+  --wk-rd:    #555;
+  --green:    #1a9e6a;
+  --rr:       10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+}
+
+.header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.header-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.header-sub {
+  font-size: 0.8rem;
+  color: var(--dim);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-all, .filter-pending {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-all.active, .filter-pending.active,
+.filter-all:hover, .filter-pending:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+/* ── Word list ────────────────────────────────────────────── */
+.list {
+  max-width: 800px;
+  margin: 18px auto;
+  padding: 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+/* ── Card ─────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--rr);
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.card:hover { box-shadow: 0 2px 14px rgba(0,0,0,0.07); }
+.card.learned { opacity: 0.45; }
+.card.hidden  { display: none; }
+
+/* Collapsed row */
+.card-row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  padding: 12px 14px;
+  cursor: pointer;
+  gap: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.card-row:hover { background: rgba(0,0,0,0.015); }
+
+.rank {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.row-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.word-jp {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+  color: var(--text);
+}
+
+.row-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.kanji-chips {
+  display: flex;
+  gap: 3px;
+}
+.kanji-chip {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-l);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.freq {
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: var(--raised);
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.btn-learn {
+  padding: 5px 13px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-learn:hover { opacity: 0.82; }
+.btn-learn.done  { background: var(--green); }
+
+.chevron {
+  color: var(--muted);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.card.open .chevron { transform: rotate(180deg); }
+
+/* ── Expanded body ────────────────────────────────────────── */
+.card-body {
+  display: none;
+  padding: 0 18px 20px;
+  border-top: 1px solid var(--border);
+}
+.card.open .card-body { display: block; }
+
+/* Word header */
+.word-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 18px;
+  padding: 16px 0 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.word-display {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 3.4rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text);
+}
+
+.word-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 3px;
+}
+
+.meta-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.meta-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 600;
+  width: 50px;
+  flex-shrink: 0;
+}
+
+.meta-value {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.meta-value.reading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem;
+  color: var(--dim);
+}
+
+/* Kanji section */
+.kanji-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.kanji-entry {
+  display: flex;
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.kanji-entry:last-child { border-bottom: none; }
+
+.kanji-glyph {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 3.8rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text);
+  width: 76px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 2px;
+}
+
+.kanji-info { flex: 1; min-width: 0; }
+
+.kanji-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.kanji-meaning {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.kanji-reading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.9rem;
+  color: var(--dim);
+}
+
+/* Mnemonic blocks */
+.mne-block { margin-top: 8px; }
+.mne-block + .mne-block { margin-top: 12px; }
+
+.mne-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.mne-text {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+/* ── WaniKani tag colours ─────────────────────────────────── */
+.t-r  { color: var(--wk-r); font-weight: 600; cursor: help;
+        border-bottom: 1px dashed var(--wk-r); }
+.t-k  { color: var(--wk-k); font-weight: 600; }
+.t-v  { color: var(--wk-v); font-weight: 600; }
+.t-rd { color: var(--wk-rd); font-weight: 600;
+        background: rgba(0,0,0,0.055); padding: 0 3px; border-radius: 3px; }
+
+/* ── Radical tooltip ─────────────────────────────────────── */
+.tt {
+  position: fixed;
+  pointer-events: none;
+  background: #1c1a14;
+  color: #f0ede8;
+  border-radius: 9px;
+  padding: 9px 13px 8px;
+  display: none;
+  z-index: 999;
+  text-align: center;
+  min-width: 68px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.30);
+}
+.tt.vis { display: flex; flex-direction: column; align-items: center; }
+
+.tt-char {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--wk-r);
+}
+.tt-char.none { font-size: 0.85rem; color: #888; font-style: italic; }
+.tt-name { font-size: 0.72rem; color: #bbb; margin-top: 2px; text-transform: lowercase; }
+.tt-desc { font-size: 0.68rem; color: #888; margin-top: 1px; max-width: 110px; line-height: 1.3; }
+
+/* ── Mnemonic legend ─────────────────────────────────────── */
+.legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: var(--raised);
+  border-radius: 7px;
+  margin-bottom: 14px;
+  font-size: 0.78rem;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; color: var(--dim); }
+.legend-dot  { width: 9px; height: 9px; border-radius: 50%; }
+.ld-r  { background: var(--wk-r); }
+.ld-k  { background: var(--wk-k); }
+.ld-v  { background: var(--wk-v); }
+.ld-rd { background: var(--wk-rd); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <span class="header-title">FMA Brotherhood S1</span>
+    <span class="header-sub" id="hSub">loading...</span>
+  </div>
+  <div class="header-right">
+    <button class="filter-all active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-pending" onclick="setFilter('pending',this)">To Learn</button>
+    <span class="progress-text" id="progTxt"></span>
+  </div>
+</div>
+
+<div class="list" id="list"></div>
+
+<!-- Radical tooltip -->
+<div class="tt" id="tt">
+  <span class="tt-char" id="ttCh"></span>
+  <span class="tt-name" id="ttNm"></span>
+  <span class="tt-desc" id="ttDesc"></span>
+</div>
+
+<script>
+const WORDS = [{"word":"錬金術師","reading":"れんきんじゅつし","meaning":"alchemist","frequency_in_section":117,"kanji":[{"character":"錬","meaning":"Tempering","reading":"れん","meaning_mnemonic":"The <radical>gold</radical> from the <radical>east</radical> needs <kanji>tempering</kanji> before it can be sold. The gold from the east is good, it just needs some tempering before it's entirely presentable. You know, tempering like you'd do in a forge."},{"character":"金","meaning":"Gold","reading":"きん","meaning_mnemonic":"The <radical>gold</radical> radical and the <kanji>gold</kanji> kanji are the same!"},{"character":"術","meaning":"Technique","reading":"じゅつ","meaning_mnemonic":"There <radical>go</radical> some <radical>angel</radical>s with <radical>drop</radical>s on their shoulders. Carrying drops like that requires <kanji>technique</kanji>. It’s a real <kanji>art</kanji>."},{"character":"師","meaning":"Teacher","reading":"し","meaning_mnemonic":"A <radical>drop</radical> of water falls from a <radical>bear</radical> onto the <radical>ground</radical> and needs to be wiped up with a <radical>towel</radical>. Only a <kanji>teacher</kanji> or an <kanji>expert</kanji> could get away with getting close to this wet bear to wipe up after it."}]},{"word":"錬金術","reading":"れんきんじゅつ","meaning":"Alchemy","frequency_in_section":56,"kanji":[{"character":"錬","meaning":"Tempering","reading":"れん","meaning_mnemonic":"The <radical>gold</radical> from the <radical>east</radical> needs <kanji>tempering</kanji> before it can be sold. The gold from the east is good, it just needs some tempering before it's entirely presentable. You know, tempering like you'd do in a forge."},{"character":"金","meaning":"Gold","reading":"きん","meaning_mnemonic":"The <radical>gold</radical> radical and the <kanji>gold</kanji> kanji are the same!"},{"character":"術","meaning":"Technique","reading":"じゅつ","meaning_mnemonic":"There <radical>go</radical> some <radical>angel</radical>s with <radical>drop</radical>s on their shoulders. Carrying drops like that requires <kanji>technique</kanji>. It’s a real <kanji>art</kanji>."}]},{"word":"錬成","reading":"れんせい","meaning":"training","frequency_in_section":54,"kanji":[{"character":"錬","meaning":"Tempering","reading":"れん","meaning_mnemonic":"The <radical>gold</radical> from the <radical>east</radical> needs <kanji>tempering</kanji> before it can be sold. The gold from the east is good, it just needs some tempering before it's entirely presentable. You know, tempering like you'd do in a forge."},{"character":"成","meaning":"Become","reading":"せい","meaning_mnemonic":"When a <radical>drunkard</radical> holds a <radical>sword</radical> it <kanji>becomes</kanji> something else. The drunkard doesn't become a swordsman, they're still just a drunkard. But the sword in their hands does."}]},{"word":"賢者","reading":"けんじゃ","meaning":"wise person","frequency_in_section":48,"kanji":[{"character":"賢","meaning":"Clever","reading":"けん","meaning_mnemonic":"Your <radical>servant</radical> uses a <radical>stool</radical> to break open <radical>shellfish</radical>. This is really <kanji>clever</kanji>, because shucking shellfish is a lot of work. It's also a <kanji>wise</kanji> move, because it'll save him time that he can spend on all his other servant chores."},{"character":"者","meaning":"Someone","reading":"しゃ","meaning_mnemonic":"The radical and the kanji are exactly the same, so this means <kanji>someone</kanji>."}]},{"word":"禁忌","reading":"きんき","meaning":"Taboo","frequency_in_section":16,"kanji":[{"character":"禁","meaning":"Prohibit","reading":"きん","meaning_mnemonic":"Killing two <radical>tree</radical>s with a <radical>jackhammer</radical> is expressly <kanji>prohibit</kanji>ed. Don't get me wrong, you can rip up one tree with your jackhammer, but not two."},{"character":"忌","meaning":"Mourning","reading":"き","meaning_mnemonic":"If you only let <radical>oneself</radical> (yourself) into your <radical>heart</radical>, you'll end up <kanji>mourning</kanji> all of the loves and friendships you could have had but didn't let in."}]},{"word":"構築","reading":"こうちく","meaning":"construction","frequency_in_section":15,"kanji":[{"character":"構","meaning":"Set Up","reading":"こう","meaning_mnemonic":"A <radical>tree</radical> is what a <radical>lifeguard</radical> uses to <kanji>set up</kanji> the station where he'll <kanji>care</kanji> for the people on the beach and in the water. Trees provide the shade lifeguards need to take care of half-drowned kids and grannies with sand stuck in their bathing suits. That's why they set up their care stations here."},{"character":"築","meaning":"Construct","reading":"ちく","meaning_mnemonic":"You use a <radical>bamboo</radical> <radical>saw</radical> to cut down <radical>tree</radical>s to <kanji>construct</kanji> and <kanji>build</kanji> a building. The bamboo saw was crafted by a master bamboosmith, and cuts through trees with ease so you can quickly construct this new building."}]},{"word":"総統","reading":"そうとう","meaning":"supreme ruler","frequency_in_section":14,"kanji":[{"character":"総","meaning":"Whole","reading":"そう","meaning_mnemonic":"Taking out your <radical>thread</radical>, you sew together the <radical>public</radical>'s <radical>heart</radical>s to make them <kanji>whole</kanji> again."},{"character":"統","meaning":"Unite","reading":"とう","meaning_mnemonic":"You take all of your <radical>thread</radical> and <radical>allocate</radical> them into one place to <kanji>unite</kanji> them. With all your thread united and wrapped together, you're ready to <kanji>rule</kanji> and <kanji>govern</kanji> the world!"}]},{"word":"犯す","reading":"おかし","meaning":"To Commit A Crime","frequency_in_section":13,"kanji":[{"character":"犯","meaning":"Crime","reading":"はん","meaning_mnemonic":"In the <radical>animal</radical> kingdom, a <radical>snake</radical> is the most likely to commit a <kanji>crime</kanji>. Remember the Garden of Eden? The snake was the bad guy. Ever since then, snakes are the animal most known for committing crimes."}]},{"word":"真理","reading":"しんり","meaning":"truth","frequency_in_section":12,"kanji":[{"character":"真","meaning":"Reality","reading":"しん","meaning_mnemonic":"If the <radical>pope</radical> stays fixated on the <radical>ground</radical>, staring at <radical>fins</radical>, he's going to lose touch with <kanji>reality</kanji>. He should be focusing on his popish duties, but instead he's looking at the fish fins he dropped, and now can't eat because they're dirty. Silly pope. You can't let this one thing get you down. You have other things to do."},{"character":"理","meaning":"Reason","reading":"り","meaning_mnemonic":"The <radical>king</radical>'s <radical>village</radical> is the <kanji>reason</kanji> he's king. Without the village there would be no reason to have a king in the first place."}]},{"word":"錬成陣","reading":"れんせいじん","meaning":null,"frequency_in_section":11,"kanji":[{"character":"錬","meaning":"Tempering","reading":"れん","meaning_mnemonic":"The <radical>gold</radical> from the <radical>east</radical> needs <kanji>tempering</kanji> before it can be sold. The gold from the east is good, it just needs some tempering before it's entirely presentable. You know, tempering like you'd do in a forge."},{"character":"成","meaning":"Become","reading":"せい","meaning_mnemonic":"When a <radical>drunkard</radical> holds a <radical>sword</radical> it <kanji>becomes</kanji> something else. The drunkard doesn't become a swordsman, they're still just a drunkard. But the sword in their hands does."},{"character":"陣","meaning":"Army Camp","reading":"じん","meaning_mnemonic":"This <radical>building</radical> is full of <radical>car</radical>s because it's an <kanji>army camp</kanji>. The cars (and tanks and planes) need to be ready to go at any moment just like the soldiers."}]},{"word":"物質","reading":"ぶっしつ","meaning":"material","frequency_in_section":10,"kanji":[{"character":"物","meaning":"Thing","reading":"ぶつ","meaning_mnemonic":"A <radical>cow</radical> with <radical>wing</radical>s is flying in the air. What a strange <kanji>thing</kanji>! You've heard of flying pigs before, but cows? This is a new and strange thing indeed! Cows with wings! What a silly thing."},{"character":"質","meaning":"Quality","reading":"しつ","meaning_mnemonic":"You have to use two <radical>axe</radical>s to open these <radical>shellfish</radical>. That seems like overkill, but it is necessary. These particular shellfish are of very high <kanji>quality</kanji> meaning they won't open so easily."}]},{"word":"支払う","reading":"しはらう","meaning":"to pay","frequency_in_section":9,"kanji":[{"character":"支","meaning":"Support","reading":"し","meaning_mnemonic":"The <radical>branch</radical> radical and the <kanji>branch</kanji> kanji are the same! This kanji also means <kanji>support</kanji>. To remember it, think about a tree with lots of branches. The branches support each other and the trunk of the tree. If you were to climb the tree, the branches would be able to support your weight too!"},{"character":"払","meaning":"Pay","reading":"はら","meaning_mnemonic":"Your <radical>fingers</radical> are <radical>private</radical>, no one can see them unless they <kanji>pay</kanji>! And you decide if what they pay is enough to get a peek."}]},{"word":"者たち","reading":"ものたち","meaning":null,"frequency_in_section":9,"kanji":[{"character":"者","meaning":"Someone","reading":"しゃ","meaning_mnemonic":"The radical and the kanji are exactly the same, so this means <kanji>someone</kanji>."}]},{"word":"造る","reading":"つくら","meaning":"To Construct","frequency_in_section":9,"kanji":[{"character":"造","meaning":"Create","reading":"ぞう","meaning_mnemonic":"\"A <radical>scooter</radical>!\" you <radical>announce</radical>. You are announcing this because you decided this is what you would <kanji>create</kanji>."}]},{"word":"産まれる","reading":"うまれ","meaning":"To Be Born","frequency_in_section":9,"kanji":[{"character":"産","meaning":"Give Birth","reading":"さん","meaning_mnemonic":"You <radical>stand</radical> on the <radical>Cliff</radical> of <radical>Life</radical> and <kanji>give birth</kanji> to a child. Oh no! You’re standing too close to the edge of the Cliff of Life! The baby falls off the cliff right after you give birth to it! In your despair, you throw all your <kanji>property</kanji> off the cliff too."}]},{"word":"我輩","reading":"わがはい","meaning":"I","frequency_in_section":8,"kanji":[{"character":"我","meaning":"I","reading":"が","meaning_mnemonic":"Your <radical>ego</radical>... it's totally out of control. <kanji>I</kanji> mean, my ego isn't out of control. I'm the greatest. That's <kanji>me</kanji>. But your ego? Ugh, so out of control unlike my amazing ego."},{"character":"輩","meaning":"Comrade","reading":"はい","meaning_mnemonic":"The <radical>criminal</radical> that stole your <radical>car</radical> was your <kanji>comrade</kanji>! You thought the two of you were friends, but you were probably wrong."}]},{"word":"生ずる","reading":"しょうずる","meaning":"to produce","frequency_in_section":8,"kanji":[{"character":"生","meaning":"Life","reading":"せい","meaning_mnemonic":"The <radical>life</radical> radical and the <kanji>life</kanji> kanji are the same, so hopefully you now just know them both."}]},{"word":"欲する","reading":"ほっすれ","meaning":"to want","frequency_in_section":8,"kanji":[{"character":"欲","meaning":"Want","reading":"よく","meaning_mnemonic":"In the <radical>valley</radical> you feel a <radical>lack</radical> of <kanji>want</kanji>. You want for nothing in this valley. It is the valley of plenty."}]},{"word":"氷結","reading":"ひょうけつ","meaning":"freezing","frequency_in_section":7,"kanji":[{"character":"氷","meaning":"Ice","reading":"こおり","meaning_mnemonic":"Add a <radical>drop</radical> of something magical to <radical>water</radical> and suddenly it turns into big block of <kanji>ice</kanji>, just like that."},{"character":"結","meaning":"Bind","reading":"けつ","meaning_mnemonic":"You use a <radical>thread</radical> for <radical>good luck</radical> by <kanji>bind</kanji>ing two fingers together. You <kanji>tie</kanji> them nice and tight."}]},{"word":"東部","reading":"とうぶ","meaning":"eastern part","frequency_in_section":7,"kanji":[{"character":"東","meaning":"East","reading":"ひがし","meaning_mnemonic":"This is the same as the radical for <radical>east</radical>, so it means <kanji>east</kanji> too."},{"character":"部","meaning":"Part","reading":"ぶ","meaning_mnemonic":"The <radical>clown</radical> <radical>building</radical> is over in that <kanji>part</kanji> of town. We keep the clown part as separate as we can from the rest of the normal people. In fact, the entire clown education <kanji>department</kanji> and their clown <kanji>club</kanji>s have to stay in their part, they can't come in ours."}]},{"word":"銀時計","reading":"ぎんどけい","meaning":"silver watch","frequency_in_section":7,"kanji":[{"character":"銀","meaning":"Silver","reading":"ぎん","meaning_mnemonic":"<radical>Gold</radical>, at its <radical>root</radical>, is made up of <kanji>silver</kanji>. Using silver as the root of a coin is a great way to save on gold! That's why, often, if you just scratch gold, you'll find there's silver hidden underneath, at its root."},{"character":"時","meaning":"Time","reading":"じ","meaning_mnemonic":"The <radical>sun</radical> is used in a <radical>temple</radical> to tell <kanji>time</kanji>. They don't have clocks or cell phones, they have sun dials and good old fashioned \"looking up and seeing where the sun is right now.\"\n\nThis also can mean <kanji>o' clock</kanji>, as in \"five o'clock\" It's used when measuring what time it is in Japanese."},{"character":"計","meaning":"Measure","reading":"けい","meaning_mnemonic":"If you want to <radical>say</radical> how big a <radical>cross</radical> is, you have to <kanji>measure</kanji> it. You can't say the size of something without measuring it first."}]},{"word":"構築式","reading":"こうちくしき","meaning":null,"frequency_in_section":6,"kanji":[{"character":"構","meaning":"Set Up","reading":"こう","meaning_mnemonic":"A <radical>tree</radical> is what a <radical>lifeguard</radical> uses to <kanji>set up</kanji> the station where he'll <kanji>care</kanji> for the people on the beach and in the water. Trees provide the shade lifeguards need to take care of half-drowned kids and grannies with sand stuck in their bathing suits. That's why they set up their care stations here."},{"character":"築","meaning":"Construct","reading":"ちく","meaning_mnemonic":"You use a <radical>bamboo</radical> <radical>saw</radical> to cut down <radical>tree</radical>s to <kanji>construct</kanji> and <kanji>build</kanji> a building. The bamboo saw was crafted by a master bamboosmith, and cuts through trees with ease so you can quickly construct this new building."},{"character":"式","meaning":"Ritual","reading":"しき","meaning_mnemonic":"A good <radical>ceremony</radical> is under <radical>construction</radical> for a long time. You can't just make up a new ceremony on the spot. A ceremony is done a certain way because that's the way it's always been done. In short, to build a ceremony, you have to create a <kanji>ritual</kanji> first. Then, the ritual can be constructed into a bigger, more lavish <kanji>ceremony</kanji>.\n\nThis kanji also means <kanji>equation</kanji> for some reason. Just think of a ceremony that involves doing math and solving equations. How strange would that be? Pretend you're at this ceremony."}]},{"word":"異教徒","reading":"いきょうと","meaning":"pagan","frequency_in_section":6,"kanji":[{"character":"異","meaning":"Differ","reading":"い","meaning_mnemonic":"Put a <radical>rice paddy</radical> <radical>together</radical> with other paddies and you'll see how much they <kanji>differ</kanji>. When you're driving or taking a train through the countryside it may seem like all of those rice paddies blurring together are all the same, but they can differ quite a bit!"},{"character":"教","meaning":"Teach","reading":"きょう","meaning_mnemonic":"A <radical>teacher</radical> in <radical>winter</radical> is happiest because they get to <kanji>teach</kanji>! The kids can't go out and play because it's too cold. They all have to come in and stay warm as the teacher teaches!"},{"character":"徒","meaning":"Junior","reading":"と","meaning_mnemonic":"“Don’t <radical>loiter</radical> – <radical>run</radical>, <kanji>Junior</kanji>!” said Indiana Jones Senior to Indiana Jones Junior. They’re escaping from a sticky situation and Junior was just loitering around like a fool. It’s no time to loiter, it’s time to run!"}]},{"word":"コーネロ様","reading":"さま","meaning":"appearing ...","frequency_in_section":5,"kanji":[{"character":"様","meaning":"Formal Name Ender","reading":"さま","meaning_mnemonic":"By a <radical>tree</radical>, there's a <radical>sheep</radical> in the <radical>water</radical> with a <kanji>formal name ender</kanji>. That means everyone calls him Sheep-sama. No one calls him just \"Sheep,\" since he's kind of a big deal. He's actually like sheep royalty. When he's not in his castle, Sheep-sama enjoys playing in the water by the trees.\n\nThis can also mean <kanji>manner</kanji>, as in your manner of doing things. I guess someone with a formal name ender has a different manner of doing things."}]},{"word":"２年","reading":"にねん","meaning":"second-year student","frequency_in_section":5,"kanji":[{"character":"年","meaning":"Year","reading":"ねん","meaning_mnemonic":"You have a <radical>gun</radical> and a <radical>cow</radical>, which must mean it's that time of the <kanji>year</kanji>! Every year on New Year's Eve, you get asked to shoot a cow, as per tradition. You really don't want to though, so you deliberately miss every time."}]},{"word":"研究書","reading":"けんきゅうしょ","meaning":"monograph","frequency_in_section":5,"kanji":[{"character":"研","meaning":"Sharpen","reading":"けん","meaning_mnemonic":"A <radical>stone</radical> <radical>lantern</radical> is an excellent way to <kanji>sharpen</kanji> anything, even in the dark. Your knives, your forks, your spoons, and even your sword."},{"character":"究","meaning":"Research","reading":"きゅう","meaning_mnemonic":"You dig a <radical>hole</radical> <radical>nine</radical> times for your <kanji>research</kanji>. You should always do research with nine variables so you can compare them, and so there's an uneven number."},{"character":"書","meaning":"Write","reading":"しょ","meaning_mnemonic":"Why would you try to take a <radical>brush</radical> to the <radical>sun</radical>? It's almost too obvious, because you want to <kanji>write</kanji> something down."}]},{"word":"滅ぼす","reading":"ほろぼし","meaning":"To Destroy","frequency_in_section":4,"kanji":[{"character":"滅","meaning":"Destroy","reading":"めつ","meaning_mnemonic":"You're struck by a <radical>tsunami</radical>, mauled by a <radical>canine</radical>, and then set on <radical>fire</radical>. It seems the universe is trying to <kanji>destroy</kanji> you."}]},{"word":"炭素","reading":"たんそ","meaning":"Carbon","frequency_in_section":4,"kanji":[{"character":"炭","meaning":"Charcoal","reading":"たん","meaning_mnemonic":"You climb up a <radical>mountain</radical> and a <radical>cliff</radical> in search of <radical>fire</radical>, but all you find is <kanji>charcoal</kanji>. You can make fire with the charcoal, but you were hoping to find fire itself. All that climbing for nothing."},{"character":"素","meaning":"Element","reading":"そ","meaning_mnemonic":"If you look really close at your <radical>rib cage</radical>, you'll see what looks like millions of tiny little <radical>thread</radical>s. But those aren't threads — they're the essential <kanji>element</kanji>s of life as we know it."}]},{"word":"通行料","reading":"つうこうりょう","meaning":"toll","frequency_in_section":4,"kanji":[{"character":"通","meaning":"Pass Through","reading":"つう","meaning_mnemonic":"There's a <radical>scooter</radical> with your <radical>mama</radical> carrying a <radical>task</radical> she needs to get done. You see her <kanji>pass through</kanji>, hurrying by to get that task done."},{"character":"行","meaning":"Go","reading":"こう","meaning_mnemonic":"The <radical>go</radical> radical and the <kanji>go</kanji> kanji are exactly the same!"},{"character":"料","meaning":"Fee","reading":"りょう","meaning_mnemonic":"You have a <radical>rice</radical> <radical>ladle</radical> that's specifically for paying the rice <kanji>fee</kanji>. Each scoop of something has an extra fee tacked on, so when you use a <kanji>material</kanji>, there's a fee you have to pay in that material as well."}]},{"word":"排除","reading":"はいじょ","meaning":"Exclusion","frequency_in_section":4,"kanji":[{"character":"排","meaning":"Emit","reading":"はい","meaning_mnemonic":"The <radical>fingers</radical> are where <radical>criminal</radical>s <kanji>emit</kanji> or <kanji>expel</kanji> all of their bad energy from. "},{"character":"除","meaning":"Exclude","reading":"じょ","meaning_mnemonic":"The <radical>building</radical>s are at a <radical>surplus</radical>. Because of that, we will need to <kanji>exclude</kanji> some of them from our future plans. Also, we'll need to <kanji>remove</kanji> some buildings too."}]},{"word":"循環","reading":"じゅんかん","meaning":"Circulation","frequency_in_section":4,"kanji":[{"character":"循","meaning":"Circulation","reading":"じゅん","meaning_mnemonic":"If you want to <radical>loiter</radical> on a <radical>cliff</radical> with the <radical>pope</radical> you better be ready to move in perfect <kanji>circulation</kanji> with him. The pope is wearing really heavy robes and it's hot up here on this cliff, so you both need to walk in circles to keep cool."},{"character":"環","meaning":"Loop","reading":"かん","meaning_mnemonic":"The <radical>king</radical> is showing his people how to put a <radical>net</radical> around a weird <radical>zombie</radical> by walking around it in a <kanji>loop</kanji>. It's a weird zombie because it has the ground on top of its head instead of dirt."}]},{"word":"復しゅう","reading":"ふくしゅう","meaning":"revenge","frequency_in_section":4,"kanji":[{"character":"復","meaning":"Restore","reading":"ふく","meaning_mnemonic":"You <radical>loiter</radical> around a <radical>black hole</radical>, waiting for it to finish destroying and switch to <kanji>restore</kanji> mode. You were told all black holes finish eventually, and when they do you can press a button to restore everything back to the way it was."}]},{"word":"軍曹","reading":"ぐんそう","meaning":"sergeant","frequency_in_section":4,"kanji":[{"character":"軍","meaning":"Army","reading":"ぐん","meaning_mnemonic":"You run into someone's <radical>forehead</radical> with your <radical>car</radical>. The big forehead you hit is Kim Jong Un's. You know that now you're going to have the whole North Korean <kanji>army</kanji> coming after you."},{"character":"曹","meaning":"Official","reading":"そう","meaning_mnemonic":"When under<radical>ground</radical> <radical>music</radical> makes it out into the light of the <radical>sun</radical> (the public), it finally becomes <kanji>official</kanji>. Music isn't really real unless people hear it outside of those secret underground concerts."}]},{"word":"マルコー氏","reading":"し","meaning":"circle","frequency_in_section":4,"kanji":[{"character":"氏","meaning":"Family Name","reading":"し","meaning_mnemonic":"Your <radical>clan</radical> is where you get your name. But not your given name, your <kanji>family name</kanji>. That's why people have names that mean \"in a rice paddy\" and \"near the ferry crossing.\" The location of your clan determined your <kanji>surname</kanji>! Hope your ancestors didn't live on \"Poo Lake\" or something."}]},{"word":"身柄","reading":"みがら","meaning":"one's person","frequency_in_section":3,"kanji":[{"character":"身","meaning":"Body","reading":"しん","meaning_mnemonic":"When your <radical>self</radical> goes down a <radical>slide</radical> and hits a <radical>barb</radical>, it's a painful reminder that you have a <kanji>body</kanji>. Sometimes people think their self is just some kind of floating, disembodied consciousness, but getting a barb stuck in <kanji>oneself</kanji> while going down a slide will quickly remind one of one's bodily existence."},{"character":"柄","meaning":"Pattern","reading":"がら","meaning_mnemonic":"You walk up to a <radical>tree</radical> and put <radical>dynamite</radical> on it. Then you set it off. BOOM. It explodes, but doesn't do what you'd expect. Instead of blowing the tree up, it blasts a very beautiful <kanji>pattern</kanji> into the side of it as well as the ground around it."}]},{"word":"錬る","reading":"ね","meaning":"to knead","frequency_in_section":3,"kanji":[{"character":"錬","meaning":"Tempering","reading":"れん","meaning_mnemonic":"The <radical>gold</radical> from the <radical>east</radical> needs <kanji>tempering</kanji> before it can be sold. The gold from the east is good, it just needs some tempering before it's entirely presentable. You know, tempering like you'd do in a forge."}]},{"word":"レト教","reading":"きょう","meaning":null,"frequency_in_section":3,"kanji":[{"character":"教","meaning":"Teach","reading":"きょう","meaning_mnemonic":"A <radical>teacher</radical> in <radical>winter</radical> is happiest because they get to <kanji>teach</kanji>! The kids can't go out and play because it's too cold. They all have to come in and stay warm as the teacher teaches!"}]},{"word":"背く","reading":"そむき","meaning":"to run counter to","frequency_in_section":3,"kanji":[{"character":"背","meaning":"Back","reading":"はい","meaning_mnemonic":"You fly <radical>north</radical> to the <radical>moon</radical> and break your <kanji>back</kanji> when you finally land on it. You weren’t braced for impact so when you hit the moon, your back took all of the impact."}]},{"word":"複数","reading":"ふくすう","meaning":"Multiple","frequency_in_section":3,"kanji":[{"character":"複","meaning":"Duplicate","reading":"ふく","meaning_mnemonic":"If your <radical>outfit</radical> gets sucked into a <radical>black hole</radical>, you'll need to get a <kanji>duplicate</kanji> version of the same outfit, 'cause you're not getting the original back. Hopefully you had <kanji>multiple</kanji>s…"},{"character":"数","meaning":"Count","reading":"すう","meaning_mnemonic":"Give <radical>rice</radical> to a <radical>woman</radical> in <radical>winter</radical> so she can <kanji>count</kanji> it. The woman will count each individual grain of rice, then tell you the <kanji>amount</kanji> or <kanji>number</kanji> of grains."}]},{"word":"タッカー氏","reading":"し","meaning":"staple gun","frequency_in_section":3,"kanji":[{"character":"氏","meaning":"Family Name","reading":"し","meaning_mnemonic":"Your <radical>clan</radical> is where you get your name. But not your given name, your <kanji>family name</kanji>. That's why people have names that mean \"in a rice paddy\" and \"near the ferry crossing.\" The location of your clan determined your <kanji>surname</kanji>! Hope your ancestors didn't live on \"Poo Lake\" or something."}]},{"word":"軍法","reading":"ぐんぽう","meaning":"military law","frequency_in_section":3,"kanji":[{"character":"軍","meaning":"Army","reading":"ぐん","meaning_mnemonic":"You run into someone's <radical>forehead</radical> with your <radical>car</radical>. The big forehead you hit is Kim Jong Un's. You know that now you're going to have the whole North Korean <kanji>army</kanji> coming after you."},{"character":"法","meaning":"Method","reading":"ほう","meaning_mnemonic":"<radical>Tsunami</radical>s in the <radical>past</radical> changed the <kanji>method</kanji>s and <kanji>law</kanji>s of today."}]},{"word":"貴様ら","reading":"きさまら","meaning":null,"frequency_in_section":3,"kanji":[{"character":"貴","meaning":"Valuable","reading":"き","meaning_mnemonic":"The <radical>valuable</radical> radical and the <kanji>valuable</kanji> kanji are the same!"},{"character":"様","meaning":"Formal Name Ender","reading":"さま","meaning_mnemonic":"By a <radical>tree</radical>, there's a <radical>sheep</radical> in the <radical>water</radical> with a <kanji>formal name ender</kanji>. That means everyone calls him Sheep-sama. No one calls him just \"Sheep,\" since he's kind of a big deal. He's actually like sheep royalty. When he's not in his castle, Sheep-sama enjoys playing in the water by the trees.\n\nThis can also mean <kanji>manner</kanji>, as in your manner of doing things. I guess someone with a formal name ender has a different manner of doing things."}]},{"word":"３日","reading":"さんにち","meaning":"3rd day of the month","frequency_in_section":3,"kanji":[{"character":"日","meaning":"Sun","reading":"にち","meaning_mnemonic":"The <radical>sun</radical> radical and <kanji>sun</kanji> kanji are the same, huzzah! Also, if you want to remember <kanji>day</kanji> as well, you can just think about how a day is the time it takes for the sun to cross the sky."}]},{"word":"後戻り","reading":"あともどり","meaning":"going backward","frequency_in_section":3,"kanji":[{"character":"後","meaning":"Behind","reading":"ご","meaning_mnemonic":"If you <radical>loiter</radical> around to <radical>poop</radical> in <radical>winter</radical> you never know what could be happening <kanji>behind</kanji> you. <kanji>After</kanji> you're done you could turn <kanji>back</kanji> to see something really crazy that you missed because you took so long to poop in the cold."},{"character":"戻","meaning":"Return","reading":"もど","meaning_mnemonic":"This <radical>door</radical> is <radical>big</radical> and you need to <kanji>return</kanji> it to its rightful owner. This door is too big and important looking to not belong to someone. You need to find its owner and return it to them."}]},{"word":"暑苦しい","reading":"あつくるしい","meaning":"sultry","frequency_in_section":3,"kanji":[{"character":"暑","meaning":"Hot","reading":"あつ","meaning_mnemonic":"If the <radical>sun</radical> is on <radical>someone</radical>, they will get <kanji>hot</kanji>. That's just how it is. Someone standing out in the sun for a long time will inevitably get hot. The sun is hot, and it makes you get hot too.\n\nNote that this usually refers to hot weather or the heat of an area you're in and doesn't refer to a hot \"thing.\""},{"character":"苦","meaning":"Suffering","reading":"く","meaning_mnemonic":"The <radical>flowers</radical> have grown <radical>old</radical>, so they're <kanji>suffering</kanji>."}]},{"word":"解読","reading":"かいどく","meaning":"deciphering","frequency_in_section":3,"kanji":[{"character":"解","meaning":"Solve","reading":"かい","meaning_mnemonic":"<radical>Angle</radical> your <radical>sword</radical> correctly at this <radical>cow</radical> to <kanji>solve</kanji> its riddle. The key is to <kanji>untie</kanji> the cow with the sword without hurting it."},{"character":"読","meaning":"Read","reading":"よ","meaning_mnemonic":"You have to <radical>say</radical> what you’re <radical>sell</radical>ing because people don’t like to <kanji>read</kanji>. If they walk right by and don’t read, you better say what you have for sale so they’ll know! Read it out loud to them."}]},{"word":"書庫","reading":"しょこ","meaning":"library","frequency_in_section":3,"kanji":[{"character":"書","meaning":"Write","reading":"しょ","meaning_mnemonic":"Why would you try to take a <radical>brush</radical> to the <radical>sun</radical>? It's almost too obvious, because you want to <kanji>write</kanji> something down."},{"character":"庫","meaning":"Storage","reading":"こ","meaning_mnemonic":"A <radical>canopy</radical> is over your <radical>car</radical> because your car is in <kanji>storage</kanji> in a large <kanji>storehouse</kanji>."}]},{"word":"連れ","reading":"つれ","meaning":"companion","frequency_in_section":3,"kanji":[{"character":"連","meaning":"Take Along","reading":"れん","meaning_mnemonic":"Your <radical>scooter</radical> and your <radical>car</radical> is what you always <kanji>take along</kanji> with you. Make sure they're <kanji>connect</kanji>ed well so you don't lose them! "}]},{"word":"技師","reading":"ぎし","meaning":"engineer","frequency_in_section":3,"kanji":[{"character":"技","meaning":"Skill","reading":"ぎ","meaning_mnemonic":"You can make your <radical>fingers</radical> <radical>branch</radical> out. It's your special <kanji>skill</kanji>, a very advanced <kanji>technique</kanji>. Your fingers branch out into smaller fingers and you can hold things really well. You can type super-duper fast. And you can win any tickle fight. These are skills you have thanks to your branching fingers."},{"character":"師","meaning":"Teacher","reading":"し","meaning_mnemonic":"A <radical>drop</radical> of water falls from a <radical>bear</radical> onto the <radical>ground</radical> and needs to be wiped up with a <radical>towel</radical>. Only a <kanji>teacher</kanji> or an <kanji>expert</kanji> could get away with getting close to this wet bear to wipe up after it."}]},{"word":"１か月","reading":"いちかげつ","meaning":"one month","frequency_in_section":3,"kanji":[{"character":"月","meaning":"Moon","reading":"げつ","meaning_mnemonic":"The <kanji>moon</kanji> kanji is made up of the <radical>moon</radical> radical. This kanji is also used to mean <kanji>month</kanji>."}]},{"word":"連鎖","reading":"れんさ","meaning":"Chain","frequency_in_section":3,"kanji":[{"character":"連","meaning":"Take Along","reading":"れん","meaning_mnemonic":"Your <radical>scooter</radical> and your <radical>car</radical> is what you always <kanji>take along</kanji> with you. Make sure they're <kanji>connect</kanji>ed well so you don't lose them! "},{"character":"鎖","meaning":"Chain","reading":"さ","meaning_mnemonic":"The famous <radical>gold</radical> <radical>triceratops</radical> <radical>shellfish</radical> is good for only one thing, and that's being made into <kanji>chain</kanji>s. They link their triceratops horns together and form an unbreakable gold chain. You can't eat them, because they're gold. So they're only really good for their chaining together ability."}]},{"word":"水蒸気","reading":"すいじょうき","meaning":"water vapour","frequency_in_section":2,"kanji":[{"character":"水","meaning":"Water","reading":"すい","meaning_mnemonic":"The <radical>water</radical> radical and the <kanji>water</kanji> kanji are the same."},{"character":"蒸","meaning":"Steam","reading":"じょう","meaning_mnemonic":"If you take the <radical>flowers</radical> off some <radical>coral</radical> and <radical>boil</radical> them, <kanji>steam</kanji> comes out."},{"character":"気","meaning":"Energy","reading":"き","meaning_mnemonic":"These days <radical>energy</radical> is the greatest <radical>treasure</radical>. Not gold, money, or anything like that. Imagine finding some in a literal treasure chest. As soon as you open it, out bursts the <kanji>energy</kanji> in a kind of <kanji>spirit</kanji> ball."}]},{"word":"年長者","reading":"ねんちょうしゃ","meaning":"senior","frequency_in_section":2,"kanji":[{"character":"年","meaning":"Year","reading":"ねん","meaning_mnemonic":"You have a <radical>gun</radical> and a <radical>cow</radical>, which must mean it's that time of the <kanji>year</kanji>! Every year on New Year's Eve, you get asked to shoot a cow, as per tradition. You really don't want to though, so you deliberately miss every time."},{"character":"長","meaning":"Long","reading":"ちょう","meaning_mnemonic":"The <radical>long</radical> radical and the <kanji>long</kanji> kanji are the same! \n\nThis kanji also means <kanji>leader</kanji>, because the longer a person is, the better a leader they'll be. Or maybe it was... the longer they've been somewhere? Whatever, longness = leaderness, you know?"},{"character":"者","meaning":"Someone","reading":"しゃ","meaning_mnemonic":"The radical and the kanji are exactly the same, so this means <kanji>someone</kanji>."}]},{"word":")戦","reading":"せん","meaning":"war","frequency_in_section":2,"kanji":[{"character":"戦","meaning":"War","reading":"せん","meaning_mnemonic":"A <radical>simple</radical> <radical>drunkard</radical> starting a <kanji>war</kanji>."}]},{"word":"芸術的","reading":"げいじゅつてき","meaning":"artistic","frequency_in_section":2,"kanji":[{"character":"芸","meaning":"Art","reading":"げい","meaning_mnemonic":"You put <radical>flowers</radical> on a <radical>cloud</radical> and call it <kanji>art</kanji>. Not everyone agrees that your flower cloud art is actually art, but you know it is."},{"character":"術","meaning":"Technique","reading":"じゅつ","meaning_mnemonic":"There <radical>go</radical> some <radical>angel</radical>s with <radical>drop</radical>s on their shoulders. Carrying drops like that requires <kanji>technique</kanji>. It’s a real <kanji>art</kanji>."},{"character":"的","meaning":"Target","reading":"てき","meaning_mnemonic":"A <radical>white</radical> guy jumps into a <radical>pool</radical> with a <kanji>target</kanji> painted on the bottom. He's aiming for the target, of course.\n\nThis kanji can also mean <kanji>-al</kanji>, as in the endings you get on some English adjectives. You know, like the pool is artifici-al. Or painting a target down there is not practic-al. That kind of -al."}]},{"word":"金法","reading":"きんほう","meaning":null,"frequency_in_section":2,"kanji":[{"character":"金","meaning":"Gold","reading":"きん","meaning_mnemonic":"The <radical>gold</radical> radical and the <kanji>gold</kanji> kanji are the same!"},{"character":"法","meaning":"Method","reading":"ほう","meaning_mnemonic":"<radical>Tsunami</radical>s in the <radical>past</radical> changed the <kanji>method</kanji>s and <kanji>law</kanji>s of today."}]},{"word":"逝く","reading":"いっ","meaning":"to go","frequency_in_section":2,"kanji":[{"character":"逝","meaning":"Die","reading":"せい","meaning_mnemonic":"If you ride a <radical>scooter</radical> with your <radical>fingers</radical> around an <radical>axe</radical> you're going to <kanji>die</kanji>. I mean, probably. There's a 99% chance you'll die."}]},{"word":"戻せる","reading":"もどせ","meaning":null,"frequency_in_section":2,"kanji":[{"character":"戻","meaning":"Return","reading":"もど","meaning_mnemonic":"This <radical>door</radical> is <radical>big</radical> and you need to <kanji>return</kanji> it to its rightful owner. This door is too big and important looking to not belong to someone. You need to find its owner and return it to them."}]},{"word":"豆粒","reading":"まめつぶ","meaning":"speck","frequency_in_section":2,"kanji":[{"character":"豆","meaning":"Beans","reading":"とう","meaning_mnemonic":"The <radical>beans</radical> radical and the <kanji>beans</kanji> kanji are exactly the same!"},{"character":"粒","meaning":"Grains","reading":"りゅう","meaning_mnemonic":"The part of <radical>rice</radical> that <radical>stand</radical>s up tall in the air (at the end of the stalks) is the <kanji>grains</kanji>."}]},{"word":"磨く","reading":"みがい","meaning":"To Polish","frequency_in_section":2,"kanji":[{"character":"磨","meaning":"Polish","reading":"みが","meaning_mnemonic":"Below this <radical>canopy</radical> of <radical>tree</radical>s is a <radical>stone</radical>. Since it's the only stone here, you make sure to <kanji>polish</kanji> it."}]},{"word":"石灰","reading":"せっかい","meaning":"lime","frequency_in_section":2,"kanji":[{"character":"石","meaning":"Stone","reading":"せき","meaning_mnemonic":"The <radical>stone</radical> radical and <kanji>stone</kanji> kanji are the same thing!"},{"character":"灰","meaning":"Ash","reading":"はい","meaning_mnemonic":"On a <radical>cliff</radical>, a <radical>fire</radical> burns to <kanji>ashes</kanji>. The ashes then blow off the cliff, and follow the wind wherever it may go."}]},{"word":"母さ","reading":"ははさ","meaning":"mother","frequency_in_section":2,"kanji":[{"character":"母","meaning":"Mother","reading":"はは","meaning_mnemonic":"Someone breaks part of your <radical>window</radical>. Who did this? It was your <kanji>mother</kanji>!"}]},{"word":"理論","reading":"りろん","meaning":"Theory","frequency_in_section":2,"kanji":[{"character":"理","meaning":"Reason","reading":"り","meaning_mnemonic":"The <radical>king</radical>'s <radical>village</radical> is the <kanji>reason</kanji> he's king. Without the village there would be no reason to have a king in the first place."},{"character":"論","meaning":"Theory","reading":"ろん","meaning_mnemonic":"You <radical>say</radical>, throwing your <radical>hat</radical> on the <radical>ground</radical> in front of the <radical>bookshelf</radical>, \"I have a <kanji>theory</kanji>!\" All this reading and thinking has finally given you a wonderful idea, a theory you think might solve all of your problems!"}]},{"word":"特権","reading":"とっけん","meaning":"privilege","frequency_in_section":2,"kanji":[{"character":"特","meaning":"Special","reading":"とく","meaning_mnemonic":"This <radical>cow</radical> <radical>temple</radical> is <kanji>special</kanji>. This cow must have been very important to have an entire temple dedicated to it."},{"character":"権","meaning":"Rights","reading":"けん","meaning_mnemonic":"Under a <radical>tree</radical>, a broken <radical>arrow</radical> protrudes from a <radical>turkey</radical>. It was fighting for the <kanji>rights</kanji> of its fellow turkeys, and was mortally wounded in the process."}]},{"word":"手術","reading":"しゅじゅつ","meaning":"surgery","frequency_in_section":2,"kanji":[{"character":"手","meaning":"Hand","reading":"て","meaning_mnemonic":"The <radical>hand</radical> radical and the <kanji>hand</kanji> kanji are identical in looks and meaning! That should make things easy!"},{"character":"術","meaning":"Technique","reading":"じゅつ","meaning_mnemonic":"There <radical>go</radical> some <radical>angel</radical>s with <radical>drop</radical>s on their shoulders. Carrying drops like that requires <kanji>technique</kanji>. It’s a real <kanji>art</kanji>."}]},{"word":"義手","reading":"ぎしゅ","meaning":"artificial arm (hand)","frequency_in_section":2,"kanji":[{"character":"義","meaning":"Righteousness","reading":"ぎ","meaning_mnemonic":"The kanji and the radical are exactly the same. That means they share meanings as well. <radical>Righteousness</radical> is as <kanji>righteousness</kanji> does, right?"},{"character":"手","meaning":"Hand","reading":"て","meaning_mnemonic":"The <radical>hand</radical> radical and the <kanji>hand</kanji> kanji are identical in looks and meaning! That should make things easy!"}]},{"word":"質量","reading":"しつりょう","meaning":"mass","frequency_in_section":2,"kanji":[{"character":"質","meaning":"Quality","reading":"しつ","meaning_mnemonic":"You have to use two <radical>axe</radical>s to open these <radical>shellfish</radical>. That seems like overkill, but it is necessary. These particular shellfish are of very high <kanji>quality</kanji> meaning they won't open so easily."},{"character":"量","meaning":"Quantity","reading":"りょう","meaning_mnemonic":"When <radical>dawn</radical> reaches this <radical>village</radical> it increases in <kanji>quantity</kanji>. That's right. Every morning the <kanji>amount</kanji> of people or animals living here goes up by at least one."}]},{"word":"構成","reading":"こうせい","meaning":"Composition","frequency_in_section":2,"kanji":[{"character":"構","meaning":"Set Up","reading":"こう","meaning_mnemonic":"A <radical>tree</radical> is what a <radical>lifeguard</radical> uses to <kanji>set up</kanji> the station where he'll <kanji>care</kanji> for the people on the beach and in the water. Trees provide the shade lifeguards need to take care of half-drowned kids and grannies with sand stuck in their bathing suits. That's why they set up their care stations here."},{"character":"成","meaning":"Become","reading":"せい","meaning_mnemonic":"When a <radical>drunkard</radical> holds a <radical>sword</radical> it <kanji>becomes</kanji> something else. The drunkard doesn't become a swordsman, they're still just a drunkard. But the sword in their hands does."}]},{"word":"どん底","reading":"どんぞこ","meaning":"very bottom","frequency_in_section":2,"kanji":[{"character":"底","meaning":"Bottom","reading":"そこ","meaning_mnemonic":"Under a <radical>canopy</radical> your <radical>clan</radical> digs in the <radical>ground</radical>, trying to get to the <kanji>bottom</kanji>. They want to build a nice home your entire clan can live in, but they need to get to the bottom before they'll start building."}]},{"word":"要請","reading":"ようせい","meaning":"Demand","frequency_in_section":2,"kanji":[{"character":"要","meaning":"Need","reading":"よう","meaning_mnemonic":"When a <radical>helicopter</radical> is piloted by a <radical>woman</radical>, it stirs an insatiable <kanji>need</kanji> in her. She doesn't know what it is. But she needs it. And that's why she's flying around looking for it!"},{"character":"請","meaning":"Request","reading":"せい","meaning_mnemonic":"If what you <radical>say</radical> comes out <radical>blue</radical>, everyone knows that means you made a <kanji>request</kanji>. You request a favor and the words slide out of your mouth in a bright, blue blob. They hover in front of you for a few seconds, before splashing onto the person you made the request to."}]},{"word":"担当","reading":"たんとう","meaning":"In Charge","frequency_in_section":2,"kanji":[{"character":"担","meaning":"Carry","reading":"たん","meaning_mnemonic":"You use your <radical>fingers</radical> at <radical>dawn</radical> to <kanji>carry</kanji> many things. You have to carry yourself out of bed. You have to carry your backpack or purse or laptop bag to school or work. Your fingers have to carry a lot of weight around at dawn."},{"character":"当","meaning":"Correct","reading":"とう","meaning_mnemonic":"What superhero is most like a <radical>triceratops</radical>? …If you said <radical>Wolverine</radical>, you're <kanji>correct</kanji>! Why is that the <kanji>right</kanji> answer? Because the triceratops has three horns, and Wolverine has three blades coming out of his hands. It's obvious, isn't it? But you knew that of course."}]},{"word":"ため込む","reading":"ためこん","meaning":"to save up","frequency_in_section":2,"kanji":[{"character":"込","meaning":"Into","reading":"こ","meaning_mnemonic":"If you get on your <radical>scooter</radical> and <radical>enter</radical> somewhere, you’re going <kanji>into</kanji> that place."}]},{"word":"解する","reading":"かいする","meaning":"to understand","frequency_in_section":2,"kanji":[{"character":"解","meaning":"Solve","reading":"かい","meaning_mnemonic":"<radical>Angle</radical> your <radical>sword</radical> correctly at this <radical>cow</radical> to <kanji>solve</kanji> its riddle. The key is to <kanji>untie</kanji> the cow with the sword without hurting it."}]},{"word":"決断","reading":"けつだん","meaning":"decision","frequency_in_section":2,"kanji":[{"character":"決","meaning":"Decide","reading":"けつ","meaning_mnemonic":"You have at your disposal a <radical>tsunami</radical> to assassinate this <radical>person</radical>, or a <radical>hook</radical>. Which method will you choose? <kanji>Decide</kanji> now!"},{"character":"断","meaning":"Cut Off","reading":"だん","meaning_mnemonic":"A <radical>lion</radical> harvesting <radical>rice</radical> uses an <radical>axe</radical> to <kanji>cut off</kanji> the tops of the stalks. The lion is roaming the rice fields using his axe to harvest the rice. He does so by cutting off the part of the rice stalks he needs."}]},{"word":"レト神","reading":"しん","meaning":null,"frequency_in_section":2,"kanji":[{"character":"神","meaning":"God","reading":"しん","meaning_mnemonic":"Your <radical>spirit</radical> should feel <radical>humble</radical> before a <kanji>god</kanji>'s <kanji>spirit</kanji>. You never really feel humble in front of anyone else, but if you meet a god's spirit… Well, you should probably lower yourself appropriately. Gods have powerful spirits."}]},{"word":"流血","reading":"りゅうけつ","meaning":"bloodshed","frequency_in_section":2,"kanji":[{"character":"流","meaning":"Stream","reading":"りゅう","meaning_mnemonic":"A <radical>tsunami</radical> lifts all the <radical>trash</radical> out of the <radical>river</radical> and it <kanji>stream</kanji>s out onto the shores."},{"character":"血","meaning":"Blood","reading":"けつ","meaning_mnemonic":"The <radical>blood</radical> radical and <kanji>blood</kanji> are the same in looks as well as in meaning."}]},{"word":"憎悪","reading":"ぞうお","meaning":"hatred","frequency_in_section":2,"kanji":[{"character":"憎","meaning":"Hate","reading":"ぞう","meaning_mnemonic":"The <radical>soul</radical> <radical>mask</radical> helps you to see the deepest part of anyone's soul. You look around and in all the people you only see <kanji>hate</kanji>."},{"character":"悪","meaning":"Bad","reading":"あく","meaning_mnemonic":"In <radical>Asia</radical> they assume everyone's <radical>heart</radical> is automatically <kanji>bad</kanji> and <kanji>evil</kanji>."}]},{"word":"５日","reading":"ごにち","meaning":"5th day of the month","frequency_in_section":2,"kanji":[{"character":"日","meaning":"Sun","reading":"にち","meaning_mnemonic":"The <radical>sun</radical> radical and <kanji>sun</kanji> kanji are the same, huzzah! Also, if you want to remember <kanji>day</kanji> as well, you can just think about how a day is the time it takes for the sun to cross the sky."}]},{"word":"異形","reading":"いぎょう","meaning":"fantastic","frequency_in_section":2,"kanji":[{"character":"異","meaning":"Differ","reading":"い","meaning_mnemonic":"Put a <radical>rice paddy</radical> <radical>together</radical> with other paddies and you'll see how much they <kanji>differ</kanji>. When you're driving or taking a train through the countryside it may seem like all of those rice paddies blurring together are all the same, but they can differ quite a bit!"},{"character":"形","meaning":"Shape","reading":"けい","meaning_mnemonic":"You're walking at night when you discover a <radical>lantern</radical> covered entirely in <radical>hair</radical>, making it a very strange <kanji>shape</kanji>. In fact, this is a <kanji>form</kanji> you'd never expect a lantern to take."}]},{"word":"来れる","reading":"これ","meaning":null,"frequency_in_section":2,"kanji":[{"character":"来","meaning":"Come","reading":"らい","meaning_mnemonic":"The <radical>ground</radical> is scattered with <radical>rice</radical>, which will cause the Predator to <kanji>come</kanji> because he loves rice. Then once he's gone, the <kanji>next</kanji> Predator will come to eat."}]},{"word":"無用","reading":"むよう","meaning":"useless","frequency_in_section":2,"kanji":[{"character":"無","meaning":"Nothing","reading":"む","meaning_mnemonic":"The <radical>nothing</radical> radical and the <kanji>nothing</kanji> kanji are exactly the same! Woah!"},{"character":"用","meaning":"Task","reading":"よう","meaning_mnemonic":"The kanji and the radical are the same, so remembering the meaning of this kanji is as simple as making sure you know the radical for <radical>task</radical> first! If you know the radical, you know this kanji means <kanji>task</kanji> as well."}]},{"word":"１日","reading":"いちにち","meaning":"first day of the month","frequency_in_section":2,"kanji":[{"character":"日","meaning":"Sun","reading":"にち","meaning_mnemonic":"The <radical>sun</radical> radical and <kanji>sun</kanji> kanji are the same, huzzah! Also, if you want to remember <kanji>day</kanji> as well, you can just think about how a day is the time it takes for the sun to cross the sky."}]},{"word":"ウィンリィ殿","reading":"どの","meaning":"rear","frequency_in_section":2,"kanji":[{"character":"殿","meaning":"Milord","reading":"でん","meaning_mnemonic":"Under the same <radical>flag</radical>, all the people get <radical>together</radical> to present a new <radical>weapon</radical> to your <kanji>lord</kanji>. You all bow and say, \"<kanji>Milord</kanji>, this gift is for you.\" Because that's the proper way to address your lord."}]},{"word":"旅立つ","reading":"たびだつ","meaning":"to begin a trip","frequency_in_section":2,"kanji":[{"character":"旅","meaning":"Trip","reading":"りょ","meaning_mnemonic":"The <radical>direction</radical> your <radical>gun</radical> is facing leads straight to a block of <radical>tofu</radical>. This might be a sign you need to take a <kanji>trip</kanji>. If you're out there pointing guns at tofu, you're probably a little… tired… and in need of a change of scenery. Take a trip!"},{"character":"立","meaning":"Stand","reading":"りつ","meaning_mnemonic":"The radical <radical>stand</radical> and the kanji <kanji>stand</kanji> are the same thing, so now you know them both."}]},{"word":"燃やす","reading":"もやし","meaning":"To Burn Something","frequency_in_section":2,"kanji":[{"character":"燃","meaning":"Burn","reading":"ねん","meaning_mnemonic":"<radical>Fire</radical> in <radical>nature</radical> will <kanji>burn</kanji> down everything in its path. In nature, there are no firefighters to contain the flames, so the <kanji>blaze</kanji> will burn until nothing's left."}]},{"word":"設計","reading":"せっけい","meaning":"plan","frequency_in_section":2,"kanji":[{"character":"設","meaning":"Establish","reading":"せつ","meaning_mnemonic":"If you <radical>say</radical> a new <radical>weapon</radical> idea out loud, then it will be <kanji>establish</kanji>ed immediately."},{"character":"計","meaning":"Measure","reading":"けい","meaning_mnemonic":"If you want to <radical>say</radical> how big a <radical>cross</radical> is, you have to <kanji>measure</kanji> it. You can't say the size of something without measuring it first."}]},{"word":"献立","reading":"こんだて","meaning":"Menu","frequency_in_section":2,"kanji":[{"character":"献","meaning":"Offer","reading":"けん","meaning_mnemonic":"The <radical>South</radical> <radical>Dog</radical> gives you an <kanji>offer</kanji>. None of the other dogs in the North, East, or West offered you anything."},{"character":"立","meaning":"Stand","reading":"りつ","meaning_mnemonic":"The radical <radical>stand</radical> and the kanji <kanji>stand</kanji> are the same thing, so now you know them both."}]},{"word":"1000種","reading":"しゅ","meaning":null,"frequency_in_section":2,"kanji":[{"character":"種","meaning":"Kind","reading":"しゅ","meaning_mnemonic":"If a <radical>grain</radical> seems extra <radical>heavy</radical>, you know it's a different <kanji>kind</kanji>. Not all <kanji>type</kanji>s of grains are the same. So when you feel the heavy type, you know it isn't the same as the light kind."}]},{"word":"関連書","reading":"かんれんしょ","meaning":null,"frequency_in_section":2,"kanji":[{"character":"関","meaning":"Related","reading":"かん","meaning_mnemonic":"This <radical>gate</radical> of <radical>horns</radical> will take you to <radical>heaven</radical>. These horns are <kanji>related</kanji> and <kanji>connected</kanji> to heaven in some way."},{"character":"連","meaning":"Take Along","reading":"れん","meaning_mnemonic":"Your <radical>scooter</radical> and your <radical>car</radical> is what you always <kanji>take along</kanji> with you. Make sure they're <kanji>connect</kanji>ed well so you don't lose them! "},{"character":"書","meaning":"Write","reading":"しょ","meaning_mnemonic":"Why would you try to take a <radical>brush</radical> to the <radical>sun</radical>? It's almost too obvious, because you want to <kanji>write</kanji> something down."}]},{"word":"研究費","reading":"けんきゅうひ","meaning":"research funds","frequency_in_section":2,"kanji":[{"character":"研","meaning":"Sharpen","reading":"けん","meaning_mnemonic":"A <radical>stone</radical> <radical>lantern</radical> is an excellent way to <kanji>sharpen</kanji> anything, even in the dark. Your knives, your forks, your spoons, and even your sword."},{"character":"究","meaning":"Research","reading":"きゅう","meaning_mnemonic":"You dig a <radical>hole</radical> <radical>nine</radical> times for your <kanji>research</kanji>. You should always do research with nine variables so you can compare them, and so there's an uneven number."},{"character":"費","meaning":"Expense","reading":"ひ","meaning_mnemonic":"<radical>Dollar</radical>s and <radical>shellfish</radical> are used to pay <kanji>expense</kanji>s and <kanji>cost</kanji>s. Shellfish used to be used as currency, so they're like the coins that go with dollars."}]},{"word":"誰かさん","reading":"だれかさん","meaning":"a certain someone","frequency_in_section":2,"kanji":[{"character":"誰","meaning":"Who","reading":"だれ","meaning_mnemonic":"Who will <radical>say</radical> <radical>turkey</radical>? Who? <kanji>WHO</kanji>???"}]},{"word":"閉館","reading":"へいかん","meaning":"closing (for the day; of a library, museum, cinema, etc.)","frequency_in_section":2,"kanji":[{"character":"閉","meaning":"Closed","reading":"へい","meaning_mnemonic":"The <radical>gate</radical> to <radical>talent</radical> is now <kanji>closed</kanji>. In fact, the gate to talent is always closed. It's not like anyone can just waltz in and get themselves some talent. You have to work for it! You have to work hard to get through that closed gate to talent!"},{"character":"館","meaning":"Public Building","reading":"かん","meaning_mnemonic":"<radical>Eat</radical>ing the <radical>roof</radical> is a <radical>bear</radical>, because the roof is a <kanji>public building</kanji>. Because it is a public building bears are allowed to eat the roof."}]},{"word":"探り","reading":"さぐり","meaning":"sounding","frequency_in_section":2,"kanji":[{"character":"探","meaning":"Look For","reading":"たん","meaning_mnemonic":"Put your <radical>fingers</radical> to your <radical>forehead</radical> and stand your <radical>legs</radical> high up in a <radical>tree</radical> if you want to <kanji>look for</kanji> something. After all, shielding your eyes and getting up high is the best way to look for something, isn’t it?"}]},{"word":"忍び込む","reading":"しのびこん","meaning":"to creep in","frequency_in_section":2,"kanji":[{"character":"忍","meaning":"Endure","reading":"にん","meaning_mnemonic":"If someone puts a <radical>blade</radical> to your <radical>heart</radical>, you're going to have a rough time. They leave it there, for a long time. They aren't going to cut you, but you can't move. You have to <kanji>endure</kanji> the pain and <kanji>conceal</kanji> your discomfort with the situation."},{"character":"込","meaning":"Into","reading":"こ","meaning_mnemonic":"If you get on your <radical>scooter</radical> and <radical>enter</radical> somewhere, you’re going <kanji>into</kanji> that place."}]},{"word":"通れる","reading":"とおれ","meaning":"to travel on frequently (e.g. a road or path)","frequency_in_section":2,"kanji":[{"character":"通","meaning":"Pass Through","reading":"つう","meaning_mnemonic":"There's a <radical>scooter</radical> with your <radical>mama</radical> carrying a <radical>task</radical> she needs to get done. You see her <kanji>pass through</kanji>, hurrying by to get that task done."}]},{"word":"気がつく","reading":"きがつい","meaning":"to notice","frequency_in_section":2,"kanji":[{"character":"気","meaning":"Energy","reading":"き","meaning_mnemonic":"These days <radical>energy</radical> is the greatest <radical>treasure</radical>. Not gold, money, or anything like that. Imagine finding some in a literal treasure chest. As soon as you open it, out bursts the <kanji>energy</kanji> in a kind of <kanji>spirit</kanji> ball."}]},{"word":"現状","reading":"げんじょう","meaning":"present condition","frequency_in_section":2,"kanji":[{"character":"現","meaning":"Present Time","reading":"げん","meaning_mnemonic":"The <radical>king</radical> can <radical>see</radical> the <kanji>present time</kanji> for what it really is. The future isn't important. The past isn't important. The present is when everything <kanji>appear</kanji>s."},{"character":"状","meaning":"Condition","reading":"じょう","meaning_mnemonic":"See all those <radical>icicle</radical>s to the <radical>dog</radical>'s left? Good thing they all fell on his left, or he would've been in a terrible <kanji>condition</kanji>."}]},{"word":"楽に","reading":"らくに","meaning":"to relax","frequency_in_section":2,"kanji":[{"character":"楽","meaning":"Comfort","reading":"らく","meaning_mnemonic":"The <radical>white</radical> <radical>ice</radical> <radical>tree</radical> is a magical tree that radiates an aura of <kanji>comfort</kanji>, <kanji>ease</kanji>, and <kanji>pleasure</kanji>, with its icy foliage tinkling like beautiful <kanji>music</kanji> whenever it sways in the breeze."}]},{"word":"退避","reading":"たいひ","meaning":"taking refuge","frequency_in_section":2,"kanji":[{"character":"退","meaning":"Retreat","reading":"たい","meaning_mnemonic":"If you're on your <radical>scooter</radical> and you run over a <radical>root</radical>, you'll need to <kanji>retreat</kanji>. The roots have obviously <kanji>reject</kanji>ed you, they want you to leave, so you should."},{"character":"避","meaning":"Dodge","reading":"ひ","meaning_mnemonic":"You're on a <radical>scooter</radical> and suddenly someone throws a <radical>hot pepper</radical> at you and you have to <kanji>dodge</kanji> it."}]},{"word":"師父","reading":"しふ","meaning":"fatherly master","frequency_in_section":2,"kanji":[{"character":"師","meaning":"Teacher","reading":"し","meaning_mnemonic":"A <radical>drop</radical> of water falls from a <radical>bear</radical> onto the <radical>ground</radical> and needs to be wiped up with a <radical>towel</radical>. Only a <kanji>teacher</kanji> or an <kanji>expert</kanji> could get away with getting close to this wet bear to wipe up after it."},{"character":"父","meaning":"Father","reading":"ちち","meaning_mnemonic":"The radical and the kanji for <kanji>father</kanji> are the same."}]}];
+
+// ── Radical → Unicode map (extended) ──────────────────────
+const RC = {
+  "ability":"能","above":"上","accept":"受","again":"亦","alcohol":"酉",
+  "alligator":"也","allocate":"充","angel":"ホ","angle":"角","animal":"犭",
+  "announce":"告","anti":"反","arrow":"矢","asia":"亜","attach":"付",
+  "axe":"斤","badger":"豸","bamboo":"竹","bar":"㦮","barb":"亅",
+  "barracks":"屯","bathtub":"呂","beans":"豆","bear":"㠯","become":"成",
+  "bed":"巴","before":"前","beforehand":"予","below":"下","belt":"帯",
+  "big":"大","bird":"鳥","black":"黒","black hole":"复","blackjack":"龷",
+  "blade":"刃","blame":"責","blood":"血","blue":"青","boat":"舟",
+  "body":"身","boil":"灬","bone":"骨","book":"本","bookshelf":"冊",
+  "boot":"堇","both":"両","bow":"弓","box":"凵","branch":"支",
+  "bright":"明","broom":"帚","brush":"聿","buddy":"君","building":"阝",
+  "bully":"鬲","bundle":"束","business":"業","cage":"匚","call":"召",
+  "can":"缶","canine":"戌","canopy":"广","cape":"𠃌","capital":"京",
+  "car":"車","cat pirate":"卬","catapult":"呉","center":"央","ceremony":"弋",
+  "certain":"必","change":"化","chapter":"章","charcoal":"尞","cheap":"安",
+  "child":"子","chinese":"𦰩","circle":"丸","circumference":"周","city":"市",
+  "clan":"氏","claw":"爪","cleat":"⺤","cliff":"厂","clothes":"衣",
+  "cloud":"云","clown":"咅","coat rack":"疋","coffin":"耂","color":"色",
+  "comfort":"楽","commander":"将","compare":"比","concave":"凹","conflict":"争",
+  "construction":"工","control":"制","convex":"凸","coral":"丞","correct":"正",
+  "cottage":"舎","courage":"勇","cow":"牛","crab":"其","crab trap":"甚",
+  "criminal":"非","cross":"十","cyclops 133":"向","dance":"舛","dawn":"旦",
+  "death":"亡","demon":"鬼","departure":"発","direction":"方","director":"司",
+  "dirt":"土","district":"区","dog":"犬","dollar":"弗","door":"戸",
+  "doubt":"疑","dragon":"竜","drawer 70":"母","droopy":"垂","drop":"丶",
+  "drum":"壴","drunkard":"戈","dry":"干","dynamite":"丙","ear":"耳",
+  "early":"早","east":"東","easy":"易","eat":"食","ego":"我",
+  "elephant":"象","employ":"雇","energy":"气","enter":"入","escalator":"及",
+  "eternity":"永","evening":"夕","every":"毎","excuse":"免","exit":"出",
+  "eye":"目","face":"面","fang":"牙","farming":"農","fat":"太",
+  "father":"父","fault":"失","favor":"恵","feathers":"羽","feeling":"感",
+  "festival":"祭","few":"少","fingers":"扌","fins":"ハ","fire":"火",
+  "fish":"魚","five":"五","flag":"尸","flood":"巛","flowers":"艹",
+  "fly":"飛","foot":"足","football":"爰","forehead":"冖","form":"容",
+  "former":"旧","fortune":"占","friend":"友","frostbite":"夌","fruit":"果",
+  "fur":"毛","gambler":"尭","gate":"門","geoduck":"頁","giant":"巨",
+  "gladiator":"龹","go":"行","gold":"金","good":"良","good luck":"吉",
+  "grain":"禾","grass":"𭕄","greenhouse":"莫","grenade 386":"臼","ground":"一",
+  "guard":"兑","guest":"客","gun":"𠂉","guy":"郎","hair":"彡",
+  "half":"半","hand":"手","happiness":"幸","hat":"𠆢","have":"有",
+  "head":"冂","heart":"心","heaven":"天","heavy":"重","height":"丈",
+  "helicopter":"覀","hercules 316":"絜","hill":"岡","history":"史","hole":"穴",
+  "hook":"ユ","horns":"丷","horse":"馬","hot pepper":"辟","house":"家",
+  "humble":"申","hundred":"百","husband":"夫","ice":"冫","icicle":"丬",
+  "idea":"意","imperial":"龍","insect":"虫","inside":"内","interval":"間",
+  "jackhammer":"示","jammed in":"介","jet":"未","key":"乍","king":"王",
+  "kiss":"各","knife":"刂","korea":"韋","lack":"欠","ladle":"斗",
+  "landslide":"辰","lantern":"开","leader":"ｲ","leaf":"丆","leather":"革",
+  "legs":"儿","library":"扁","lid":"亠","life":"生","lifeguard":"冓",
+  "light":"光","line up":"並","lineage":"系","lion":"L","lip ring":"可",
+  "loiter":"彳","long":"長","long ago":"昔","lovely":"麗","machine":"台",
+  "mama":"マ","man":"男","mantis":"禹","mask":"曽","master":"主",
+  "measurement":"寸","meat":"肉","meet":"会","melon":"瓜","member":"員",
+  "middle":"中","mix":"交","mohawk":"啇","mole":"至","mona lisa":"兼",
+  "moon":"月","morning":"𠦝","mountain":"山","mouth":"口","music":"曲",
+  "mustache":"冋","mysterious":"玄","name":"名","narwhal":"ナ","nature":"然",
+  "neck":"首","net":"罒","next":"次","night":"夜","nine":"九",
+  "noon":"午","north":"北","nose":"乙","not":"不","nothing":"無",
+  "now":"今","number":"番","nurse":"㐮","odd":"奇","old":"古",
+  "older brother":"兄","omen":"兆","one sided":"片","oneself":"己","orders":"令",
+  "origin":"元","original":"原","outfit":"衤","oversee":"監","paragraph":"句",
+  "part":"分","past":"去","peace":"平","penguin":"敝","peoples":"民",
+  "person":"人","pi":"兀","pig":"豕","pirate":"冘","plate":"皿",
+  "plow":"耒","poem":"苟","pool":"勺","poop":"幺","power":"力",
+  "prefecture":"県","preserve":"保","previous":"先","prison":"勹","private":"ム",
+  "prize":"賞","proclaim":"宣","products":"品","protect":"守","public":"公",
+  "ra 58":"ラ","rain":"雨","rake":"而","raptor cage 59":"久","reality":"真",
+  "reason":"由","receive":"享","red":"赤","rejoice":"喜","renew":"更",
+  "request":"求","restaurant":"亭","rice":"米","rice paddy":"田","right":"右",
+  "righteousness":"義","river":"川","road":"道","rocket":"离","roof":"宀",
+  "roof 225":"亼","root":"艮","run":"走","sake":"為","same":"同",
+  "samurai":"士","saw":"巩","say":"言","scarecrow":"畐","scooter":"⻌",
+  "scroll":"巻","see":"見","self":"自","sell":"売","servant":"臣",
+  "seven":"七","sheep":"羊","shellfish":"貝","shop":"屋","showy":"華",
+  "shrimp":"尺","shuriken":"彑","sick":"疒","sickle":"釆","signpost":"夆",
+  "simple":"単","simultaneous":"斉","six 375":"六","skewer":"串","skin":"皮",
+  "sky":"空","slice":"亥","slide":"丿","small":"小","snake":"巳",
+  "someone":"者","soul":"忄","sound":"音","south":"南","spear":"矛",
+  "specialty":"専","spicy":"辛","spider":"夋","spikes":"业","spirit":"ネ",
+  "splinter":"禺","spoon":"匕","spring":"𡗗","squid":"㑒","stairs":"乃",
+  "stamp":"卩","stand":"立","stick":"丨","stomach":"胃","stone":"石",
+  "stool":"又","stop":"止","storehouse":"蔵","straight":"直","street":"丁",
+  "substitute":"代","suit":"合","sun":"日","surplus":"余","sweet":"甘",
+  "sword":"刀","syrup":"喿","table":"几","talent":"才","tall":"高",
+  "task":"用","task 401":"務","teacher":"孝","temple":"寺","ten thousand":"万",
+  "tent":"癶","think":"思","thousand":"千","thread":"糸","three":"三",
+  "tiger":"虍","times":"回","toe":"ト","together":"共","tombstone":"圣",
+  "tongue":"舌","tooth":"歯","top hat":"且","towel":"巾","trash":"𠫓",
+  "treasure":"メ","treasure chest":"凶","tree":"木","triceratops":"⺌","tsunami":"氵",
+  "turkey":"隹","turtle":"亀","turtle shell":"甲","twenty":"廾","two":"二",
+  "umbrella":"乚","valley":"谷","valuable":"貴","viking":"龸","village":"里",
+  "vines":"丩","violence":"暴","walk":"歩","warehouse":"倉","water":"水",
+  "wave":"波","weapon":"殳","wedding":"甫","well":"井","west":"西",
+  "wheat":"麦","white":"白","wide":"広","wife":"妻","wild":"荒",
+  "wind":"風","window":"毋","wing":"勿","winter":"夂","wolverine":"ヨ",
+  "woman":"女","womb":"坴","world":"世","wrap":"包","writing":"文",
+  "yakuza":"歹","yellow":"黄","yoga":"廴","younger brother":"弟","zombie":"袁",
+  // Mnemonic-name aliases (text in <radical> tags differs from WK slug)
+  "horn":"角","hot peppers":"辛","one":"一","swords":"刃"
+};
+
+// Descriptions for custom WK radicals (no Unicode)
+const RDESC = {
+  "beggar":      "WK custom — hunched figure with a bowl (image only)",
+  "cactus":      "WK custom — spiky desert plant (image only)",
+  "death star":  "WK custom — sphere with a trench (image only)",
+  "explosion":   "WK custom — star-burst / kaboom shape (image only)",
+  "hills":       "WK custom — two peaks side by side (image only)",
+  "kick":        "WK custom — leg extending in a kick (image only)",
+  "pope":        "WK custom — papal mitre / tall pointed hat (image only)",
+  "rib cage":    "WK custom — curved protective bone cage (image only)",
+  "satellite":   "WK custom — circular dish on a pole (image only)",
+  "yurt":        "WK custom — round felt tent (image only)"
+};
+
+// ── Mnemonic renderer ─────────────────────────────────────
+function renderMne(text) {
+  if (!text) return '<em style="color:var(--muted)">No mnemonic available.</em>';
+  const d = document.createElement('div');
+  d.innerHTML = text;
+  const wrap = (tag, cls) =>
+    d.querySelectorAll(tag).forEach(el => {
+      const s = document.createElement('span');
+      s.className = cls;
+      if (cls === 't-r') s.dataset.radical = el.textContent.trim().toLowerCase();
+      s.textContent = el.textContent;
+      el.replaceWith(s);
+    });
+  wrap('radical','t-r'); wrap('kanji','t-k');
+  wrap('vocabulary','t-v'); wrap('reading','t-rd');
+  // Strip remaining unknown tags
+  d.querySelectorAll(':not(span)').forEach(el => el.replaceWith(...el.childNodes));
+  return d.innerHTML;
+}
+
+// ── Build card HTML ───────────────────────────────────────
+function buildCard(w, i) {
+  const kanji = w.kanji || [];
+  const chips = kanji.map(k =>
+    `<span class="kanji-chip">${k.character}</span>`
+  ).join('');
+
+  let kanjiHTML = '';
+  if (kanji.length) {
+    kanjiHTML = `
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot ld-r"></span>Radical</div>
+        <div class="legend-item"><span class="legend-dot ld-k"></span>Kanji</div>
+        <div class="legend-item"><span class="legend-dot ld-v"></span>Vocabulary</div>
+        <div class="legend-item"><span class="legend-dot ld-rd"></span>Reading</div>
+      </div>
+      <div class="kanji-section">
+    `;
+
+    for (const k of kanji) {
+      const mm = renderMne(k.meaning_mnemonic);
+
+      kanjiHTML += `
+        <div class="kanji-entry">
+          <div class="kanji-glyph">${k.character}</div>
+          <div class="kanji-info">
+            <div class="kanji-head">
+              <span class="kanji-meaning">${k.meaning ? escHtml(k.meaning) : '—'}</span>
+              ${k.reading ? `<span class="kanji-reading">${escHtml(k.reading)}</span>` : ''}
+            </div>
+            <div class="mne-block">
+              <div class="mne-label">Meaning mnemonic</div>
+              <div class="mne-text">${mm}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    kanjiHTML += '</div>';
+  }
+
+  return `
+    <div class="card" id="c${i}" data-i="${i}">
+      <div class="card-row" onclick="toggle(${i})">
+        <span class="rank">${i+1}</span>
+        <div class="row-main">
+          <span class="word-jp">${w.word}</span>
+        </div>
+        <div class="row-right">
+          <div class="kanji-chips">${chips}</div>
+          <span class="freq">${w.frequency_in_section}×</span>
+          <button class="btn-learn${learned.has(w.word)?` done`:''}"
+                  onclick="toggleLearn(event,${i})">${learned.has(w.word)?'Learned':'Learn'}</button>
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="word-header">
+          <div class="word-display">${w.word}</div>
+          <div class="word-meta">
+            <div class="meta-row">
+              <span class="meta-label">Reading</span>
+              <span class="meta-value reading">${w.reading ? escHtml(w.reading) : '—'}</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Meaning</span>
+              <span class="meta-value">${w.meaning ? escHtml(w.meaning) : '—'}</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Freq</span>
+              <span class="meta-value">${w.frequency_in_section}× in text</span>
+            </div>
+          </div>
+        </div>
+        ${kanjiHTML}
+      </div>
+    </div>
+  `;
+}
+
+// ── State ─────────────────────────────────────────────────
+let learned  = new Set(JSON.parse(localStorage.getItem('kl-v3') || '[]'));
+let curFilter = 'all';
+
+function save() { localStorage.setItem('kl-v3', JSON.stringify([...learned])); }
+
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function toggle(i) {
+  const card = document.getElementById('c'+i);
+  card.classList.toggle('open');
+}
+
+function toggleLearn(ev, i) {
+  ev.stopPropagation();
+  const w   = WORDS[i];
+  const btn = ev.currentTarget;
+  if (learned.has(w.word)) {
+    learned.delete(w.word);
+    btn.textContent = 'Learn'; btn.classList.remove('done');
+    document.getElementById('c'+i).classList.remove('learned');
+  } else {
+    learned.add(w.word);
+    btn.textContent = 'Learned'; btn.classList.add('done');
+    document.getElementById('c'+i).classList.add('learned');
+  }
+  save();
+  updateProgress();
+  if (curFilter === 'pending') applyFilter();
+}
+
+function updateProgress() {
+  const done  = WORDS.filter(w => learned.has(w.word)).length;
+  const total = WORDS.length;
+  document.getElementById('progTxt').textContent = `${done} / ${total} learned`;
+}
+
+function setFilter(f, btn) {
+  curFilter = f;
+  document.querySelectorAll('.filter-all,.filter-pending').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
+
+function applyFilter() {
+  WORDS.forEach((w, i) => {
+    const card = document.getElementById('c'+i);
+    if (curFilter === 'pending') {
+      card.classList.toggle('hidden', learned.has(w.word));
+    } else {
+      card.classList.remove('hidden');
+    }
+  });
+}
+
+// ── Tooltip ───────────────────────────────────────────────
+const tt    = document.getElementById('tt');
+const ttCh  = document.getElementById('ttCh');
+const ttNm  = document.getElementById('ttNm');
+const ttDesc= document.getElementById('ttDesc');
+let ttOn = false;
+
+function moveTT(e) {
+  const x = e.clientX, y = e.clientY;
+  const w = tt.offsetWidth  || 90;
+  const h = tt.offsetHeight || 80;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  tt.style.left = Math.min(x + 14, vw - w - 6) + 'px';
+  tt.style.top  = Math.max(y - h - 10, 6) + 'px';
+}
+
+document.addEventListener('mouseover', e => {
+  const t = e.target.closest('.t-r'); if (!t) return;
+  const name = t.dataset.radical || '';
+  const char = RC[name] ?? null;
+  const desc = RDESC[name] ?? null;
+
+  if (char) {
+    ttCh.textContent = char;
+    ttCh.className   = 'tt-char';
+    ttDesc.textContent = '';
+  } else {
+    ttCh.textContent = '？';
+    ttCh.className   = 'tt-char none';
+    ttDesc.textContent = desc || 'WK custom radical (no Unicode equivalent)';
+  }
+  ttNm.textContent = name;
+  moveTT(e);
+  tt.classList.add('vis');
+  ttOn = true;
+});
+
+document.addEventListener('mousemove', e => {
+  if (ttOn && e.target.closest('.t-r')) moveTT(e);
+});
+
+document.addEventListener('mouseout', e => {
+  if (!e.target.closest('.t-r')) return;
+  const rel = e.relatedTarget;
+  if (rel && rel.closest('.t-r')) return;
+  tt.classList.remove('vis');
+  ttOn = false;
+});
+
+// ── Init ──────────────────────────────────────────────────
+(function() {
+  const list = document.getElementById('list');
+  list.innerHTML = WORDS.map((w,i) => buildCard(w,i)).join('');
+
+  const done  = WORDS.filter(w => learned.has(w.word)).length;
+  WORDS.forEach((w,i) => {
+    if (learned.has(w.word)) document.getElementById('c'+i).classList.add('learned');
+  });
+
+  document.getElementById('hSub').textContent = `${WORDS.length} words · sorted by frequency`;
+  updateProgress();
+})();
+</script>
+</body>
+</html>
