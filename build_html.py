@@ -9,7 +9,7 @@ HTML_TEMPLATE = r'''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>日本語 Vocabulary</title>
+<title>PLACEHOLDER_TITLE · Vocabulary</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
@@ -405,7 +405,7 @@ body {
 
 <div class="header">
   <div class="header-left">
-    <span class="header-title">日本語</span>
+    <span class="header-title">PLACEHOLDER_TITLE</span>
     <span class="header-sub" id="hSub">loading...</span>
   </div>
   <div class="header-right">
@@ -774,7 +774,7 @@ document.addEventListener('mouseout', e => {
 </html>'''
 
 
-def build_html(result: list, out_path):
+def build_html(result: list, out_path, title: str = '日本語'):
     out_path = Path(out_path)
     j = json.dumps(result, ensure_ascii=False, separators=(',', ':'))
     j = j.replace('</script>', r'<\/script>')  # prevent early script close
@@ -782,17 +782,18 @@ def build_html(result: list, out_path):
     html = HTML_TEMPLATE.replace(
         'const WORDS = [];',
         f'const WORDS = {j};'
-    )
+    ).replace('PLACEHOLDER_TITLE', title)
 
     out_path.write_text(html, encoding='utf-8')
-    print(f'[ok] index.html written ({len(html)//1024} KB) → {out_path}')
+    print(f'[ok] HTML written ({len(html)//1024} KB) → {out_path}')
 
 
 if __name__ == '__main__':
     import sys
     if len(sys.argv) < 2:
-        print('Usage: python build_html.py result.json [output.html]')
+        print('Usage: python build_html.py result.json [output.html] [title]')
         sys.exit(1)
-    data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
-    out  = Path(sys.argv[2]) if len(sys.argv) > 2 else Path('index.html')
-    build_html(data, out)
+    data  = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
+    out   = Path(sys.argv[2]) if len(sys.argv) > 2 else Path('index.html')
+    title = sys.argv[3] if len(sys.argv) > 3 else '日本語'
+    build_html(data, out, title)

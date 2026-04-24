@@ -2,8 +2,9 @@
 migaku_data/pull_sync.json
 migaku_data/srs.db
 
-# Epub text + tokenisation caches — large, regenerated automatically
+# Text + tokenisation caches — large, regenerated automatically
 data/epub_text_*.txt
+data/srt_text_*.txt
 data/word_counts_*.json
 
 # Python
