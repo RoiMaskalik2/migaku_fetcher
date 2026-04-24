@@ -1,29 +1,25 @@
 ---
 name: run-pipeline
-description: Pipeline coordinator for the full Japanese vocabulary study flow. Supports two modes: (1) Book pipeline — Migaku fetch → epub analysis → HTML generation; (2) TV show pipeline — SRT subtitle analysis → HTML generation (no Migaku login needed). Use when the user wants to run the whole chain end-to-end or asks what to run next.
+description: Pipeline coordinator for the full Japanese vocabulary study flow. Supports two modes: (1) Book pipeline — Migaku fetch → epub analysis → HTML generation; (2) TV show pipeline — Migaku fetch → SRT analysis → HTML generation. Use when the user wants to run the whole chain end-to-end or asks what to run next.
 ---
 
 # Japanese Study Pipeline Coordinator
 
-Two independent pipelines — choose based on the source material:
+Two pipelines — same Stage 1, different Stage 2 depending on source material.
 
-## Pipeline A: Japanese Book (EPUB)
-
-Runs three stages:
-1. **migaku-fetch** — download SRS database, extract known words
-2. **epub-word-analysis** — tokenise epub, rank by WaniKani coverage, produce result.json
-3. **build_html** — embed data into self-contained index.html
-
-### Prerequisites
+## Prerequisites (both pipelines)
 
 Collect from the user before running:
-- `BASE_DIR` — e.g. `C:\Users\mueu2\Desktop\JapaneseBookRecommender`
-- `EPUB_PATH` — path to the epub file
-- `EMAIL` — Migaku account email
-- `PASSWORD` — Migaku account password
+- `BASE_DIR` — project directory
+- `EMAIL` / `PASSWORD` — Migaku account credentials
 - `WK_TOKEN` — WaniKani API token (v2)
+- Source file(s):
+  - **Book**: `EPUB_PATH`
+  - **TV show**: one or more `.srt` files
 
-### Full book pipeline (2 commands)
+---
+
+## Pipeline A: Japanese Book (EPUB)
 
 ```bash
 cd <BASE_DIR>
@@ -31,146 +27,68 @@ cd <BASE_DIR>
 # Stage 1: Migaku → known_words.json
 python migaku_fetch.py <EPUB_PATH>
 
-# Stage 2: epub analysis → result.json + index.html (all-in-one)
+# Stage 2+3: epub → result.json + index.html
 python analyze_epub.py <EPUB_PATH> <WK_TOKEN>
 ```
-
-`analyze_epub.py` calls `build_html.py` internally, so no third command needed.
-
-### Stage 1 only (known words refresh)
-
-```bash
-python migaku_fetch.py <EPUB_PATH>
-```
-
-srs.db is cached for 24 hours. Force refresh by deleting it first:
-```bash
-rm migaku_data/srs.db && python migaku_fetch.py <EPUB_PATH>
-```
-
-### Stage 2 only (re-analysis with same known words)
-
-```bash
-python analyze_epub.py <EPUB_PATH> <WK_TOKEN>
-```
-
-Tokenisation is cached by epub MD5 hash in `data/word_counts_<hash>.json`.
-Delete it to force re-tokenisation.
-
-### Output files (book pipeline)
-
-| File | Stage | Contents |
-|------|-------|----------|
-| `migaku_data/known_words.json` | 1 | Known words (dictForm keys) |
-| `migaku_data/summary.md`       | 1 | Book progress + word stats |
-| `data/epub_text_<hash>.txt`    | 2 | Cached epub text |
-| `data/word_counts_<hash>.json` | 2 | Cached tokenisation |
-| `result.json`                  | 2 | Top 100 WK-focused vocab |
-| `index.html`                   | 2 | Self-contained study app |
-
-### Configurable parameters (in analyze_epub.py)
-
-| Constant    | Default | Purpose |
-|-------------|---------|---------|
-| `TOP_N`     | 100     | Max words in output |
-| `MIN_FREQ`  | 2       | Minimum occurrence count |
-| `N_SECTIONS`| 20      | Epub sections to read |
-| `JISHO_LIMIT`| 50     | Words to enrich via Jisho fallback |
 
 ---
 
-## Pipeline B: Japanese TV Show / Anime (SRT subtitles)
-
-**No Migaku login required.** Start directly from subtitle files.
-
-Runs two stages:
-1. **tv-show-word-analysis** — parse SRT files, tokenise, rank by WaniKani coverage, produce result.json
-2. **build_html** — embed data into self-contained index.html (called internally)
-
-### Prerequisites
-
-Collect from the user before running:
-- `BASE_DIR` — project directory
-- `SRT_PATHS` — one or more `.srt` subtitle files (pass all episodes for a full season)
-- `WK_TOKEN` — WaniKani API token (v2)
-- `known_words.json` (optional) — if the user has already run `migaku_fetch.py`, it is used automatically for better filtering; otherwise `jp_top1000.txt` alone is used
-
-### Full TV show pipeline (1 command)
+## Pipeline B: Japanese TV Show / Anime (SRT)
 
 ```bash
 cd <BASE_DIR>
 
-# Single episode
-python analyze_srt.py episode01.srt --wk-token <WK_TOKEN>
+# Stage 1: Migaku → known_words.json (same as book pipeline)
+python migaku_fetch.py <EPUB_PATH>
 
-# Full season (pass all episodes — words are aggregated across all files)
-python analyze_srt.py subs/ep01.srt subs/ep02.srt subs/ep03.srt --wk-token <WK_TOKEN>
+# Stage 2+3: SRT → result.json + index.html
+python analyze_srt.py <SRT_FILE> [<SRT_FILE2> ...] --wk-token <WK_TOKEN>
 ```
 
-`analyze_srt.py` calls `build_html.py` internally — result.json and index.html are produced in one step.
-
-### Re-analysis with same SRT files
-
-Tokenisation is cached by MD5 hash of the combined subtitle text in `data/srt_counts_<hash>.json`.
-Delete it to force re-tokenisation:
-```bash
-rm data/srt_counts_*.json
-python analyze_srt.py <SRT_FILES> --wk-token <WK_TOKEN>
-```
-
-### Output files (TV show pipeline)
-
-| File | Contents |
-|------|----------|
-| `data/srt_counts_<hash>.json` | Cached tokenisation |
-| `result.json`                 | Top 100 WK-focused vocab |
-| `index.html`                  | Self-contained study app |
-
-### Configurable parameters (in analyze_srt.py)
-
-| Constant  | Default | Purpose |
-|-----------|---------|---------|
-| `TOP_N`   | 100     | Max words in output |
-| `MIN_FREQ`| 2       | Minimum occurrence count |
+Pass all episode SRT files at once — word frequencies are aggregated across all files.
 
 ---
 
-## Stage 3 only (rebuild HTML from existing result.json)
+## Re-run stages individually
 
-Works for both pipelines:
 ```bash
+# Refresh known words (force fresh srs.db download)
+rm migaku_data/srs.db && python migaku_fetch.py <EPUB_PATH>
+
+# Re-analyse with same known words (clears tokenisation cache first if needed)
+python analyze_epub.py <EPUB_PATH> <WK_TOKEN>          # book
+python analyze_srt.py <SRT_FILES> --wk-token <WK_TOKEN>  # TV show
+
+# Rebuild HTML from existing result.json only
 python build_html.py result.json index.html
 ```
+
+---
+
+## Output files
+
+| File | Stage | Contents |
+|------|-------|----------|
+| `migaku_data/known_words.json` | 1 | Known words (dictForm keys) |
+| `migaku_data/summary.md` | 1 | Book progress + word stats |
+| `result.json` | 2 | Top 100 WK-focused vocab |
+| `index.html` | 2 | Self-contained study app |
 
 ---
 
 ## After running
 
 Report to the user:
-
-**Book pipeline:**
 ```
 Stage 1: known words: <N>
-Stage 2: selected top <N> WK-focused words
-         with meanings: <N>
-         top 5: <words>
-index.html ready — open in browser to study.
-```
-
-**TV show pipeline:**
-```
-SRT files: <N> files parsed
-Selected top <N> WK-focused words
-  with meanings: <N>
-  top 5: <words>
+Stage 2: top <N> WK-focused words  |  with meanings: <N>
+Top 5: <words>
 index.html ready — open in browser to study.
 ```
 
 ## Troubleshooting
 
-**`known_words.json` not found (book pipeline)**: run stage 1 first.
-**`known_words.json` not found (TV pipeline)**: not an error — `jp_top1000.txt` is used as the sole filter. Run `migaku_fetch.py` first for better filtering.
-**WK API 401**: invalid or expired WK token.
-**Tokenisation takes long**: normal on first run (~60s for large input). Cache used afterwards.
-**`result.json` has < 100 words**: input may be short, or WK coverage is low — reduce `MIN_FREQ` or add more SRT files.
-**SRT encoding errors**: files may be Shift-JIS or have a UTF-8 BOM — `analyze_srt.py` handles both automatically.
+**WK API 401**: invalid or expired WaniKani token.
+**`known_words.json` not found**: run Stage 1 first.
+**`result.json` has < 100 words**: add more source files or lower `MIN_FREQ`.
+**Tokenisation slow**: normal on first run; cache used afterwards.

@@ -339,8 +339,17 @@ def main():
     # 8. Jisho fallback
     result = enrich_jisho(result)
 
-    # 9. Save result.json
+    # 9. Save result.json — preserve meanings from any prior run
     out = BASE_DIR / 'result.json'
+    if out.exists():
+        try:
+            old = json.loads(out.read_text(encoding='utf-8'))
+            old_meanings = {e['word']: e['meaning'] for e in old if e.get('meaning')}
+            for entry in result:
+                if entry['meaning'] is None and entry['word'] in old_meanings:
+                    entry['meaning'] = old_meanings[entry['word']]
+        except Exception:
+            pass
     out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
     print(f'[ok] result.json written ({len(result)} words)')
 
