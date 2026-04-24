@@ -1,6 +1,6 @@
 ---
 name: japanese-vocab-learner
-description: Build and maintain the WaniKani/Migaku Japanese vocabulary learner app. Use when asked to update index.html, add UI features, or rebuild from result.json. Covers data schema, self-contained HTML embedding, mnemonic rendering, extended radical→Unicode mapping, and reading-in-dropdown UI pattern.
+description: Build and maintain the WaniKani/Migaku Japanese vocabulary learner app. Use when asked to update index.html, add UI features, or rebuild from result.json. Covers data schema, self-contained HTML embedding, mnemonic rendering, and the WK radical→Unicode mapping.
 ---
 
 # Japanese Vocabulary Learner — Session Knowledge
@@ -9,7 +9,7 @@ description: Build and maintain the WaniKani/Migaku Japanese vocabulary learner 
 
 The HTML is built by running `analyze_epub.py` (which calls `build_html.py`):
 ```bash
-python analyze_epub.py <epub> <wk_token>
+python analyze_epub.py <epub>
 ```
 
 Or rebuild from an existing `result.json`:
@@ -141,79 +141,71 @@ CSS classes and WaniKani colours:
         padding: 0 3px; border-radius: 3px; }
 ```
 
-## Radical → Unicode Tooltip (extended map)
+## Radical → Unicode Map (RC)
 
-Radical tooltips fire on `.t-r` hover. For radicals not in the RC map,
-show a helpful description from `RDESC` rather than just `？`.
+**CRITICAL: Do NOT hand-craft the RC map.** The correct source of truth is the
+WaniKani `/v2/subjects?types=radical` API. Fetch it once and generate the full
+map programmatically. The current `build_html.py` contains **485 entries** built
+from the live WK API.
+
+### How to regenerate RC if needed
+
+```python
+import requests, json, time
+
+token = WK_TOKEN
+headers = {'Authorization': f'Bearer {token}'}
+radicals, url = [], 'https://api.wanikani.com/v2/subjects?types=radical&per_page=500'
+while url:
+    for attempt in range(5):
+        r = requests.get(url, headers=headers, timeout=30)
+        if r.status_code == 503: time.sleep(3*(attempt+1)); continue
+        r.raise_for_status(); break
+    d = r.json()
+    radicals.extend(d['data'])
+    url = d['pages'].get('next_url')
+    time.sleep(0.3)
+
+slug_to_char = {
+    s['data']['slug'].replace('-',' ').lower(): s['data']['characters']
+    for s in radicals if s['data'].get('characters')
+}
+# slug_to_char now has ~485 entries — embed as RC in build_html.py
+```
+
+### Key lookup rules
+
+- `data-radical` on `.t-r` spans is set to `.toLowerCase()` — **all RC keys must be lowercase**.
+- WK mnemonic text sometimes uses names that differ from the WK slug. Add aliases:
+  ```javascript
+  "horn":"角",        // WK slug: angle
+  "hot peppers":"辛", // WK slug: spicy
+  "one":"一",         // WK slug: ground
+  "swords":"刃",      // WK slug: blade
+  ```
+- These aliases are already present at the bottom of the RC block in `build_html.py`.
+
+### RDESC — truly image-only radicals
+
+Only 10 WK radicals have no Unicode character at all (verified via API):
 
 ```javascript
-const RC = {
-  // Numbers / basic
-  "one":"一","two":"二","three":"三","four":"四","five":"五",
-  "six":"六","seven":"七","eight":"八","nine":"九","ten":"十",
-  "hundred":"百","thousand":"千","ten-thousand":"万",
-  // Strokes
-  "stick":"丨","drop":"丶","slide":"乚","horns":"丷","legs":"儿",
-  "barb":"亅","cross":"十","hat":"亠","lid":"亡",
-  "table":"几","jail":"冂","ice":"冫","canopy":"冖",
-  "umbrella":"勹","cliff":"厂","spoon":"匕","seal":"卩",
-  // Nature
-  "sun":"日","moon":"月","fire":"火","water":"水","rain":"雨",
-  "mountain":"山","river":"川","tree":"木","field":"田",
-  "earth":"土","ground":"土","stone":"石","rice":"米",
-  "flower":"花","grass":"草","leaf":"葉","gold":"金",
-  "snow":"雪","cloud":"雲","lightning":"雷","wave":"波",
-  // Animals
-  "bird":"鳥","fish":"魚","creature":"虫","beast":"獣","cow":"牛",
-  "dog":"犬","horse":"馬","tiger":"虎","dragon":"龍","turtle":"亀",
-  "turkey":"隹","shell":"貝",
-  // Body
-  "ear":"耳","eye":"目","mouth":"口","hand":"手","foot":"足",
-  "heart":"心","bone":"骨","head":"首","body":"身","nose":"鼻",
-  "nail":"爪","hair":"毛",
-  // People
-  "person":"人","woman":"女","child":"子","man":"男","king":"王",
-  "husband":"夫","father":"父","mother":"母","friend":"友",
-  // Concepts
-  "big":"大","small":"小","middle":"中","up":"上","down":"下",
-  "inside":"内","outside":"外","before":"前","after":"後",
-  "right":"右","left":"左","old":"古","new":"新",
-  "high":"高","low":"低","long":"長","short":"短","half":"半",
-  "north":"北","south":"南","east":"東","west":"西",
-  // Actions
-  "walk":"歩","run":"走","go":"行","stop":"止","stand":"立",
-  "die":"死","live":"生","say":"言","see":"見","hear":"聞",
-  "write":"書","eat":"食","drink":"飲","buy":"買","sell":"売",
-  "come":"来","exit":"出","enter":"入",
-  // WK-named radicals with Unicode
-  "stool":"又","loiter":"彳","scooter":"辶","fins":"八",
-  "tsunami":"氵","temple":"寺","roof":"宀","master":"主",
-  "thread":"糸","car":"車","door":"門","power":"力",
-  "sword":"刀","bow":"弓","arrow":"矢","spring":"春",
-  "music":"音","art":"工","self":"自","boat":"舟",
-  "page":"頁","wing":"羽","dry":"干","genius":"才",
-  "compare":"比","flowers":"艹","tombstone":"囗",
-  "war":"戈","toe":"止","inch":"寸","direction":"方",
-  "evening":"夕","winter":"冬","neck":"首","private":"厶",
-};
-
-// For WK custom radicals (no Unicode), show a description
 const RDESC = {
-  "gun":         "WK custom — looks like a sideways pistol (⌐■)",
-  "explosion":   "WK custom — star-burst / kaboom shape",
-  "wolverine":   "WK custom — claw / talon shape",
-  "cactus":      "WK custom — spiky plant shape",
-  "satellite":   "WK custom — circular dish on a pole",
-  "coffin":      "WK custom — rectangular box with lid",
-  "death star":  "WK custom — sphere with a trench",
-  "gladiator":   "WK custom — armoured warrior shape",
-  "pope":        "WK custom — tall pointed mitre hat",
-  "lobster":     "WK custom — clawed sea creature",
-  "hills":       "WK custom — two peaks side by side",
+  "beggar":      "WK custom — hunched figure with a bowl (image only)",
+  "cactus":      "WK custom — spiky desert plant (image only)",
+  "death star":  "WK custom — sphere with a trench (image only)",
+  "explosion":   "WK custom — star-burst / kaboom shape (image only)",
+  "hills":       "WK custom — two peaks side by side (image only)",
+  "kick":        "WK custom — leg extending in a kick (image only)",
+  "pope":        "WK custom — papal mitre / tall pointed hat (image only)",
+  "rib cage":    "WK custom — curved protective bone cage (image only)",
+  "satellite":   "WK custom — circular dish on a pole (image only)",
+  "yurt":        "WK custom — round felt tent (image only)"
 };
 ```
 
-Tooltip logic:
+### Tooltip logic
+
 ```javascript
 document.addEventListener('mouseover', e => {
   const t = e.target.closest('.t-r'); if (!t) return;
@@ -229,6 +221,23 @@ document.addEventListener('mouseover', e => {
   ttNm.textContent = name;
   moveTT(e); tt.classList.add('vis'); ttOn = true;
 });
+```
+
+### Verifying coverage after changes
+
+Run this before building to confirm zero missing radicals:
+
+```python
+import re, json
+text = open('build_html.py', encoding='utf-8').read()
+rc_keys = set(re.findall(r'"([^"]+)":', re.search(r'const RC = \{(.+?)\};', text, re.DOTALL).group(1)))
+rd_keys = set(re.findall(r'"([^"]+)":', re.search(r'const RDESC = \{(.+?)\};', text, re.DOTALL).group(1)))
+r = json.loads(open('result.json', encoding='utf-8').read())
+used = {m.lower().strip()
+        for e in r for k in e.get('kanji',[])
+        for m in re.findall(r'<radical>([^<]+)</radical>', k.get('meaning_mnemonic','') or '')}
+missing = used - (rc_keys | rd_keys)
+print('Missing:', sorted(missing) or 'NONE')
 ```
 
 ## localStorage key
@@ -252,3 +261,5 @@ html = HTML_TEMPLATE.replace('const WORDS = [];', f'const WORDS = {j};')
 - **`reading_mnemonic`**: do NOT add this field — removed from schema
 - **`scene_hook`**: do NOT add this field — removed from schema
 - **Radical `？`**: always show RDESC description too, never just `？` alone
+- **Hand-crafting RC**: NEVER do this — always generate from WK API or use the existing 485-entry map in `build_html.py`
+- **Capitalised RC keys**: all keys must be lowercase — the tooltip lookup uses `.toLowerCase()`

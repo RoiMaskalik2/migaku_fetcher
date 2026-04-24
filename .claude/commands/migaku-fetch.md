@@ -26,8 +26,9 @@ The following must be provided in the initial prompt before running this skill:
 Logging into `study.migaku.com` triggers two useful calls:
 
 1. **`srs-db-presigned-url-service-api.migaku.com/db-force-sync-download-url`**
-   Returns a signed GCS URL for `{uid}/srs.db.gz` — the **full** SQLite word database
-   (6000+ known words). This is the authoritative source for all SRS vocabulary.
+   Returns a **plain-text** GCS URL (not JSON) for `{uid}/srs.db.gz` — the **full**
+   SQLite word database (7000+ known words). Parse with `resp.text()`, not `resp.json()`.
+   The browser then fetches that GCS URL directly; both are intercepted.
 
 2. **`core-server.migaku.com/pull-sync`**
    Returns `libraryItems` which contains the book reading position
@@ -70,19 +71,23 @@ python migaku_fetch.py <EPUB_PATH>
 Expected output:
 ```
 [skip] cached data present   # or fresh login on first run / after cache expiry
-[ok] srs.db presigned URL captured
+[ok] srs.db GCS request URL captured
+[ok] srs.db presigned URL captured (plain)
 [ok] pull-sync captured (8 libraryItems)
 [ok] downloading srs.db.gz...
-[ok] srs.db saved (NNN KB)
-[ok] extracted ~6000 words from srs.db
-[ok] known words: ~6000
+[ok] srs.db saved (~12000 KB)
+[ok] extracted ~7700 words from srs.db
+[ok] known words: ~7700
 [ok] Spider book: 蜘蛛ですが、なにか？...
-     progress  : 32.x%
-     groupIdx  : 3116
-[ok] EPUB: <N> non-empty lines, next pages from line ~1602
-[ok] saved <N> chars → migaku_data/spider_next_pages.txt
+     progress  : 33.x%
+     groupIdx  : 3262
+[ok] EPUB: 5009 non-empty lines, next pages from line ~1652
+[ok] saved 16000 chars → migaku_data/spider_next_pages.txt
 [ok] summary written → migaku_data/summary.md
 ```
+
+Note: POS counts in summary.md will show all words as "Other" — Migaku's `WordList`
+table stores empty `partOfSpeech` values. This is a Migaku data issue, not a bug.
 
 ### 4. Confirm Output and Report Summary Stats Only
 
@@ -139,23 +144,26 @@ The `epub-word-analysis` skill reads `item['dictForm']`, not `item['word']`.
 
 ## Troubleshooting
 
-**SRS URL not captured**: Login failed or Migaku changed its API URL. Check credentials.
-The presigned-URL call fires within ~10 s of login form submit; script waits up to 30 s.
+**SRS URL not captured**: The presigned-URL endpoint returns a **plain-text URL**
+(not JSON). If you see `srs URL parse error`, the handler is trying `resp.json()`
+instead of `resp.text()` — fix `on_response` in `_fetch_migaku_data`. The URL fires
+within ~10 s of login; do NOT navigate away from the page before it arrives or the
+in-flight response will be cancelled.
 
-**Known words low (~183 instead of 6000+)**: The cache (pull_sync.json) was built with
-the old pull-sync-only code. Delete it to force a fresh download with the SQLite approach:
-```bash
-rm migaku_data/pull_sync.json
-python migaku_fetch.py <epub>
-```
-
-**Word table not found in srs.db**: SQLite schema changed. Run:
+**Known words 0 or very low**: The SQLite word table is named `WordList` (not `Word`).
+Check `_read_words_from_db()` — the table search list must include `'WordList'` first.
+To confirm the actual table name:
 ```python
 import sqlite3
 conn = sqlite3.connect('migaku_data/srs.db')
 print([r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")])
 ```
-Then update `_read_words_from_db()` with the correct table name.
+
+**Stale cache (pull_sync.json) with wrong word count**: Delete and re-run:
+```bash
+rm migaku_data/pull_sync.json
+python migaku_fetch.py <epub>
+```
 
 **Spider book not found**: The query searches for `蜘蛛`, `spider`, `Spider`, or `kumo`
 in the JSON-serialised library row. Add the relevant keyword if the title differs.

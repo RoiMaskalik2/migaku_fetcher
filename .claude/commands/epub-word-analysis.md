@@ -19,11 +19,11 @@ Ask the user for:
 ## Token Efficiency Rules (follow strictly)
 - **Never** fetch all WaniKani subjects. Use the `slugs` parameter with only kanji in the final word list.
 - Filter to **freq >= 2 AND has kanji** before the WaniKani call.
-- **Two WaniKani API calls**: one for kanji, one for vocabulary (meanings).
+- **Two WaniKani API calls**: one for kanji (batched, 100 slugs per request), one for vocabulary (meanings).
 - Use the tokenisation cache (`data/word_counts_<hash>.json`) — skip re-tokenising if it exists.
 - Do NOT echo `result.json` back to the user — it is too large. Report stats only.
 - **result.json schema is lean**: only store `character`, `meaning`, `reading`, `meaning_mnemonic` per kanji. No `reading_mnemonic`, no `scene_hook`.
-- Filter uses **two sources**: `migaku_data/known_words.json` (primary — 6000+ SRS words from srs.db) AND `data/jp_top1000.txt` (secondary — ~850 common vocab the user knows but hasn't tracked in Migaku). The jp_top1000.txt catches basic words like 思う, 食べる, 言う that any intermediate learner knows.
+- Filter uses **two sources**: `migaku_data/known_words.json` (primary — 7000+ SRS words from srs.db) AND `data/jp_top1000.txt` (secondary — ~850 common vocab the user knows but hasn't tracked in Migaku). Both are always applied.
 
 ---
 
@@ -106,7 +106,7 @@ else:
     )
 ```
 
-### 4. Filter against known words (Migaku only)
+### 4. Filter against known words (Migaku + common vocab)
 
 ```python
 with open('migaku_data/known_words.json', encoding='utf-8') as f:
@@ -115,35 +115,50 @@ with open('migaku_data/known_words.json', encoding='utf-8') as f:
 known = {item['dictForm'] if isinstance(item, dict) else item for item in raw}
 known.discard('')
 
+# Also filter against jp_top1000.txt (basic vocab the user knows but hasn't tracked)
+top1k_file = DATA_DIR / 'jp_top1000.txt'
+if top1k_file.exists():
+    common = {l.strip() for l in top1k_file.read_text(encoding='utf-8').splitlines() if l.strip()}
+    known |= common
+
 def has_kanji(word):
     return any(ord('一') <= ord(c) <= ord('鿿') for c in word)
 
-# Filter: not in Migaku known words, has kanji, freq >= 2
-# Do NOT filter against jp_top1000.txt — Migaku known words is the sole filter
 candidates = [
     (w, cnt) for w, cnt in word_count.most_common()
     if w not in known and cnt >= 2 and has_kanji(w)
 ]
 ```
 
-### 5. Fetch WaniKani kanji data (single targeted call)
+### 5. Fetch WaniKani kanji data (batched — 100 slugs per request)
 
-`wk_token` is passed as a CLI argument.
+`wk_token` defaults to the `WK_TOKEN` constant in `analyze_epub.py`; can also be
+passed as `sys.argv[2]`. **Do NOT send all kanji in one request** — large slug lists
+cause 503 errors. Batch at 100 and retry on 503.
 
 ```python
-import requests
+import requests, time
 
 all_kanji = sorted({c for w, _ in candidates for c in w
                     if ord('一') <= ord(c) <= ord('鿿')})
 
-resp = requests.get(
-    'https://api.wanikani.com/v2/subjects',
-    params={'types': 'kanji', 'slugs': ','.join(all_kanji)},
-    headers={'Authorization': f'Bearer {wk_token}'},
-    timeout=30
-)
-resp.raise_for_status()
-wk_kanji = {s['data']['characters']: s['data'] for s in resp.json()['data']}
+wk_kanji = {}
+for i in range(0, len(all_kanji), 100):
+    batch = all_kanji[i:i + 100]
+    for attempt in range(4):
+        resp = requests.get(
+            'https://api.wanikani.com/v2/subjects',
+            params={'types': 'kanji', 'slugs': ','.join(batch)},
+            headers={'Authorization': f'Bearer {wk_token}'},
+            timeout=30
+        )
+        if resp.status_code == 503:
+            time.sleep(2 ** attempt); continue
+        resp.raise_for_status()
+        for s in resp.json()['data']:
+            wk_kanji[s['data']['characters']] = s['data']
+        time.sleep(0.3)
+        break
 ```
 
 ### 5.5. WK-focused ranking — prefer words where ALL kanji are in WaniKani
@@ -211,13 +226,13 @@ for word, freq in final_words:
     })
 ```
 
-### 7.5. Jisho fallback for words not in WK vocabulary (top 50 only)
+### 7.5. Jisho fallback for words not in WK vocabulary
 
 ```python
 import time
 
-for entry in result[:50]:
-    if entry['meaning'] is not None: continue
+missing = [e for e in result if e['meaning'] is None]
+for entry in missing:
     try:
         r = requests.get('https://jisho.org/api/v1/search/words',
                          params={'keyword': entry['word']}, timeout=10)
@@ -228,8 +243,28 @@ for entry in result[:50]:
         pass
     time.sleep(0.25)
 
+still_missing = [e['word'] for e in result if e['meaning'] is None]
+if still_missing:
+    print(f'[warn] {len(still_missing)} words still have no meaning: {still_missing}')
+
 with open('result.json', 'w', encoding='utf-8') as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
+```
+
+**If words are still null after Jisho**: do NOT use a kanji-composition fallback and do NOT
+call an external API. Instead, just report the list to the user. Claude (in conversation)
+can instantly generate real meanings — paste the `[warn]` list and ask Claude to fill them:
+
+```python
+# After the pipeline, patch result.json directly:
+meanings = {
+    "迷宮": "labyrinth / dungeon",
+    "転生者": "reincarnated person",
+    # ...
+}
+for e in result:
+    if not e['meaning'] and e['word'] in meanings:
+        e['meaning'] = meanings[e['word']]
 ```
 
 ### 8. Generate index.html
