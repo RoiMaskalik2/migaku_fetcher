@@ -49,6 +49,10 @@ def epub_hash(epub_path: Path) -> str:
     return h
 
 
+def text_hash(text: str) -> str:
+    return hashlib.md5(text.encode('utf-8')).hexdigest()[:8]
+
+
 def kata_to_hira(text: str) -> str:
     """Convert katakana to hiragana (U+30A1-U+30F6 → U+3041-U+3096)."""
     return ''.join(
@@ -59,13 +63,21 @@ def kata_to_hira(text: str) -> str:
 
 # ── Step 1: Extract text from epub ────────────────────────────────────────────
 
-def load_text(epub_path: Path, n_sections: int) -> str:
+def load_text(epub_path: Path, n_sections: int) -> tuple[str, str]:
+    """Return (text, cache_key). Uses spider_next_pages.txt when available."""
+    next_pages = MIGAKU_DATA / 'spider_next_pages.txt'
+    if next_pages.exists():
+        text = next_pages.read_text(encoding='utf-8')
+        key  = text_hash(text)
+        print(f'[ok] using spider_next_pages.txt ({len(text):,} chars, key={key})')
+        return text, key
+
     cache_key  = epub_hash(epub_path)
     cache_file = DATA_DIR / f'epub_text_{cache_key}.txt'
 
     if cache_file.exists():
         print(f'[skip] epub text cache found ({cache_file.name})')
-        return cache_file.read_text(encoding='utf-8')
+        return cache_file.read_text(encoding='utf-8'), cache_key
 
     from ebooklib import epub, ITEM_DOCUMENT
     from bs4 import BeautifulSoup
@@ -87,13 +99,12 @@ def load_text(epub_path: Path, n_sections: int) -> str:
     text = '\n'.join(texts)
     cache_file.write_text(text, encoding='utf-8')
     print(f'[ok] epub extracted ({count} sections, {len(text):,} chars)')
-    return text
+    return text, cache_key
 
 
 # ── Step 2: Tokenise ─────────────────────────────────────────────────────────
 
-def tokenize(text: str, epub_path: Path):
-    cache_key  = epub_hash(epub_path)
+def tokenize(text: str, cache_key: str):
     cache_file = DATA_DIR / f'word_counts_{cache_key}.json'
 
     if cache_file.exists():
@@ -204,6 +215,21 @@ def filter_known(word_count: Counter, word_reading: dict) -> list[tuple[str, int
 
 # ── Step 4: Fetch WaniKani data — kanji + vocabulary ─────────────────────────
 
+WK_KANJI_CACHE = DATA_DIR / 'wk_kanji_cache.json'
+
+
+def _load_wk_kanji_cache() -> dict:
+    if WK_KANJI_CACHE.exists():
+        return json.loads(WK_KANJI_CACHE.read_text(encoding='utf-8'))
+    return {}
+
+
+def _save_wk_kanji_cache(wk_kanji: dict) -> None:
+    cache = _load_wk_kanji_cache()
+    cache.update(wk_kanji)
+    WK_KANJI_CACHE.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding='utf-8')
+
+
 def fetch_wanikani(candidates: list[tuple[str, int]], wk_token: str):
     import requests
 
@@ -212,32 +238,40 @@ def fetch_wanikani(candidates: list[tuple[str, int]], wk_token: str):
     # Collect all unique kanji across ALL candidates (not just top 100 yet)
     all_kanji = sorted({c for w, _ in candidates for c in w if is_kanji(c)})
     if not all_kanji:
-        return {}, {}
+        return {}
 
-    print(f'[wk] fetching {len(all_kanji)} kanji subjects...')
-    wk_kanji = {}
-    batch_size = 100  # stay well under URL length limits
-    for i in range(0, len(all_kanji), batch_size):
-        batch = all_kanji[i:i + batch_size]
-        for attempt in range(4):
-            resp = requests.get(
-                'https://api.wanikani.com/v2/subjects',
-                params={'types': 'kanji', 'slugs': ','.join(batch)},
-                headers=headers,
-                timeout=30
-            )
-            if resp.status_code == 503:
-                wait = 2 ** attempt
-                print(f'[wk] 503, retrying in {wait}s...')
-                time.sleep(wait)
-                continue
-            resp.raise_for_status()
-            for s in resp.json()['data']:
-                wk_kanji[s['data']['characters']] = s['data']
-            time.sleep(0.3)
-            break
+    # Serve already-cached kanji without a network call
+    disk_cache = _load_wk_kanji_cache()
+    wk_kanji   = {k: v for k, v in disk_cache.items() if k in set(all_kanji)}
+    missing    = [k for k in all_kanji if k not in wk_kanji]
+
+    if missing:
+        print(f'[wk] fetching {len(missing)} kanji subjects ({len(wk_kanji)} from cache)...')
+        batch_size = 100  # stay well under URL length limits
+        for i in range(0, len(missing), batch_size):
+            batch = missing[i:i + batch_size]
+            for attempt in range(4):
+                resp = requests.get(
+                    'https://api.wanikani.com/v2/subjects',
+                    params={'types': 'kanji', 'slugs': ','.join(batch)},
+                    headers=headers,
+                    timeout=30
+                )
+                if resp.status_code == 503:
+                    wait = 2 ** attempt
+                    print(f'[wk] 503, retrying in {wait}s...')
+                    time.sleep(wait)
+                    continue
+                resp.raise_for_status()
+                for s in resp.json()['data']:
+                    wk_kanji[s['data']['characters']] = s['data']
+                time.sleep(0.3)
+                break
+        _save_wk_kanji_cache(wk_kanji)
+    else:
+        print(f'[wk] all {len(all_kanji)} kanji served from cache')
+
     print(f'[wk] got {len(wk_kanji)}/{len(all_kanji)} kanji in WaniKani')
-
     return wk_kanji
 
 
@@ -361,6 +395,8 @@ def enrich_jisho(result: list[dict]) -> list[dict]:
     if still_missing:
         print(f'[warn] {len(still_missing)} words still have no meaning: {still_missing}')
 
+    return result
+
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
@@ -378,10 +414,10 @@ def main():
         sys.exit(1)
 
     # 1. Extract text
-    text = load_text(epub_path, n_sec)
+    text, cache_key = load_text(epub_path, n_sec)
 
     # 2. Tokenise
-    word_count, word_reading = tokenize(text, epub_path)
+    word_count, word_reading = tokenize(text, cache_key)
 
     # 3. Filter
     candidates = filter_known(word_count, word_reading)
