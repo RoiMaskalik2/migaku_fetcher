@@ -108,7 +108,7 @@ def tokenize(text: str, epub_path: Path):
     NOUN_COMPOUND_TYPES = {'一般', 'サ変接続', '固有名詞', '副詞可能', '数', 'ナイ形容詞語幹'}
 
     def _keep(base: str) -> bool:
-        return (base and base != '*' and len(base) >= 2
+        return (base and base != '*'
                 and not all('ぁ' <= c <= 'ゟ' for c in base))
 
     print('[...] tokenising (first run, may take ~60s)...')
