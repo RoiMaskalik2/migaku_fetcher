@@ -1931,7 +1931,7 @@
     "partOfSpeech": "",
     "language": "ja",
     "knownStatus": 1,
-    "hasCard": true,
+    "hasCard": false,
     "created": 0
   },
   {
@@ -11615,7 +11615,7 @@
     "partOfSpeech": "",
     "language": "ja",
     "knownStatus": 1,
-    "hasCard": false,
+    "hasCard": true,
     "created": 0
   },
   {
@@ -44401,7 +44401,7 @@
     "secondary": "さすが",
     "partOfSpeech": "",
     "language": "ja",
-    "knownStatus": 1,
+    "knownStatus": 0,
     "hasCard": false,
     "created": 0
   },
@@ -46417,7 +46417,7 @@
     "secondary": "せっしょく",
     "partOfSpeech": "",
     "language": "ja",
-    "knownStatus": 0,
+    "knownStatus": 1,
     "hasCard": false,
     "created": 0
   },
@@ -57380,7 +57380,7 @@
     "partOfSpeech": "",
     "language": "ja",
     "knownStatus": 1,
-    "hasCard": false,
+    "hasCard": true,
     "created": 0
   },
   {
@@ -69487,5 +69487,419 @@
     "knownStatus": 1,
     "hasCard": false,
     "created": 1776940312743
+  },
+  {
+    "dictForm": "通路",
+    "secondary": "つうろ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 1776976243328
+  },
+  {
+    "dictForm": "迷宮",
+    "secondary": "めいきゅう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": true,
+    "created": 1776976298550
+  },
+  {
+    "dictForm": "脱皮",
+    "secondary": "だっぴ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1776976455085
+  },
+  {
+    "dictForm": "探索",
+    "secondary": "たんさく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1776977943470
+  },
+  {
+    "dictForm": "ゲジ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777014597714
+  },
+  {
+    "dictForm": "ｈｐ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777015030973
+  },
+  {
+    "dictForm": "アドヴァンテージ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777015459581
+  },
+  {
+    "dictForm": "奇襲",
+    "secondary": "きしゅう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777015586154
+  },
+  {
+    "dictForm": "ゲージ",
+    "secondary": "げーじ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777015845735
+  },
+  {
+    "dictForm": "上昇",
+    "secondary": "じょうしょう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777016394558
+  },
+  {
+    "dictForm": "各種",
+    "secondary": "かくしゅ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777016397893
+  },
+  {
+    "dictForm": "値",
+    "secondary": "ち",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777016410395
+  },
+  {
+    "dictForm": "ススススス",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777017588316
+  },
+  {
+    "dictForm": "バサッ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777017590756
+  },
+  {
+    "dictForm": "グールグール",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1777017593060
+  },
+  {
+    "dictForm": "ガブッ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1777017596369
+  },
+  {
+    "dictForm": "殺し",
+    "secondary": "ごろし",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777017613032
+  },
+  {
+    "dictForm": "隠密",
+    "secondary": "おんみつ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777019154438
+  },
+  {
+    "dictForm": "マイナス",
+    "secondary": "まいなす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777019491712
+  },
+  {
+    "dictForm": "錬金術",
+    "secondary": "れんきんじゅつ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022083094
+  },
+  {
+    "dictForm": "ロイ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022099380
+  },
+  {
+    "dictForm": "マスタング",
+    "secondary": "ますたんぐ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022101639
+  },
+  {
+    "dictForm": "大総統",
+    "secondary": "だいそうとう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022121684
+  },
+  {
+    "dictForm": "エドワード",
+    "secondary": "えどわーど",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022132939
+  },
+  {
+    "dictForm": "リック",
+    "secondary": "りっく",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022140191
+  },
+  {
+    "dictForm": "錬成",
+    "secondary": "れんせい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022173498
+  },
+  {
+    "dictForm": "エルリック",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022245207
+  },
+  {
+    "dictForm": "アルフォンス",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1777022247865
+  },
+  {
+    "dictForm": "賢者",
+    "secondary": "けんじゃ",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022314039
+  },
+  {
+    "dictForm": "生命",
+    "secondary": "せいめい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777022468277
+  },
+  {
+    "dictForm": "ハーフエルフ",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777049569837
+  },
+  {
+    "dictForm": "支払う",
+    "secondary": "しはらう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777049723447
+  },
+  {
+    "dictForm": "漆原",
+    "secondary": "うるしばら",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 0,
+    "hasCard": false,
+    "created": 1777051463569
+  },
+  {
+    "dictForm": "簡易",
+    "secondary": "かんい",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777148259086
+  },
+  {
+    "dictForm": "嚙",
+    "secondary": "",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777148404113
+  },
+  {
+    "dictForm": "み",
+    "secondary": "み",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777148440880
+  },
+  {
+    "dictForm": "一気に",
+    "secondary": "いっきに",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777148918265
+  },
+  {
+    "dictForm": "引っかかる",
+    "secondary": "ひっかかる",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777181315286
+  },
+  {
+    "dictForm": "尻",
+    "secondary": "しり",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777181764837
+  },
+  {
+    "dictForm": "経験値",
+    "secondary": "けいけんち",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777182051535
+  },
+  {
+    "dictForm": "苦痛",
+    "secondary": "くつう",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777182177777
+  },
+  {
+    "dictForm": "満たす",
+    "secondary": "みたす",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777182217301
+  },
+  {
+    "dictForm": "強敵",
+    "secondary": "きょうてき",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777183134692
+  },
+  {
+    "dictForm": "真正面",
+    "secondary": "まっしょうめん",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777183141685
+  },
+  {
+    "dictForm": "持ち",
+    "secondary": "もち",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777183215314
+  },
+  {
+    "dictForm": "視",
+    "secondary": "し",
+    "partOfSpeech": "",
+    "language": "ja",
+    "knownStatus": 1,
+    "hasCard": false,
+    "created": 1777183427942
   }
 ]
