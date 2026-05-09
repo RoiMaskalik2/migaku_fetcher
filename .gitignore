@@ -6,6 +6,10 @@ migaku_data/srs.db
 data/epub_text_*.txt
 data/srt_text_*.txt
 data/word_counts_*.json
+srt_text_*.txt
+
+# Default-named pipeline output (use named outputs instead)
+srt_vocab.html
 
 # Python
 __pycache__/
