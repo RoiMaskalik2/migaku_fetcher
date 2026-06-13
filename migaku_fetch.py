@@ -135,6 +135,22 @@ async def _fetch_migaku_data() -> dict:
             if 'srs_url' in captured and 'library_items' in captured:
                 break
 
+        # If we got the SRS URL but still no library items, navigate to the
+        # library page to trigger a fresh pull-sync request
+        if 'srs_url' in captured and 'library_items' not in captured:
+            print('[auth] navigating to library page to trigger pull-sync...')
+            try:
+                await page.goto('https://study.migaku.com/library',
+                                wait_until='domcontentloaded', timeout=30000)
+            except Exception as e:
+                print(f'[warn] library nav: {e}')
+            for _ in range(60):
+                await asyncio.sleep(0.5)
+                if 'library_items' in captured:
+                    break
+            if 'library_items' not in captured:
+                print('[warn] library_items still not captured after library nav')
+
         await browser.close()
 
     if 'srs_url' not in captured:
@@ -160,9 +176,16 @@ async def _fetch_migaku_data() -> dict:
     words = _read_words_from_db(db_path)
     print(f'[ok] extracted {len(words)} words from srs.db')
 
+    # pull-sync only returns delta updates; fall back to the library table in srs.db
+    library_items = captured.get('library_items', [])
+    if not library_items:
+        library_items = _read_library_from_db(db_path)
+        if library_items:
+            print(f'[ok] library loaded from srs.db ({len(library_items)} items)')
+
     return {
         'words':        words,
-        'libraryItems': captured.get('library_items', []),
+        'libraryItems': library_items,
     }
 
 
@@ -213,6 +236,24 @@ def _read_words_from_db(db_path) -> list[dict]:
             'created':      d.get('created', 0),
         })
     return words
+
+
+def _read_library_from_db(db_path) -> list[dict]:
+    """Read library items (books + progress) from Migaku's SQLite database."""
+    import sqlite3
+
+    conn = sqlite3.connect(str(db_path))
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+
+    tables = {r[0] for r in cur.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+    if 'library' not in tables:
+        conn.close()
+        return []
+
+    rows = cur.execute('SELECT * FROM library').fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
 
 
 def fetch_and_cache() -> dict:
