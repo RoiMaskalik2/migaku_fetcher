@@ -361,6 +361,8 @@ def enrich_jisho(result: list[dict]) -> list[dict]:
     if still_missing:
         print(f'[warn] {len(still_missing)} words still have no meaning: {still_missing}')
 
+    return result
+
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
