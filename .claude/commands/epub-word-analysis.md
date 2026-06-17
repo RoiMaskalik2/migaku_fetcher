@@ -6,8 +6,9 @@ description: Analyze a Japanese epub file to find the top 100 high-frequency unk
 # Japanese EPUB Word Frequency Analyzer
 
 Given a Japanese epub and Migaku known-words data, produce a ranked JSON list of
-the **top 100** unknown words (kanji must be in WaniKani) with frequency, reading,
-and WaniKani kanji meaning mnemonics.
+the **top 100** unknown words — kanji words are prioritised by WaniKani coverage,
+and frequent kana-only words are included too — with frequency, reading, and
+WaniKani kanji meaning mnemonics where applicable.
 
 ## Prerequisites
 
@@ -18,7 +19,7 @@ Ask the user for:
 
 ## Token Efficiency Rules (follow strictly)
 - **Never** fetch all WaniKani subjects. Use the `slugs` parameter with only kanji in the final word list.
-- Filter to **freq >= 2 AND has kanji** before the WaniKani call.
+- Filter to **freq >= 2** before the WaniKani call (kana-only words pass too — they just skip the kanji lookup).
 - **Two WaniKani API calls**: one for kanji (batched, 100 slugs per request), one for vocabulary (meanings).
 - Use the tokenisation cache (`data/word_counts_<hash>.json`) — skip re-tokenising if it exists.
 - Do NOT echo `result.json` back to the user — it is too large. Report stats only.
@@ -58,7 +59,7 @@ cache_file = DATA_DIR / f'epub_text_{cache_key}.txt'
 if cache_file.exists():
     text = cache_file.read_text(encoding='utf-8')
 else:
-    n_sections = 20  # increase for larger coverage
+    n_sections = None  # None = entire book; pass an int to cap sections
     book = epub.read_epub(epub_path)
     texts, count = [], 0
     for item_id, _ in book.spine:
@@ -67,7 +68,7 @@ else:
             t = BeautifulSoup(item.get_content(), 'lxml').get_text()
             if t.strip():
                 texts.append(t); count += 1
-        if count >= n_sections: break
+        if n_sections is not None and count >= n_sections: break
     text = '\n'.join(texts)
     cache_file.write_text(text, encoding='utf-8')
 ```
@@ -93,8 +94,9 @@ else:
     for t in tokenizer.tokenize(text):
         pos = t.part_of_speech.split(',')[0]
         base = t.base_form
-        if (pos in KEEP_POS and base and base != '*' and len(base) >= 2
-                and not all('ぁ' <= c <= 'ゟ' for c in base)):
+        # Kana-only bases are kept too — filtered later by frequency/known-word checks,
+        # not blanket-excluded here.
+        if pos in KEEP_POS and base and base != '*' and len(base) >= 2:
             word_count[base] += 1
             if base not in word_reading and t.reading and t.reading != '*':
                 word_reading[base] = t.reading
@@ -121,12 +123,9 @@ if top1k_file.exists():
     common = {l.strip() for l in top1k_file.read_text(encoding='utf-8').splitlines() if l.strip()}
     known |= common
 
-def has_kanji(word):
-    return any(ord('一') <= ord(c) <= ord('鿿') for c in word)
-
 candidates = [
     (w, cnt) for w, cnt in word_count.most_common()
-    if w not in known and cnt >= 2 and has_kanji(w)
+    if w not in known and cnt >= 2
 ]
 ```
 
@@ -166,17 +165,20 @@ for i in range(0, len(all_kanji), 100):
 ```python
 TOP_N = 100
 
-tier1, tier2 = [], []
+tier1, tier2, tier_kana = [], [], []
 for w, cnt in candidates:
     chars = [c for c in w if ord('一') <= ord(c) <= ord('鿿')]
+    if not chars:
+        tier_kana.append((w, cnt))   # kana-only word — no kanji mnemonics, still useful
+        continue
     in_wk = sum(1 for c in chars if c in wk_kanji)
     if in_wk == len(chars):
         tier1.append((w, cnt))   # all kanji in WK — preferred
     elif in_wk > 0:
         tier2.append((w, cnt))   # some kanji in WK
-    # Words with zero WK kanji are dropped
+    # Words with kanji but zero WK coverage are dropped
 
-final_words = (tier1 + tier2)[:TOP_N]  # tier1 first (by freq), then tier2
+final_words = (tier1 + tier2 + tier_kana)[:TOP_N]  # tier1, then tier2, then kana-only
 ```
 
 ### 6. Fetch WaniKani vocabulary meanings (second targeted call)
@@ -309,7 +311,7 @@ index.html written to <path>
 ```
 
 - Sorted by `frequency_in_section` descending within WK tier
-- `kanji: []` never happens (kana-only words are excluded)
+- `kanji: []` for frequent kana-only words (included after kanji-tier words)
 - `meaning: null` if neither WK vocab nor Jisho have an entry
 - No `reading_mnemonic` field — not stored, not needed
 - No `scene_hook` field — not stored, not needed

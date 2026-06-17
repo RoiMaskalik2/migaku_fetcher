@@ -7,9 +7,11 @@ Usage:
 
 Changes applied:
   - Top 100 words only (freq-ranked, WaniKani-prioritised)
-  - WK-focused filtering: words where ALL kanji are in WK first, then SOME
+  - WK-focused filtering: words where ALL kanji are in WK first, then SOME,
+    then frequent kana-only words
   - WK vocabulary API for word meanings (falls back to Jisho)
   - Scene hook extraction from WK mnemonics
+  - Reads the entire epub by default (pass n_sections to cap it)
   - Tokenisation cache (word_counts.json) to skip re-tokenising unchanged epubs
 """
 
@@ -28,7 +30,7 @@ WK_TOKEN = "d80065d9-7717-4d27-948c-2ad657faa924"
 
 TOP_N         = 100   # max words in output
 MIN_FREQ      = 2     # minimum occurrence count
-N_SECTIONS    = 20    # epub sections to read (increase for larger coverage)
+N_SECTIONS    = None  # epub sections to read; None = entire book
 
 KANJI_MIN = ord('一')
 KANJI_MAX = ord('鿿')
@@ -40,13 +42,16 @@ def is_kanji(c: str) -> bool:
     return KANJI_MIN <= ord(c) <= KANJI_MAX
 
 
-def has_kanji(word: str) -> bool:
-    return any(is_kanji(c) for c in word)
-
-
 def epub_hash(epub_path: Path) -> str:
     h = hashlib.md5(epub_path.read_bytes()).hexdigest()[:8]
     return h
+
+
+def cache_key_for(epub_path: Path, n_sections) -> str:
+    """Cache key incorporating section scope, so a full-book run never reuses
+    a cache built from a narrower (e.g. first-20-sections) run."""
+    scope = 'all' if n_sections is None else str(n_sections)
+    return f'{epub_hash(epub_path)}_{scope}'
 
 
 def kata_to_hira(text: str) -> str:
@@ -59,8 +64,7 @@ def kata_to_hira(text: str) -> str:
 
 # ── Step 1: Extract text from epub ────────────────────────────────────────────
 
-def load_text(epub_path: Path, n_sections: int) -> str:
-    cache_key  = epub_hash(epub_path)
+def load_text(epub_path: Path, n_sections, cache_key: str) -> str:
     cache_file = DATA_DIR / f'epub_text_{cache_key}.txt'
 
     if cache_file.exists():
@@ -81,7 +85,7 @@ def load_text(epub_path: Path, n_sections: int) -> str:
             if t.strip():
                 texts.append(t)
                 count += 1
-        if count >= n_sections:
+        if n_sections is not None and count >= n_sections:
             break
 
     text = '\n'.join(texts)
@@ -92,8 +96,7 @@ def load_text(epub_path: Path, n_sections: int) -> str:
 
 # ── Step 2: Tokenise ─────────────────────────────────────────────────────────
 
-def tokenize(text: str, epub_path: Path):
-    cache_key  = epub_hash(epub_path)
+def tokenize(text: str, cache_key: str):
     cache_file = DATA_DIR / f'word_counts_{cache_key}.json'
 
     if cache_file.exists():
@@ -108,8 +111,9 @@ def tokenize(text: str, epub_path: Path):
     NOUN_COMPOUND_TYPES = {'一般', 'サ変接続', '固有名詞', '副詞可能', '数', 'ナイ形容詞語幹'}
 
     def _keep(base: str) -> bool:
-        return (base and base != '*' and len(base) >= 2
-                and not all('ぁ' <= c <= 'ゟ' for c in base))
+        # Pure-hiragana words are kept too — they're filtered out later by
+        # frequency/known-word checks, not blanket-excluded here.
+        return base and base != '*' and len(base) >= 2
 
     print('[...] tokenising (first run, may take ~60s)...')
     tokenizer = Tokenizer()
@@ -196,9 +200,9 @@ def filter_known(word_count: Counter, word_reading: dict) -> list[tuple[str, int
 
     candidates = [
         (w, cnt) for w, cnt in word_count.most_common()
-        if w not in known and w not in common and cnt >= MIN_FREQ and has_kanji(w)
+        if w not in known and w not in common and cnt >= MIN_FREQ
     ]
-    print(f'[ok] {len(candidates)} unknown kanji-words with freq >= {MIN_FREQ}')
+    print(f'[ok] {len(candidates)} unknown words with freq >= {MIN_FREQ}')
     return candidates
 
 
@@ -272,21 +276,24 @@ def fetch_wk_vocab(words: list[str], wk_token: str) -> dict:
 # ── Step 5: WaniKani-focused ranking ──────────────────────────────────────────
 
 def rank_by_wanikani(candidates: list[tuple[str, int]], wk_kanji: dict) -> list[tuple[str, int]]:
-    """Sort candidates: all-WK-kanji first, then some-WK-kanji, sorted by freq within tier."""
-    tier1, tier2 = [], []
+    """Sort candidates: all-WK-kanji first, then some-WK-kanji, then kana-only
+    words (no kanji mnemonics, but still useful vocab), sorted by freq within tier."""
+    tier1, tier2, tier_kana = [], [], []
     for w, cnt in candidates:
         chars = [c for c in w if is_kanji(c)]
         if not chars:
+            tier_kana.append((w, cnt))
             continue
         in_wk = sum(1 for c in chars if c in wk_kanji)
         if in_wk == len(chars):
             tier1.append((w, cnt))
         elif in_wk > 0:
             tier2.append((w, cnt))
-        # Words with zero WK kanji are dropped
+        # Words with zero WK kanji coverage among their kanji are dropped
 
-    print(f'[wk] tier1 (all kanji in WK): {len(tier1)}, tier2 (partial): {len(tier2)}')
-    result = tier1 + tier2  # both already sorted by freq from most_common()
+    print(f'[wk] tier1 (all kanji in WK): {len(tier1)}, tier2 (partial): {len(tier2)}, '
+          f'kana-only: {len(tier_kana)}')
+    result = tier1 + tier2 + tier_kana  # all already sorted by freq from most_common()
     return result[:TOP_N]
 
 
@@ -380,10 +387,11 @@ def main():
         sys.exit(1)
 
     # 1. Extract text
-    text = load_text(epub_path, n_sec)
+    cache_key = cache_key_for(epub_path, n_sec)
+    text = load_text(epub_path, n_sec, cache_key)
 
     # 2. Tokenise
-    word_count, word_reading = tokenize(text, epub_path)
+    word_count, word_reading = tokenize(text, cache_key)
 
     # 3. Filter
     candidates = filter_known(word_count, word_reading)

@@ -64,8 +64,8 @@ python build_html.py result.json index.html
 |------|-------|----------|
 | `migaku_data/known_words.json` | 1 | Known words (dictForm keys) |
 | `migaku_data/summary.md`       | 1 | Book progress + word stats |
-| `data/epub_text_<hash>.txt`    | 2 | Cached epub text |
-| `data/word_counts_<hash>.json` | 2 | Cached tokenisation |
+| `data/epub_text_<hash>_<scope>.txt`    | 2 | Cached epub text (scope = `all` or section count) |
+| `data/word_counts_<hash>_<scope>.json` | 2 | Cached tokenisation |
 | `result.json`                  | 2 | Top 100 WK-focused vocab |
 | `index.html`                   | 2 | Self-contained study app |
 
@@ -75,7 +75,7 @@ python build_html.py result.json index.html
 |-------------|---------|---------|
 | `TOP_N`     | 100     | Max words in output |
 | `MIN_FREQ`  | 2       | Minimum occurrence count |
-| `N_SECTIONS`| 20      | Epub sections to read |
+| `N_SECTIONS`| None (entire book) | Epub sections to read; pass a number as the 3rd CLI arg to limit |
 | `JISHO_LIMIT`| 50     | Words to enrich via Jisho fallback |
 
 ## After running
@@ -94,4 +94,4 @@ index.html ready — open in browser to study.
 **`known_words.json` not found**: run stage 1 first.
 **WK API 401**: invalid or expired WK token.
 **Tokenisation takes long**: normal on first run (~60s for large epub). Cache used afterwards.
-**`result.json` has < 100 words**: epub may be short, or WK coverage is low — reduce `MIN_FREQ` or increase `N_SECTIONS`.
+**`result.json` has < 100 words**: epub may be short, or WK coverage is low — reduce `MIN_FREQ`.

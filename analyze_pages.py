@@ -8,7 +8,8 @@ from pathlib import Path
 
 from analyze_epub import (
     tokenize, filter_known, fetch_wanikani, rank_by_wanikani,
-    fetch_wk_vocab, build_result, enrich_jisho, WK_TOKEN, TOP_N, is_kanji,
+    fetch_wk_vocab, build_result, enrich_jisho, epub_hash,
+    WK_TOKEN, TOP_N, is_kanji,
 )
 from build_html import build_html
 
@@ -54,11 +55,11 @@ def fetch_wanikani_with_fallback(candidates, wk_token):
 
 def rank_by_frequency(candidates, wk_kanji):
     """Rank by frequency; use WK coverage only to prefer better-covered words."""
-    from collections import defaultdict
-    tier1, tier2, tier3 = [], [], []
+    tier1, tier2, tier3, tier_kana = [], [], [], []
     for w, cnt in candidates:
         chars = [c for c in w if is_kanji(c)]
         if not chars:
+            tier_kana.append((w, cnt))
             continue
         in_wk = sum(1 for c in chars if c in wk_kanji)
         if in_wk == len(chars):
@@ -67,8 +68,9 @@ def rank_by_frequency(candidates, wk_kanji):
             tier2.append((w, cnt))
         else:
             tier3.append((w, cnt))
-    result = tier1 + tier2 + tier3
-    print(f'[rank] tier1={len(tier1)} tier2={len(tier2)} tier3={len(tier3)}')
+    result = tier1 + tier2 + tier3 + tier_kana
+    print(f'[rank] tier1={len(tier1)} tier2={len(tier2)} tier3={len(tier3)} '
+          f'kana-only={len(tier_kana)}')
     return result[:TOP_N]
 
 
@@ -80,7 +82,7 @@ def main():
     text = PAGES_FILE.read_text(encoding='utf-8')
     print(f'[ok] loaded {len(text):,} chars from {PAGES_FILE.name}')
 
-    word_count, word_reading = tokenize(text, PAGES_FILE)
+    word_count, word_reading = tokenize(text, epub_hash(PAGES_FILE))
 
     candidates = filter_known(word_count, word_reading)
 
