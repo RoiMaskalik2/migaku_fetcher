@@ -66,7 +66,7 @@ python build_html.py result.json index.html
 | `migaku_data/summary.md`       | 1 | Book progress + word stats |
 | `data/epub_text_<hash>_<scope>.txt`    | 2 | Cached epub text (scope = `all` or section count) |
 | `data/word_counts_<hash>_<scope>.json` | 2 | Cached tokenisation |
-| `result.json`                  | 2 | Top 100 WK-focused vocab |
+| `result.json`                  | 2 | Top 100 vocab by frequency (kanji + kana mixed) |
 | `index.html`                   | 2 | Self-contained study app |
 
 ## Configurable parameters (in analyze_epub.py)
@@ -83,7 +83,7 @@ python build_html.py result.json index.html
 Report to the user:
 ```
 Stage 1: known words: <N>
-Stage 2: selected top <N> WK-focused words
+Stage 2: selected top <N> words by frequency
          with meanings: <N>
          top 5: <words>
 index.html ready — open in browser to study.

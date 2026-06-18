@@ -6,9 +6,9 @@ Usage:
     python analyze_epub.py <epub_path> <wanikani_token> [n_sections]
 
 Changes applied:
-  - Top 100 words only (freq-ranked, WaniKani-prioritised)
-  - WK-focused filtering: words where ALL kanji are in WK first, then SOME,
-    then frequent kana-only words
+  - Top 100 words only, ranked purely by frequency (kanji and kana-only
+    words compete equally — WaniKani coverage no longer gates selection,
+    it just decides which kanji mnemonics get shown)
   - WK vocabulary API for word meanings (falls back to Jisho)
   - Scene hook extraction from WK mnemonics
   - Reads the entire epub by default (pass n_sections to cap it)
@@ -110,10 +110,25 @@ def tokenize(text: str, cache_key: str):
     # Noun sub-types that can start or extend a compound
     NOUN_COMPOUND_TYPES = {'一般', 'サ変接続', '固有名詞', '副詞可能', '数', 'ナイ形容詞語幹'}
 
+    def _is_japanese(s: str) -> bool:
+        for c in s:
+            if is_kanji(c):
+                continue
+            if 'ぁ' <= c <= 'ゟ':  # hiragana incl. extensions
+                continue
+            if '゠' <= c <= 'ヿ':  # katakana incl. extensions
+                continue
+            if c in 'ーゝゞ・':
+                continue
+            return False
+        return True
+
     def _keep(base: str) -> bool:
-        # Pure-hiragana words are kept too — they're filtered out later by
-        # frequency/known-word checks, not blanket-excluded here.
-        return base and base != '*' and len(base) >= 2
+        # Pure-hiragana/katakana words are kept too — they're filtered out
+        # later by frequency/known-word checks, not blanket-excluded here.
+        # Full-width Latin/digits/punctuation that janome mistags as nouns
+        # are rejected here since they aren't real vocabulary.
+        return base and base != '*' and len(base) >= 2 and _is_japanese(base)
 
     print('[...] tokenising (first run, may take ~60s)...')
     tokenizer = Tokenizer()
@@ -213,7 +228,7 @@ def fetch_wanikani(candidates: list[tuple[str, int]], wk_token: str):
 
     headers = {'Authorization': f'Bearer {wk_token}'}
 
-    # Collect all unique kanji across ALL candidates (not just top 100 yet)
+    # Collect all unique kanji across the given candidates
     all_kanji = sorted({c for w, _ in candidates for c in w if is_kanji(c)})
     if not all_kanji:
         return {}, {}
@@ -306,28 +321,18 @@ def fetch_wk_vocab(words: list[str], wk_token: str) -> dict:
     return wk_vocab
 
 
-# ── Step 5: WaniKani-focused ranking ──────────────────────────────────────────
+# ── Step 5: Select top words by frequency ────────────────────────────────────
 
-def rank_by_wanikani(candidates: list[tuple[str, int]], wk_kanji: dict) -> list[tuple[str, int]]:
-    """Sort candidates: all-WK-kanji first, then some-WK-kanji, then kana-only
-    words (no kanji mnemonics, but still useful vocab), sorted by freq within tier."""
-    tier1, tier2, tier_kana = [], [], []
-    for w, cnt in candidates:
-        chars = [c for c in w if is_kanji(c)]
-        if not chars:
-            tier_kana.append((w, cnt))
-            continue
-        in_wk = sum(1 for c in chars if c in wk_kanji)
-        if in_wk == len(chars):
-            tier1.append((w, cnt))
-        elif in_wk > 0:
-            tier2.append((w, cnt))
-        # Words with zero WK kanji coverage among their kanji are dropped
-
-    print(f'[wk] tier1 (all kanji in WK): {len(tier1)}, tier2 (partial): {len(tier2)}, '
-          f'kana-only: {len(tier_kana)}')
-    result = tier1 + tier2 + tier_kana  # all already sorted by freq from most_common()
-    return result[:TOP_N]
+def select_top_words(candidates: list[tuple[str, int]]) -> list[tuple[str, int]]:
+    """Take the top TOP_N candidates by raw frequency — already sorted via
+    most_common(). Kanji and kana-only words compete equally; WaniKani
+    coverage doesn't gate selection, it only decides what mnemonics show up
+    for whichever kanji happen to be WK subjects."""
+    selected  = candidates[:TOP_N]
+    kana_only = sum(1 for w, _ in selected if not any(is_kanji(c) for c in w))
+    print(f'[ok] top {len(selected)} by frequency '
+          f'({len(selected) - kana_only} with kanji, {kana_only} kana-only)')
+    return selected
 
 
 # ── Step 6: Build result entries ──────────────────────────────────────────────
@@ -429,13 +434,12 @@ def main():
     # 3. Filter
     candidates = filter_known(word_count, word_reading)
 
-    # 4. Fetch WaniKani kanji data for all candidates (falls back to local
-    #    result*.json cache if the WK account is hibernating / API fails)
-    wk_kanji = fetch_wanikani_with_fallback(candidates, wk_token)
+    # 4. Select top 100 by raw frequency (kanji + kana mixed)
+    final_words = select_top_words(candidates)
 
-    # 5. Rank by WaniKani coverage, take top 100
-    final_words = rank_by_wanikani(candidates, wk_kanji)
-    print(f'[ok] selected top {len(final_words)} WK-focused words')
+    # 5. Fetch WaniKani kanji data for the selected words' kanji (falls back to
+    #    local result*.json cache if the WK account is hibernating / API fails)
+    wk_kanji = fetch_wanikani_with_fallback(final_words, wk_token)
 
     # 6. Fetch WK vocab meanings
     try:
@@ -462,8 +466,8 @@ def main():
     # Stats
     print('\n── Stats ──────────────────────────────')
     print(f'Words analysed (epub):     {sum(word_count.values()):,}')
-    print(f'Unknown kanji-words:       {len(candidates)}')
-    print(f'WK-focused (top {TOP_N}):       {len(result)}')
+    print(f'Unknown words:             {len(candidates)}')
+    print(f'Selected (top {TOP_N}):         {len(result)}')
     print(f'With meanings:             {sum(1 for e in result if e["meaning"])}')
     top5 = result[:5]
     top5_str = ', '.join(f'{e["word"]} ({e["frequency_in_section"]}x)' for e in top5)

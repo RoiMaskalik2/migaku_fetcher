@@ -1,19 +1,19 @@
 ---
 name: epub-word-analysis
-description: Analyze a Japanese epub file to find the top 100 high-frequency unknown vocabulary with WaniKani kanji mnemonics. Prioritises words whose kanji all appear in WaniKani. Use when the user wants to study vocabulary from a Japanese book.
+description: Analyze a Japanese epub file to find the top 100 high-frequency unknown vocabulary, with WaniKani kanji mnemonics where available. Ranked purely by frequency — kanji and kana-only words compete equally. Use when the user wants to study vocabulary from a Japanese book.
 ---
 
 # Japanese EPUB Word Frequency Analyzer
 
 Given a Japanese epub and Migaku known-words data, produce a ranked JSON list of
-the **top 100** unknown words — kanji words are prioritised by WaniKani coverage,
-and frequent kana-only words are included too — with frequency, reading, and
-WaniKani kanji meaning mnemonics where applicable.
+the **top 100** unknown words by raw frequency — kanji and kana-only words compete
+equally for a slot — with frequency, reading, and WaniKani kanji meaning mnemonics
+where applicable.
 
 ## Prerequisites
 
 Ask the user for:
-- **WaniKani API token** — required before step 5
+- **WaniKani API token** — required before step 6
 - **EPUB path** — local path to the book file
 - **`BASE_DIR`** — absolute path to the project directory
 
@@ -91,12 +91,22 @@ else:
     word_count = Counter()
     word_reading = {}
 
+    def _is_japanese(s):
+        for c in s:
+            if ord('一') <= ord(c) <= ord('鿿'): continue       # kanji
+            if 'ぁ' <= c <= 'ゟ': continue                       # hiragana
+            if '゠' <= c <= 'ヿ': continue                       # katakana
+            if c in 'ーゝゞ・': continue
+            return False
+        return True
+
     for t in tokenizer.tokenize(text):
         pos = t.part_of_speech.split(',')[0]
         base = t.base_form
-        # Kana-only bases are kept too — filtered later by frequency/known-word checks,
-        # not blanket-excluded here.
-        if pos in KEEP_POS and base and base != '*' and len(base) >= 2:
+        # Kana-only bases are kept too — filtered later by frequency/known-word checks.
+        # Non-Japanese tokens (full-width Latin/digits/punctuation that janome
+        # mistags as nouns) are rejected via _is_japanese().
+        if pos in KEEP_POS and base and base != '*' and len(base) >= 2 and _is_japanese(base):
             word_count[base] += 1
             if base not in word_reading and t.reading and t.reading != '*':
                 word_reading[base] = t.reading
@@ -129,7 +139,18 @@ candidates = [
 ]
 ```
 
-### 5. Fetch WaniKani kanji data (batched — 100 slugs per request)
+### 5. Select top words by raw frequency (kanji + kana mixed)
+
+Selection is purely frequency-based now — kanji and kana-only words compete
+equally. WaniKani coverage no longer decides who gets in; it's only fetched
+afterwards, for whichever kanji happen to land in the selected words.
+
+```python
+TOP_N = 100
+final_words = candidates[:TOP_N]   # candidates is already freq-sorted
+```
+
+### 6. Fetch WaniKani kanji data for the selected words (batched — 100 slugs/request)
 
 `wk_token` defaults to the `WK_TOKEN` constant in `analyze_epub.py`; can also be
 passed as `sys.argv[2]`. **Do NOT send all kanji in one request** — large slug lists
@@ -138,7 +159,7 @@ cause 503 errors. Batch at 100 and retry on 503.
 ```python
 import requests, time
 
-all_kanji = sorted({c for w, _ in candidates for c in w
+all_kanji = sorted({c for w, _ in final_words for c in w
                     if ord('一') <= ord(c) <= ord('鿿')})
 
 wk_kanji = {}
@@ -160,28 +181,7 @@ for i in range(0, len(all_kanji), 100):
         break
 ```
 
-### 5.5. WK-focused ranking — prefer words where ALL kanji are in WaniKani
-
-```python
-TOP_N = 100
-
-tier1, tier2, tier_kana = [], [], []
-for w, cnt in candidates:
-    chars = [c for c in w if ord('一') <= ord(c) <= ord('鿿')]
-    if not chars:
-        tier_kana.append((w, cnt))   # kana-only word — no kanji mnemonics, still useful
-        continue
-    in_wk = sum(1 for c in chars if c in wk_kanji)
-    if in_wk == len(chars):
-        tier1.append((w, cnt))   # all kanji in WK — preferred
-    elif in_wk > 0:
-        tier2.append((w, cnt))   # some kanji in WK
-    # Words with kanji but zero WK coverage are dropped
-
-final_words = (tier1 + tier2 + tier_kana)[:TOP_N]  # tier1, then tier2, then kana-only
-```
-
-### 6. Fetch WaniKani vocabulary meanings (second targeted call)
+### 7. Fetch WaniKani vocabulary meanings (second targeted call)
 
 ```python
 word_slugs = ','.join(w for w, _ in final_words)
@@ -228,7 +228,7 @@ for word, freq in final_words:
     })
 ```
 
-### 7.5. Jisho fallback for words not in WK vocabulary
+### 8.5. Jisho fallback for words not in WK vocabulary
 
 ```python
 import time
@@ -269,19 +269,19 @@ for e in result:
         e['meaning'] = meanings[e['word']]
 ```
 
-### 8. Generate index.html
+### 9. Generate index.html
 
 ```python
 from build_html import build_html
 build_html(result, BASE_DIR / 'index.html')
 ```
 
-### 9. Report stats only — do NOT echo result.json
+### 10. Report stats only — do NOT echo result.json
 
 ```
 Words analysed (epub):     <total tokens>
-Unknown kanji-words:       <N candidates>
-WK-focused (top 100):      <N final>
+Unknown words:             <N candidates>
+Selected (top 100):        <N final>
 With meanings:             <N>
 Top 5: <word> (<freq>x), ...
 index.html written to <path>
@@ -310,8 +310,8 @@ index.html written to <path>
 ]
 ```
 
-- Sorted by `frequency_in_section` descending within WK tier
-- `kanji: []` for frequent kana-only words (included after kanji-tier words)
+- Sorted by `frequency_in_section` descending (pure frequency, kanji + kana mixed)
+- `kanji: []` for kana-only words
 - `meaning: null` if neither WK vocab nor Jisho have an entry
 - No `reading_mnemonic` field — not stored, not needed
 - No `scene_hook` field — not stored, not needed
