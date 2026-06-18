@@ -1,0 +1,13 @@
+kradfile.json is derived from KRADFILE-u, distributed by the Electronic
+Dictionary Research and Development Group (EDRDG).
+
+Copyright 2001/2007 Michael Raine, James Breen and the Electronic
+Dictionary Research & Development Group.
+
+This data is used and redistributed under the terms of the EDRDG
+license. See: http://www.edrdg.org/edrdg/licence.html
+
+Format: a flat JSON object mapping each kanji to the list of component
+radicals/primitives it decomposes into, e.g. {"蝙": ["｜","一","戸","虫","冊","尸"]}.
+Source: kradfile-u (the expanded Unicode edition of KRADFILE, covering
+JIS X 0208/0212/0213 kanji).
