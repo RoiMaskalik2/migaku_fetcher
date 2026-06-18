@@ -245,6 +245,39 @@ def fetch_wanikani(candidates: list[tuple[str, int]], wk_token: str):
     return wk_kanji
 
 
+def load_kanji_cache() -> dict:
+    """Build a kanji dict from any existing result*.json files."""
+    cache = {}
+    for f in BASE_DIR.glob('result*.json'):
+        try:
+            for entry in json.loads(f.read_text(encoding='utf-8')):
+                for k in entry.get('kanji', []):
+                    c = k.get('character')
+                    if c and c not in cache:
+                        cache[c] = {
+                            'meanings':          [{'meaning': k['meaning'], 'primary': True}] if k.get('meaning') else [],
+                            'readings':          [{'reading': k['reading'], 'primary': True}] if k.get('reading') else [],
+                            'meaning_mnemonic':  k.get('meaning_mnemonic'),
+                        }
+        except Exception:
+            pass
+    if cache:
+        print(f'[cache] loaded {len(cache)} kanji from existing result files')
+    return cache
+
+
+def fetch_wanikani_with_fallback(candidates: list[tuple[str, int]], wk_token: str) -> dict:
+    """Try WK API; on failure (e.g. hibernating account) return local cache only."""
+    local = load_kanji_cache()
+    try:
+        wk = fetch_wanikani(candidates, wk_token)
+        # Merge: prefer fresh WK data, fill gaps from local cache
+        return {**local, **wk}
+    except Exception as e:
+        print(f'[warn] WK API unavailable ({e}) — using local kanji cache only')
+        return local
+
+
 def fetch_wk_vocab(words: list[str], wk_token: str) -> dict:
     import requests
     if not words:
@@ -396,15 +429,20 @@ def main():
     # 3. Filter
     candidates = filter_known(word_count, word_reading)
 
-    # 4. Fetch WaniKani kanji data for all candidates
-    wk_kanji = fetch_wanikani(candidates, wk_token)
+    # 4. Fetch WaniKani kanji data for all candidates (falls back to local
+    #    result*.json cache if the WK account is hibernating / API fails)
+    wk_kanji = fetch_wanikani_with_fallback(candidates, wk_token)
 
     # 5. Rank by WaniKani coverage, take top 100
     final_words = rank_by_wanikani(candidates, wk_kanji)
     print(f'[ok] selected top {len(final_words)} WK-focused words')
 
     # 6. Fetch WK vocab meanings
-    wk_vocab = fetch_wk_vocab([w for w, _ in final_words], wk_token)
+    try:
+        wk_vocab = fetch_wk_vocab([w for w, _ in final_words], wk_token)
+    except Exception as e:
+        print(f'[warn] WK vocab unavailable ({e}) — meanings from Jisho only')
+        wk_vocab = {}
 
     # 7. Build result
     result = build_result(final_words, wk_kanji, wk_vocab, word_reading)

@@ -7,7 +7,7 @@ sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 from pathlib import Path
 
 from analyze_epub import (
-    tokenize, filter_known, fetch_wanikani, rank_by_wanikani,
+    tokenize, filter_known, rank_by_wanikani, fetch_wanikani_with_fallback,
     fetch_wk_vocab, build_result, enrich_jisho, epub_hash,
     WK_TOKEN, TOP_N, is_kanji,
 )
@@ -17,40 +17,6 @@ BASE_DIR   = Path(__file__).parent
 PAGES_FILE = BASE_DIR / 'migaku_data' / 'spider_next_pages.txt'
 OUT_JSON   = BASE_DIR / 'result_spider_pages.json'
 OUT_HTML   = BASE_DIR / 'spider_next_pages.html'
-
-
-def load_kanji_cache() -> dict:
-    """Build a kanji dict from any existing result*.json files."""
-    cache = {}
-    for f in BASE_DIR.glob('result*.json'):
-        try:
-            for entry in json.loads(f.read_text(encoding='utf-8')):
-                for k in entry.get('kanji', []):
-                    c = k.get('character')
-                    if c and c not in cache:
-                        cache[c] = {
-                            'meanings':          [{'meaning': k['meaning'], 'primary': True}] if k.get('meaning') else [],
-                            'readings':          [{'reading': k['reading'], 'primary': True}] if k.get('reading') else [],
-                            'meaning_mnemonic':  k.get('meaning_mnemonic'),
-                        }
-        except Exception:
-            pass
-    if cache:
-        print(f'[cache] loaded {len(cache)} kanji from existing result files')
-    return cache
-
-
-def fetch_wanikani_with_fallback(candidates, wk_token):
-    """Try WK API; on failure (e.g. hibernating account) return local cache only."""
-    local = load_kanji_cache()
-    try:
-        wk = fetch_wanikani(candidates, wk_token)
-        # Merge: prefer fresh WK data, fill gaps from local cache
-        merged = {**local, **wk}
-        return merged
-    except Exception as e:
-        print(f'[warn] WK API unavailable ({e}) — using local kanji cache only')
-        return local
 
 
 def rank_by_frequency(candidates, wk_kanji):
