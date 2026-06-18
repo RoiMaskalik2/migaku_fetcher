@@ -8,7 +8,8 @@ from pathlib import Path
 
 from analyze_epub import (
     tokenize, filter_known, select_top_words, fetch_wanikani_with_fallback,
-    fetch_wk_vocab, build_result, enrich_jisho, epub_hash, WK_TOKEN,
+    fetch_wk_vocab, build_result, enrich_kanji_kanjiapi, enrich_jisho,
+    epub_hash, WK_TOKEN,
 )
 from build_html import build_html
 
@@ -41,6 +42,8 @@ def main():
         wk_vocab = {}
 
     result = build_result(final_words, wk_kanji, wk_vocab, word_reading)
+
+    result = enrich_kanji_kanjiapi(result)
 
     result = enrich_jisho(result)
 

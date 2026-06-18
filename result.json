@@ -28,14 +28,14 @@
   {
     "word": "操糸",
     "reading": "みさおいと",
-    "meaning": null,
+    "meaning": "manipulation thread (skill)",
     "frequency_in_section": 45,
     "kanji": [
       {
         "character": "操",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "maneuver",
+        "reading": "みさお",
+        "meaning_mnemonic": "<radical>Fingers</radical> pulling strings on three little puppets is exactly how you <kanji>manipulate</kanji> them."
       },
       {
         "character": "糸",
@@ -47,41 +47,41 @@
   },
   {
     "word": "巨猿",
-    "reading": "",
-    "meaning": null,
+    "reading": "きょえん",
+    "meaning": "giant ape",
     "frequency_in_section": 43,
     "kanji": [
       {
         "character": "巨",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "big",
+        "reading": "きょ",
+        "meaning_mnemonic": "A <radical>giant</radical>'s own outstretched frame is simply the shape of the kanji for <kanji>giant</kanji>."
       },
       {
         "character": "猿",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "monkey",
+        "reading": "えん",
+        "meaning_mnemonic": "An <radical>animal</radical> reaching up for a piece of fruit is, of course, a cheeky little <kanji>monkey</kanji>."
       }
     ]
   },
   {
     "word": "蜘蛛糸",
     "reading": "くもいと",
-    "meaning": null,
+    "meaning": "spider silk",
     "frequency_in_section": 40,
     "kanji": [
       {
         "character": "蜘",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "spider",
+        "reading": "ち",
+        "meaning_mnemonic": "An <radical>insect</radical> that somehow knows everything is the clever-half of the kanji for <kanji>spider</kanji>."
       },
       {
         "character": "蛛",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "spider",
+        "reading": "しゅ",
+        "meaning_mnemonic": "An <radical>insect</radical> standing on tiptoe is the bug-half of the kanji for <kanji>spider</kanji>."
       },
       {
         "character": "糸",
@@ -99,15 +99,15 @@
     "kanji": [
       {
         "character": "蝙",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "bat",
+        "reading": "へん",
+        "meaning_mnemonic": "An <radical>insect</radical> flattened out mid-flight is the first half of the kanji for <kanji>bat</kanji>."
       },
       {
         "character": "蝠",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "bat",
+        "reading": "ふく",
+        "meaning_mnemonic": "An <radical>insect</radical> wrapped in good fortune at night is the second half of the kanji for <kanji>bat</kanji>."
       }
     ]
   },
@@ -119,9 +119,9 @@
     "kanji": [
       {
         "character": "合",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "fit",
+        "reading": "ごう",
+        "meaning_mnemonic": "A <radical>person</radical> joining with one more <radical>person</radical> until the two <kanji>fit</kanji> together perfectly."
       },
       {
         "character": "成",
@@ -159,15 +159,15 @@
     "kanji": [
       {
         "character": "下",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "below",
+        "reading": "か",
+        "meaning_mnemonic": "A flag drooping <kanji>below</kanji> the pole — once it sinks, it stays low to the ground."
       },
       {
         "character": "層",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "floor",
+        "reading": "そう",
+        "meaning_mnemonic": "A corpse-still <radical>building</radical> stacked again and again forms each <kanji>floor</kanji> of the tower."
       }
     ]
   },
@@ -214,7 +214,7 @@
   {
     "word": "勇者",
     "reading": "ゆうしゃ",
-    "meaning": null,
+    "meaning": "hero",
     "frequency_in_section": 21,
     "kanji": [
       {
@@ -374,14 +374,14 @@
   {
     "word": "猿たち",
     "reading": "さるたち",
-    "meaning": null,
+    "meaning": "the monkeys",
     "frequency_in_section": 18,
     "kanji": [
       {
         "character": "猿",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "monkey",
+        "reading": "えん",
+        "meaning_mnemonic": "An <radical>animal</radical> reaching up for a piece of fruit is, of course, a cheeky little <kanji>monkey</kanji>."
       }
     ]
   },
@@ -393,9 +393,9 @@
     "kanji": [
       {
         "character": "拡",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "broaden",
+        "reading": "かく",
+        "meaning_mnemonic": "<radical>Fingers</radical> stretching a tent frame wider and wider is exactly how you <kanji>expand</kanji> something."
       },
       {
         "character": "張",
@@ -413,15 +413,15 @@
     "kanji": [
       {
         "character": "落",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "fall",
+        "reading": "らく",
+        "meaning_mnemonic": "Flowers dripping with water, letting go of the branch one by one, is how petals <kanji>fall</kanji>."
       },
       {
         "character": "下",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "below",
+        "reading": "か",
+        "meaning_mnemonic": "A flag drooping <kanji>below</kanji> the pole — once it sinks, it stays low to the ground."
       }
     ]
   },
@@ -433,9 +433,9 @@
     "kanji": [
       {
         "character": "兄",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "big brother",
+        "reading": "きょう",
+        "meaning_mnemonic": "A big <radical>mouth</radical> on a pair of <radical>legs</radical> — your <kanji>older brother</kanji> always talks louder and walks two steps ahead of you."
       },
       {
         "character": "様",
@@ -460,15 +460,15 @@
     "kanji": [
       {
         "character": "公",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "governmental",
+        "reading": "こう",
+        "meaning_mnemonic": "A <radical>private</radical> matter split open for everyone to see becomes <kanji>public</kanji> knowledge."
       },
       {
         "character": "爵",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "baron",
+        "reading": "しゃく",
+        "meaning_mnemonic": "A noble's ceremonial cup, held just so — only a <kanji>baron</kanji> earns the right to drink from it."
       }
     ]
   },
@@ -480,15 +480,15 @@
     "kanji": [
       {
         "character": "蜥",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "a lizard",
+        "reading": "せき",
+        "meaning_mnemonic": "An <radical>insect</radical> sunning itself on a rock is close enough, in this kanji's eyes, to a <kanji>lizard</kanji>."
       },
       {
         "character": "蜴",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "lizard",
+        "reading": "えき",
+        "meaning_mnemonic": "An <radical>insect</radical> changing colors in the easy sunlight is the second half of <kanji>lizard</kanji>."
       }
     ]
   },
@@ -506,15 +506,15 @@
       },
       {
         "character": "覚",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "memorize",
+        "reading": "かく",
+        "meaning_mnemonic": "Studying something with your own eyes until you finally <kanji>perceive</kanji> what it means."
       }
     ]
   },
   {
     "word": "ダンゴムシ",
-    "reading": "",
+    "reading": "だんごむし",
     "meaning": "pillbug",
     "frequency_in_section": 15,
     "kanji": []
@@ -522,7 +522,7 @@
   {
     "word": "鑑定石",
     "reading": "かんていせき",
-    "meaning": null,
+    "meaning": "appraisal stone",
     "frequency_in_section": 14,
     "kanji": [
       {
@@ -547,8 +547,8 @@
   },
   {
     "word": "スモールレッサータラテクト",
-    "reading": "",
-    "meaning": null,
+    "reading": "すもーるれっさーたらてくと",
+    "meaning": "Small Lesser Taratect (monster species)",
     "frequency_in_section": 14,
     "kanji": []
   },
@@ -562,7 +562,7 @@
   {
     "word": "人族",
     "reading": "ひとぞく",
-    "meaning": null,
+    "meaning": "human race",
     "frequency_in_section": 13,
     "kanji": [
       {
@@ -588,8 +588,8 @@
   },
   {
     "word": "クレベア",
-    "reading": "",
-    "meaning": null,
+    "reading": "くればあ",
+    "meaning": "(fictional monster species name)",
     "frequency_in_section": 13,
     "kanji": []
   },
@@ -601,22 +601,22 @@
     "kanji": [
       {
         "character": "軽",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "lightly",
+        "reading": "けい",
+        "meaning_mnemonic": "A <radical>car</radical> with almost nothing in the trunk is exactly why it feels so <kanji>light</kanji>."
       },
       {
         "character": "減",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "dwindle",
+        "reading": "げん",
+        "meaning_mnemonic": "Water dripping steadily away from a stoic face leaves less and less — a slow <kanji>decrease</kanji>."
       }
     ]
   },
   {
     "word": "クモーニングスター",
-    "reading": "",
-    "meaning": null,
+    "reading": "くもーにんぐすたー",
+    "meaning": "spider morning star (spider + the 'morning star' weapon, punned together)",
     "frequency_in_section": 13,
     "kanji": []
   },
@@ -661,29 +661,29 @@
     "kanji": [
       {
         "character": "感",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "emotion",
+        "reading": "かん",
+        "meaning_mnemonic": "All of your <radical>heart</radical> reacts at once — that is an overwhelming <kanji>feeling</kanji>."
       },
       {
         "character": "知",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "know",
+        "reading": "ち",
+        "meaning_mnemonic": "An arrow flying straight from your <radical>mouth</radical> — once you say it out loud, everyone will <kanji>know</kanji>."
       }
     ]
   },
   {
     "word": "闘法",
-    "reading": "",
-    "meaning": null,
+    "reading": "とうほう",
+    "meaning": "combat technique",
     "frequency_in_section": 12,
     "kanji": [
       {
         "character": "闘",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "fight",
+        "reading": "とう",
+        "meaning_mnemonic": "Two warriors crashing together behind a <radical>gate</radical>, neither willing to back down from the <kanji>fight</kanji>."
       },
       {
         "character": "法",
@@ -695,15 +695,15 @@
   },
   {
     "word": "エルローランダネル",
-    "reading": "",
-    "meaning": null,
+    "reading": "えるろーらんだねる",
+    "meaning": "(fragment of a deliberately long fantasy noble name — no dictionary meaning)",
     "frequency_in_section": 12,
     "kanji": []
   },
   {
     "word": "フィンジゴアット",
-    "reading": "",
-    "meaning": null,
+    "reading": "ふぃんじごあっと",
+    "meaning": "(fragment of a deliberately long fantasy noble name — no dictionary meaning)",
     "frequency_in_section": 12,
     "kanji": []
   },
@@ -735,15 +735,15 @@
     "kanji": [
       {
         "character": "蟷",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "mantis",
+        "reading": "とう",
+        "meaning_mnemonic": "An <radical>insect</radical> ready to fight anything that moves is the other half of praying <kanji>mantis</kanji>."
       },
       {
         "character": "螂",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "mantis",
+        "reading": "ろう",
+        "meaning_mnemonic": "An <radical>insect</radical> standing guard over its own village is half of the word for praying <kanji>mantis</kanji>."
       }
     ]
   },
@@ -755,41 +755,41 @@
     "kanji": [
       {
         "character": "投",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "abandon",
+        "reading": "とう",
+        "meaning_mnemonic": "Your <radical>fingers</radical> let go and send something flying — that is how you <kanji>throw</kanji>."
       },
       {
         "character": "網",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "netting",
+        "reading": "もう",
+        "meaning_mnemonic": "<radical>Thread</radical> woven across a king-sized frame catches everything in its <kanji>net</kanji>."
       }
     ]
   },
   {
     "word": "韋駄天",
-    "reading": "",
+    "reading": "いだてん",
     "meaning": "Skanda (swift-footed guardian deity)",
     "frequency_in_section": 11,
     "kanji": [
       {
         "character": "韋",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "tanned leather radical (no. 178)",
+        "reading": "い",
+        "meaning_mnemonic": "A hide stretched tight between two hands and scraped clean is the kanji for tanned <kanji>leather</kanji>."
       },
       {
         "character": "駄",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "burdensome",
+        "reading": "だ",
+        "meaning_mnemonic": "A <radical>horse</radical> loaded down with an awkward, heavy cargo finds the whole trip <kanji>burdensome</kanji>."
       },
       {
         "character": "天",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "heavens",
+        "reading": "てん",
+        "meaning_mnemonic": "A <radical>big</radical> person stretching their arms overhead reaches all the way up to <kanji>heaven</kanji>."
       }
     ]
   },
@@ -815,7 +815,7 @@
   },
   {
     "word": "ペッ",
-    "reading": "",
+    "reading": "ぺっ",
     "meaning": "phooey",
     "frequency_in_section": 11,
     "kanji": []
@@ -828,9 +828,9 @@
     "kanji": [
       {
         "character": "補",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "supplement",
+        "reading": "ほ",
+        "meaning_mnemonic": "Sewing an extra patch onto your <radical>clothes</radical> is the simplest way to <kanji>supplement</kanji> what is missing."
       },
       {
         "character": "正",
@@ -855,9 +855,9 @@
     "kanji": [
       {
         "character": "撒",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "give them the slip",
+        "reading": "さつ",
+        "meaning_mnemonic": "<radical>Fingers</radical> letting go of seeds mid-stride is how a farmer <kanji>scatter</kanji>s them across the field."
       }
     ]
   },
@@ -889,15 +889,15 @@
     "kanji": [
       {
         "character": "腐",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "decay",
+        "reading": "ふ",
+        "meaning_mnemonic": "Meat left forgotten under a government building starts to <kanji>decay</kanji>."
       },
       {
         "character": "蝕",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "be defective",
+        "reading": "しょく",
+        "meaning_mnemonic": "An <radical>insect</radical> quietly eating away at your food, bit by bit, is how things <kanji>erode</kanji>."
       }
     ]
   },
@@ -909,15 +909,15 @@
     "kanji": [
       {
         "character": "防",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "ward off",
+        "reading": "ぼう",
+        "meaning_mnemonic": "A <radical>building</radical>'s wall holding strong against every attack is how you <kanji>defend</kanji> it."
       },
       {
         "character": "御",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "govern",
+        "reading": "ぎょ",
+        "meaning_mnemonic": "Walking beside royalty with a stick in hand, you <kanji>govern</kanji> the road they travel."
       },
       {
         "character": "力",
@@ -930,14 +930,14 @@
   {
     "word": "猿ども",
     "reading": "さるども",
-    "meaning": null,
+    "meaning": "the monkeys (derogatory plural)",
     "frequency_in_section": 11,
     "kanji": [
       {
         "character": "猿",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "monkey",
+        "reading": "えん",
+        "meaning_mnemonic": "An <radical>animal</radical> reaching up for a piece of fruit is, of course, a cheeky little <kanji>monkey</kanji>."
       }
     ]
   },
@@ -1015,9 +1015,9 @@
     "kanji": [
       {
         "character": "叩",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "beat",
+        "reading": "こう",
+        "meaning_mnemonic": "A <radical>mouth</radical> shouting next to a swinging fist — that is how you <kanji>beat</kanji> a drum in time with your yelling."
       }
     ]
   },
@@ -1089,9 +1089,9 @@
     "kanji": [
       {
         "character": "勝",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "victory",
+        "reading": "しょう",
+        "meaning_mnemonic": "<radical>Moon</radical>light glinting off a <radical>power</radical>ful fist is how legends always <kanji>win</kanji>."
       },
       {
         "character": "目",
@@ -1150,15 +1150,15 @@
     "kanji": [
       {
         "character": "死",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "death",
+        "reading": "し",
+        "meaning_mnemonic": "A bent, lifeless body draped over a chair is the unmistakable shape of <kanji>death</kanji>."
       },
       {
         "character": "骸",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "body",
+        "reading": "がい",
+        "meaning_mnemonic": "What's left of a <radical>bone</radical>y body long after everything else has rotted away — the <kanji>remains</kanji>."
       }
     ]
   },
@@ -1236,41 +1236,41 @@
     "kanji": [
       {
         "character": "視",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "inspection",
+        "reading": "し",
+        "meaning_mnemonic": "Showing something right to your eyes is how you finally <kanji>see</kanji> it clearly."
       },
       {
         "character": "覚",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "memorize",
+        "reading": "かく",
+        "meaning_mnemonic": "Studying something with your own eyes until you finally <kanji>perceive</kanji> what it means."
       }
     ]
   },
   {
     "word": "公爵家",
     "reading": "こうしゃくか",
-    "meaning": null,
+    "meaning": "ducal house / duke’s family",
     "frequency_in_section": 9,
     "kanji": [
       {
         "character": "公",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "governmental",
+        "reading": "こう",
+        "meaning_mnemonic": "A <radical>private</radical> matter split open for everyone to see becomes <kanji>public</kanji> knowledge."
       },
       {
         "character": "爵",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "baron",
+        "reading": "しゃく",
+        "meaning_mnemonic": "A noble's ceremonial cup, held just so — only a <kanji>baron</kanji> earns the right to drink from it."
       },
       {
         "character": "家",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "expert",
+        "reading": "か",
+        "meaning_mnemonic": "A pig living under a roof is simply what every <kanji>house</kanji> looks like to this kanji."
       }
     ]
   },
@@ -1282,15 +1282,15 @@
     "kanji": [
       {
         "character": "麻",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "flax",
+        "reading": "ま",
+        "meaning_mnemonic": "Hemp fibers scraped and rubbed under a roof until your fingers go completely <kanji>numb</kanji>."
       },
       {
         "character": "痺",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "become numb",
+        "reading": "ひ",
+        "meaning_mnemonic": "Sickness spreading through your skin until you can't feel a thing — that creeping <kanji>numbness</kanji>."
       }
     ]
   },
@@ -1302,15 +1302,15 @@
     "kanji": [
       {
         "character": "投",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "abandon",
+        "reading": "とう",
+        "meaning_mnemonic": "Your <radical>fingers</radical> let go and send something flying — that is how you <kanji>throw</kanji>."
       },
       {
         "character": "擲",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "hit",
+        "reading": "てき",
+        "meaning_mnemonic": "<radical>Fingers</radical> jacked up and hurling something with all their strength — that is how you <kanji>fling</kanji> it."
       }
     ]
   },
@@ -1409,9 +1409,9 @@
       },
       {
         "character": "発",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "counter for gunshots",
+        "reading": "はつ",
+        "meaning_mnemonic": "Legs kicking off the ground and a bow firing an arrow are both ways to <kanji>emit</kanji> something outward."
       }
     ]
   },
@@ -1425,20 +1425,20 @@
   {
     "word": "到達",
     "reading": "とうたつ",
-    "meaning": null,
+    "meaning": "reaching",
     "frequency_in_section": 8,
     "kanji": [
       {
         "character": "到",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "arrival",
+        "reading": "とう",
+        "meaning_mnemonic": "A blade swings down the instant you finally make your <kanji>arrival</kanji>."
       },
       {
         "character": "達",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "accomplished",
+        "reading": "たつ",
+        "meaning_mnemonic": "Walking sheep all the way to the goal — however long it takes, you will <kanji>reach</kanji> it eventually."
       }
     ]
   },
@@ -1472,7 +1472,7 @@
   {
     "word": "ゴム糸",
     "reading": "ごむいと",
-    "meaning": null,
+    "meaning": "rubber thread",
     "frequency_in_section": 8,
     "kanji": [
       {
@@ -1511,15 +1511,15 @@
     "kanji": [
       {
         "character": "事",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "business",
+        "reading": "じ",
+        "meaning_mnemonic": "A hand holding a flag-on-a-stick is busy taking care of <kanji>business</kanji>."
       },
       {
         "character": "態",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "appearance",
+        "reading": "たい",
+        "meaning_mnemonic": "However your <radical>heart</radical> looks from the outside is your current <kanji>condition</kanji>."
       }
     ]
   },
@@ -1565,8 +1565,8 @@
   },
   {
     "word": "エルローフェレクト",
-    "reading": "",
-    "meaning": null,
+    "reading": "えるろーふぇれくと",
+    "meaning": "(fragment of a deliberately long fantasy noble name — no dictionary meaning)",
     "frequency_in_section": 8,
     "kanji": []
   },
@@ -1578,15 +1578,15 @@
     "kanji": [
       {
         "character": "若",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "if",
+        "reading": "じゃく",
+        "meaning_mnemonic": "Grass-like sprouts still finding the shape of their own <radical>mouth</radical> — that's how plants look when they're <kanji>young</kanji>."
       },
       {
         "character": "葉",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "blade",
+        "reading": "よう",
+        "meaning_mnemonic": "Flowers, a flat world, and a tree all rolled into one shape make up a single <kanji>leaf</kanji>."
       }
     ]
   },
@@ -1598,22 +1598,22 @@
     "kanji": [
       {
         "character": "毒",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "germ",
+        "reading": "どく",
+        "meaning_mnemonic": "What grows from a twisted plant that's not quite right is pure <kanji>poison</kanji>."
       },
       {
         "character": "持",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "have",
+        "reading": "じ",
+        "meaning_mnemonic": "Your <radical>fingers</radical> wrap around a <radical>temple</radical> pillar to <kanji>hold</kanji> it steady."
       }
     ]
   },
   {
     "word": "粘着糸",
     "reading": "ねんちゃくいと",
-    "meaning": null,
+    "meaning": "sticky thread",
     "frequency_in_section": 8,
     "kanji": [
       {
@@ -1644,29 +1644,29 @@
     "kanji": [
       {
         "character": "中",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "center",
+        "reading": "ちゅう",
+        "meaning_mnemonic": "A <radical>stick</radical> piercing straight through a box lands right in the <kanji>middle</kanji>."
       },
       {
         "character": "層",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "floor",
+        "reading": "そう",
+        "meaning_mnemonic": "A corpse-still <radical>building</radical> stacked again and again forms each <kanji>floor</kanji> of the tower."
       }
     ]
   },
   {
     "word": "タニシ虫",
     "reading": "たにしちゅう",
-    "meaning": null,
+    "meaning": "pond-snail bug (monster name)",
     "frequency_in_section": 8,
     "kanji": [
       {
         "character": "虫",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "bug",
+        "reading": "ちゅう",
+        "meaning_mnemonic": "A wriggling little shape, antennae and all, is simply an <kanji>insect</kanji>."
       }
     ]
   },
@@ -1678,22 +1678,22 @@
     "kanji": [
       {
         "character": "弱",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "frail",
+        "reading": "じゃく",
+        "meaning_mnemonic": "Two tiny bent bows, drooping and useless, can only ever be <kanji>weak</kanji>."
       },
       {
         "character": "毒",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "germ",
+        "reading": "どく",
+        "meaning_mnemonic": "What grows from a twisted plant that's not quite right is pure <kanji>poison</kanji>."
       }
     ]
   },
   {
     "word": "バグラグラッチ",
-    "reading": "",
-    "meaning": null,
+    "reading": "ばぐらぐらっち",
+    "meaning": "(fictional monster name)",
     "frequency_in_section": 8,
     "kanji": []
   },
@@ -1705,9 +1705,9 @@
     "kanji": [
       {
         "character": "投",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "abandon",
+        "reading": "とう",
+        "meaning_mnemonic": "Your <radical>fingers</radical> let go and send something flying — that is how you <kanji>throw</kanji>."
       },
       {
         "character": "石",
@@ -1725,9 +1725,9 @@
     "kanji": [
       {
         "character": "孵",
-        "meaning": null,
-        "reading": null,
-        "meaning_mnemonic": null
+        "meaning": "hatch",
+        "reading": "ふ",
+        "meaning_mnemonic": "A <radical>child</radical> claws its way out from under a feathered roof — that is how an egg <kanji>hatch</kanji>es."
       },
       {
         "character": "化",

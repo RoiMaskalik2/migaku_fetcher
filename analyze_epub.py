@@ -409,6 +409,60 @@ def enrich_jisho(result: list[dict]) -> list[dict]:
     return result
 
 
+# ── Step 7.5: kanjiapi.dev fallback for missing kanji meaning/reading ────────
+
+def enrich_kanji_kanjiapi(result: list[dict]) -> list[dict]:
+    """Fill missing kanji meaning/reading from kanjiapi.dev — a free, no-auth
+    public kanji dictionary. Used when WaniKani is unavailable (e.g. hibernating
+    account) and the local result*.json cache doesn't have the kanji either."""
+    import requests
+
+    missing_chars = sorted({
+        k['character'] for e in result for k in e.get('kanji', [])
+        if not k.get('meaning') or not k.get('reading')
+    })
+    if not missing_chars:
+        return result
+
+    print(f'[kanjiapi] enriching {len(missing_chars)} kanji without WK data...')
+    fetched = {}
+    for c in missing_chars:
+        try:
+            r = requests.get(f'https://kanjiapi.dev/v1/kanji/{c}', timeout=10)
+            if r.status_code == 200:
+                fetched[c] = r.json()
+        except Exception:
+            pass
+        time.sleep(0.1)
+
+    filled = 0
+    for e in result:
+        for k in e.get('kanji', []):
+            d = fetched.get(k['character'])
+            if not d:
+                continue
+            if not k.get('meaning') and (d.get('heisig_en') or d.get('meanings')):
+                # heisig_en is a single canonical keyword (closer to WK style);
+                # fall back to the first dictionary meaning if Heisig has none.
+                k['meaning'] = d.get('heisig_en') or d['meanings'][0]
+                filled += 1
+            if not k.get('reading'):
+                raw = (d.get('on_readings') or d.get('kun_readings') or [None])[0]
+                if raw:
+                    k['reading'] = kata_to_hira(raw.split('.')[0])
+
+    print(f'[kanjiapi] got data for {len(fetched)}/{len(missing_chars)} kanji, filled {filled} meanings')
+
+    still_missing = sorted({k['character'] for e in result for k in e.get('kanji', [])
+                             if not k.get('meaning_mnemonic')})
+    if still_missing:
+        print(f'[warn] {len(still_missing)} kanji still have no mnemonic '
+              f'(no free API provides WaniKani-style mnemonics — ask Claude to '
+              f'write them and patch result.json): {still_missing}')
+
+    return result
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
@@ -451,7 +505,10 @@ def main():
     # 7. Build result
     result = build_result(final_words, wk_kanji, wk_vocab, word_reading)
 
-    # 8. Jisho fallback
+    # 8. kanjiapi.dev fallback for kanji meaning/reading still missing after WK
+    result = enrich_kanji_kanjiapi(result)
+
+    # 9. Jisho fallback for word meanings
     result = enrich_jisho(result)
 
     # 9. Save result.json
