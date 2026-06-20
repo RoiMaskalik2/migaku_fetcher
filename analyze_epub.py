@@ -124,11 +124,19 @@ def tokenize(text: str, cache_key: str):
         return True
 
     def _keep(base: str) -> bool:
-        # Pure-hiragana/katakana words are kept too — they're filtered out
-        # later by frequency/known-word checks, not blanket-excluded here.
-        # Full-width Latin/digits/punctuation that janome mistags as nouns
-        # are rejected here since they aren't real vocabulary.
-        return base and base != '*' and len(base) >= 2 and _is_japanese(base)
+        # Pure-hiragana/katakana words are kept too (length>=2) — they're
+        # filtered out later by frequency/known-word checks, not
+        # blanket-excluded here. Full-width Latin/digits/punctuation that
+        # janome mistags as nouns are rejected since they aren't real
+        # vocabulary. Single-character kanji nouns (蜂, 糸, 巣, ...) are
+        # real, often high-frequency vocabulary and must not be dropped —
+        # only single *kana* characters are noise-filtered by the length
+        # check, since those are usually mistagged particles/symbols.
+        if not base or base == '*' or not _is_japanese(base):
+            return False
+        if len(base) == 1:
+            return is_kanji(base)
+        return True
 
     print('[...] tokenising (first run, may take ~60s)...')
     tokenizer = Tokenizer()
@@ -261,19 +269,32 @@ def fetch_wanikani(candidates: list[tuple[str, int]], wk_token: str):
 
 
 def load_kanji_cache() -> dict:
-    """Build a kanji dict from any existing result*.json files."""
+    """Build a kanji dict from any existing result*.json files.
+
+    Different result*.json files can have stale, less-complete entries for
+    the same kanji (e.g. an early-pipeline-stage file with no mnemonic yet
+    filled in). Keep the most complete entry seen for each character rather
+    than just the first one encountered, so a good cached mnemonic/meaning
+    from one file is never shadowed by an emptier entry from another."""
     cache = {}
+
+    def completeness(entry: dict) -> tuple:
+        return (bool(entry['meaning_mnemonic']), bool(entry['meanings']), bool(entry['readings']))
+
     for f in BASE_DIR.glob('result*.json'):
         try:
             for entry in json.loads(f.read_text(encoding='utf-8')):
                 for k in entry.get('kanji', []):
                     c = k.get('character')
-                    if c and c not in cache:
-                        cache[c] = {
-                            'meanings':          [{'meaning': k['meaning'], 'primary': True}] if k.get('meaning') else [],
-                            'readings':          [{'reading': k['reading'], 'primary': True}] if k.get('reading') else [],
-                            'meaning_mnemonic':  k.get('meaning_mnemonic'),
-                        }
+                    if not c:
+                        continue
+                    candidate = {
+                        'meanings':          [{'meaning': k['meaning'], 'primary': True}] if k.get('meaning') else [],
+                        'readings':          [{'reading': k['reading'], 'primary': True}] if k.get('reading') else [],
+                        'meaning_mnemonic':  k.get('meaning_mnemonic'),
+                    }
+                    if c not in cache or completeness(candidate) > completeness(cache[c]):
+                        cache[c] = candidate
         except Exception:
             pass
     if cache:

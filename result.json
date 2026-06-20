@@ -21,20 +21,34 @@
         "character": "度",
         "meaning": "Degree",
         "reading": "ど",
-        "meaning_mnemonic": "A <radical>yurt</radical>'s <radical>stool</radical> is always placed at certain <kanji>degree</kanji>s. The degrees change depending on specific <kanji>occurrence</kanji>s."
+        "meaning_mnemonic": "Beneath a sturdy <radical>canopy</radical>, the surveyor set his <radical>stool</radical> at <radical>ground</radical> level beside an old measuring <radical>box</radical>, marking off each precise <kanji>degree</kanji>."
+      }
+    ]
+  },
+  {
+    "word": "蜂",
+    "reading": "はち",
+    "meaning": "bee",
+    "frequency_in_section": 108,
+    "kanji": [
+      {
+        "character": "蜂",
+        "meaning": "bee",
+        "reading": "ほう",
+        "meaning_mnemonic": "Even through the harshest <radical>winter</radical>, the queen <radical>insect</radical> stayed buried just beneath the frozen <radical>ground</radical>, ready to swarm out each spring as a <kanji>bee</kanji>."
       }
     ]
   },
   {
     "word": "操糸",
     "reading": "みさおいと",
-    "meaning": "manipulation thread (skill)",
+    "meaning": null,
     "frequency_in_section": 45,
     "kanji": [
       {
         "character": "操",
         "meaning": "maneuver",
-        "reading": "みさお",
+        "reading": "さん",
         "meaning_mnemonic": "The puppeteer's <radical>fingers</radical> pulled strings tied high in a wooden <radical>tree</radical> hung with carved <radical>products</radical>, learning to <kanji>maneuver</kanji> every puppet's limb."
       },
       {
@@ -47,8 +61,8 @@
   },
   {
     "word": "巨猿",
-    "reading": "きょえん",
-    "meaning": "giant ape",
+    "reading": "",
+    "meaning": null,
     "frequency_in_section": 43,
     "kanji": [
       {
@@ -68,7 +82,7 @@
   {
     "word": "蜘蛛糸",
     "reading": "くもいと",
-    "meaning": "spider silk",
+    "meaning": null,
     "frequency_in_section": 40,
     "kanji": [
       {
@@ -112,6 +126,20 @@
     ]
   },
   {
+    "word": "鹿",
+    "reading": "しか",
+    "meaning": "deer (esp. the sika deer, Cervus nippon)",
+    "frequency_in_section": 28,
+    "kanji": [
+      {
+        "character": "鹿",
+        "meaning": "deer",
+        "reading": "ろく",
+        "meaning_mnemonic": "Hunters sheltering beneath the rocky <radical>canopy</radical> would <radical>compare</radical> antler racks before they ever fired at a <kanji>deer</kanji>."
+      }
+    ]
+  },
+  {
     "word": "合成",
     "reading": "ごうせい",
     "meaning": "composition",
@@ -120,7 +148,7 @@
       {
         "character": "合",
         "meaning": "fit",
-        "reading": "ごう",
+        "reading": "かっ",
         "meaning_mnemonic": "The clown's oversized <radical>hat</radical> slid down to swallow his <radical>mouth</radical> completely, snapping into place as a perfect <kanji>fit</kanji>."
       },
       {
@@ -194,7 +222,7 @@
   {
     "word": "突破",
     "reading": "とっぱ",
-    "meaning": "breaking through",
+    "meaning": null,
     "frequency_in_section": 24,
     "kanji": [
       {
@@ -374,7 +402,7 @@
   {
     "word": "猿たち",
     "reading": "さるたち",
-    "meaning": "the monkeys",
+    "meaning": null,
     "frequency_in_section": 18,
     "kanji": [
       {
@@ -514,7 +542,7 @@
   },
   {
     "word": "ダンゴムシ",
-    "reading": "だんごむし",
+    "reading": "",
     "meaning": "pillbug",
     "frequency_in_section": 15,
     "kanji": []
@@ -522,7 +550,7 @@
   {
     "word": "鑑定石",
     "reading": "かんていせき",
-    "meaning": "appraisal stone",
+    "meaning": null,
     "frequency_in_section": 14,
     "kanji": [
       {
@@ -547,8 +575,8 @@
   },
   {
     "word": "スモールレッサータラテクト",
-    "reading": "すもーるれっさーたらてくと",
-    "meaning": "Small Lesser Taratect (monster species)",
+    "reading": "",
+    "meaning": null,
     "frequency_in_section": 14,
     "kanji": []
   },
@@ -562,7 +590,7 @@
   {
     "word": "人族",
     "reading": "ひとぞく",
-    "meaning": "human race",
+    "meaning": null,
     "frequency_in_section": 13,
     "kanji": [
       {
@@ -588,8 +616,8 @@
   },
   {
     "word": "クレベア",
-    "reading": "くればあ",
-    "meaning": "(fictional monster species name)",
+    "reading": "",
+    "meaning": null,
     "frequency_in_section": 13,
     "kanji": []
   },
@@ -602,7 +630,7 @@
       {
         "character": "軽",
         "meaning": "lightly",
-        "reading": "けい",
+        "reading": "きょう",
         "meaning_mnemonic": "Hoisted onto a simple <radical>stool</radical> instead of packed with <radical>dirt</radical>, the toy <radical>car</radical> could be lifted so <kanji>lightly</kanji> it barely needed two fingers."
       },
       {
@@ -615,8 +643,8 @@
   },
   {
     "word": "クモーニングスター",
-    "reading": "くもーにんぐすたー",
-    "meaning": "spider morning star (spider + the 'morning star' weapon, punned together)",
+    "reading": "",
+    "meaning": null,
     "frequency_in_section": 13,
     "kanji": []
   },
@@ -675,8 +703,8 @@
   },
   {
     "word": "闘法",
-    "reading": "とうほう",
-    "meaning": "combat technique",
+    "reading": "",
+    "meaning": null,
     "frequency_in_section": 12,
     "kanji": [
       {
@@ -695,15 +723,15 @@
   },
   {
     "word": "エルローランダネル",
-    "reading": "えるろーらんだねる",
-    "meaning": "(fragment of a deliberately long fantasy noble name — no dictionary meaning)",
+    "reading": "",
+    "meaning": null,
     "frequency_in_section": 12,
     "kanji": []
   },
   {
     "word": "フィンジゴアット",
-    "reading": "ふぃんじごあっと",
-    "meaning": "(fragment of a deliberately long fantasy noble name — no dictionary meaning)",
+    "reading": "",
+    "meaning": null,
     "frequency_in_section": 12,
     "kanji": []
   },
@@ -769,7 +797,7 @@
   },
   {
     "word": "韋駄天",
-    "reading": "いだてん",
+    "reading": "",
     "meaning": "Skanda (swift-footed guardian deity)",
     "frequency_in_section": 11,
     "kanji": [
@@ -815,7 +843,7 @@
   },
   {
     "word": "ペッ",
-    "reading": "ぺっ",
+    "reading": "",
     "meaning": "phooey",
     "frequency_in_section": 11,
     "kanji": []
@@ -902,6 +930,20 @@
     ]
   },
   {
+    "word": "塊",
+    "reading": "かたまり",
+    "meaning": "lump",
+    "frequency_in_section": 11,
+    "kanji": [
+      {
+        "character": "塊",
+        "meaning": "clod",
+        "reading": "かい",
+        "meaning_mnemonic": "In his <radical>private</radical> tunnel beneath the flooded <radical>rice paddy</radical>, a <radical>demon</radical> braced its bare <radical>legs</radical> and used a bent <radical>spoon</radical> to scoop wet <radical>dirt</radical> into one heavy <kanji>clod</kanji>."
+      }
+    ]
+  },
+  {
     "word": "防御力",
     "reading": "ぼうぎょりょく",
     "meaning": "defensive strength",
@@ -930,7 +972,7 @@
   {
     "word": "猿ども",
     "reading": "さるども",
-    "meaning": "the monkeys (derogatory plural)",
+    "meaning": null,
     "frequency_in_section": 11,
     "kanji": [
       {
@@ -1251,7 +1293,7 @@
   {
     "word": "公爵家",
     "reading": "こうしゃくか",
-    "meaning": "ducal house / duke’s family",
+    "meaning": null,
     "frequency_in_section": 9,
     "kanji": [
       {
@@ -1275,9 +1317,23 @@
     ]
   },
   {
+    "word": "剝",
+    "reading": "",
+    "meaning": "to peel",
+    "frequency_in_section": 9,
+    "kanji": [
+      {
+        "character": "剝",
+        "meaning": "peel off [alt]",
+        "reading": "はく",
+        "meaning_mnemonic": "On the <radical>ice</radical> floe, the trapper drove a <radical>barb</radical>ed hook into the <radical>wolverine</radical> carcass, then worked his <radical>shuriken</radical>-shaped scraper and <radical>knife</radical> together, rinsing each strip in icy <radical>water</radical> as he began to <kanji>peel off [alt]</kanji> the hide."
+      }
+    ]
+  },
+  {
     "word": "麻痺",
     "reading": "まひ",
-    "meaning": "paralysis",
+    "meaning": null,
     "frequency_in_section": 9,
     "kanji": [
       {
@@ -1291,6 +1347,20 @@
         "meaning": "become numb",
         "reading": "ひ",
         "meaning_mnemonic": "Standing <radical>sick</radical> with fever for hours in the flooded <radical>rice paddy</radical>, the farmer's legs began to <kanji>become numb</kanji>."
+      }
+    ]
+  },
+  {
+    "word": "摑",
+    "reading": "",
+    "meaning": "to seize",
+    "frequency_in_section": 9,
+    "kanji": [
+      {
+        "character": "摑",
+        "meaning": "box one's ears",
+        "reading": "かく",
+        "meaning_mnemonic": "Fed up, the bouncer's <radical>fingers</radical> seized the loud-<radical>mouth</radical>ed <radical>drunkard</radical> right at the <radical>perimeter</radical> fence and gave him one stinging <kanji>box one's ears</kanji>."
       }
     ]
   },
@@ -1398,7 +1468,7 @@
   {
     "word": "一発",
     "reading": "いちはつ",
-    "meaning": "one shot",
+    "meaning": null,
     "frequency_in_section": 8,
     "kanji": [
       {
@@ -1452,7 +1522,7 @@
         "character": "表",
         "meaning": "Express",
         "reading": "ひょう",
-        "meaning_mnemonic": "If your <radical>rib cage</radical> is suddenly <radical>kick</radical>ed you'll probably want to <kanji>express</kanji> something. Anger or surprise, I'm guessing. At any rate a lot will get expressed on the <kanji>surface</kanji> of your face."
+        "meaning_mnemonic": "The retired <radical>samurai</radical> stitched his old battle crest onto a fresh <radical>outfit</radical>, letting his pride <kanji>express</kanji> itself for everyone to see."
       },
       {
         "character": "記",
@@ -1472,7 +1542,7 @@
   {
     "word": "ゴム糸",
     "reading": "ごむいと",
-    "meaning": "rubber thread",
+    "meaning": null,
     "frequency_in_section": 8,
     "kanji": [
       {
@@ -1565,8 +1635,8 @@
   },
   {
     "word": "エルローフェレクト",
-    "reading": "えるろーふぇれくと",
-    "meaning": "(fragment of a deliberately long fantasy noble name — no dictionary meaning)",
+    "reading": "",
+    "meaning": null,
     "frequency_in_section": 8,
     "kanji": []
   },
@@ -1611,9 +1681,23 @@
     ]
   },
   {
+    "word": "鱗",
+    "reading": "うろこ",
+    "meaning": "scale (of fish, snake, etc.)",
+    "frequency_in_section": 8,
+    "kanji": [
+      {
+        "character": "鱗",
+        "meaning": "scaled",
+        "reading": "りん",
+        "meaning_mnemonic": "Every <radical>evening</radical>, the fish-market vendor would <radical>dance</radical> her knife along each <radical>fish</radical> fresh from the <radical>rice paddy</radical> ponds, flicking off bits like scattered <radical>rice</radical> grains before they hit the <radical>boil</radical>ing pot — each fleck part of its shimmering <kanji>scaled</kanji> skin."
+      }
+    ]
+  },
+  {
     "word": "粘着糸",
     "reading": "ねんちゃくいと",
-    "meaning": "sticky thread",
+    "meaning": null,
     "frequency_in_section": 8,
     "kanji": [
       {
@@ -1653,101 +1737,6 @@
         "meaning": "floor",
         "reading": "そう",
         "meaning_mnemonic": "The surveyor planted a <radical>flag</radical> atop each sunlit <radical>rice paddy</radical> terrace to mark where one <kanji>floor</kanji> of the hillside ended and the next began."
-      }
-    ]
-  },
-  {
-    "word": "タニシ虫",
-    "reading": "たにしちゅう",
-    "meaning": "pond-snail bug (monster name)",
-    "frequency_in_section": 8,
-    "kanji": [
-      {
-        "character": "虫",
-        "meaning": "bug",
-        "reading": "ちゅう",
-        "meaning_mnemonic": "A wriggling little shape, antennae and all, is simply an <kanji>insect</kanji>."
-      }
-    ]
-  },
-  {
-    "word": "弱毒",
-    "reading": "じゃくどく",
-    "meaning": "low toxicity",
-    "frequency_in_section": 8,
-    "kanji": [
-      {
-        "character": "弱",
-        "meaning": "frail",
-        "reading": "じゃく",
-        "meaning_mnemonic": "Left outside in the <radical>ice</radical> all winter, the hunter's twin <radical>bow</radical>s turned brittle and <kanji>frail</kanji>."
-      },
-      {
-        "character": "毒",
-        "meaning": "germ",
-        "reading": "どく",
-        "meaning_mnemonic": "Behind a shuttered <radical>window</radical>, the scientist kept a locked <radical>drawer</radical> of soil-covered <radical>dirt</radical> samples, each one crawling with deadly <kanji>germ</kanji>s."
-      }
-    ]
-  },
-  {
-    "word": "バグラグラッチ",
-    "reading": "ばぐらぐらっち",
-    "meaning": "(fictional monster name)",
-    "frequency_in_section": 8,
-    "kanji": []
-  },
-  {
-    "word": "投石",
-    "reading": "とうせき",
-    "meaning": "stone throwing",
-    "frequency_in_section": 8,
-    "kanji": [
-      {
-        "character": "投",
-        "meaning": "abandon",
-        "reading": "とう",
-        "meaning_mnemonic": "Climbing onto a wobbly <radical>stool</radical>, the soldier's <radical>fingers</radical> gripped his broken <radical>weapon</radical> one last time before he chose to <kanji>abandon</kanji> it for good."
-      },
-      {
-        "character": "石",
-        "meaning": "Stone",
-        "reading": "せき",
-        "meaning_mnemonic": "The <radical>stone</radical> radical and <kanji>stone</kanji> kanji are the same thing!"
-      }
-    ]
-  },
-  {
-    "word": "孵化",
-    "reading": "ふか",
-    "meaning": "incubation",
-    "frequency_in_section": 7,
-    "kanji": [
-      {
-        "character": "孵",
-        "meaning": "hatch",
-        "reading": "ふ",
-        "meaning_mnemonic": "The hungry <radical>child</radical> scratched at the shell with tiny <radical>claw</radical>-like fingernails until the egg finally began to <kanji>hatch</kanji>."
-      },
-      {
-        "character": "化",
-        "meaning": "Change",
-        "reading": "か",
-        "meaning_mnemonic": "A <radical>leader</radical> with a <radical>spoon</radical> is a powerful thing. Even something as ordinary as a spoon can create great <kanji>change</kanji> in the world when given to the right person."
-      }
-    ]
-  },
-  {
-    "word": "異なる",
-    "reading": "ことなる",
-    "meaning": "to differ",
-    "frequency_in_section": 7,
-    "kanji": [
-      {
-        "character": "異",
-        "meaning": "Differ",
-        "reading": "い",
-        "meaning_mnemonic": "Put a <radical>rice paddy</radical> <radical>together</radical> with other paddies and you'll see how much they <kanji>differ</kanji>. When you're driving or taking a train through the countryside it may seem like all of those rice paddies blurring together are all the same, but they can differ quite a bit!"
       }
     ]
   }
