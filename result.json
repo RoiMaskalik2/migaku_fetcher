@@ -42,7 +42,7 @@
   {
     "word": "操糸",
     "reading": "みさおいと",
-    "meaning": null,
+    "meaning": "thread manipulation (skill)",
     "frequency_in_section": 45,
     "kanji": [
       {
@@ -62,7 +62,7 @@
   {
     "word": "巨猿",
     "reading": "",
-    "meaning": null,
+    "meaning": "giant ape",
     "frequency_in_section": 43,
     "kanji": [
       {
@@ -82,7 +82,7 @@
   {
     "word": "蜘蛛糸",
     "reading": "くもいと",
-    "meaning": null,
+    "meaning": "spider thread",
     "frequency_in_section": 40,
     "kanji": [
       {
@@ -222,7 +222,7 @@
   {
     "word": "突破",
     "reading": "とっぱ",
-    "meaning": null,
+    "meaning": "breakthrough",
     "frequency_in_section": 24,
     "kanji": [
       {
@@ -402,7 +402,7 @@
   {
     "word": "猿たち",
     "reading": "さるたち",
-    "meaning": null,
+    "meaning": "the apes",
     "frequency_in_section": 18,
     "kanji": [
       {
@@ -550,7 +550,7 @@
   {
     "word": "鑑定石",
     "reading": "かんていせき",
-    "meaning": null,
+    "meaning": "appraisal stone",
     "frequency_in_section": 14,
     "kanji": [
       {
@@ -576,7 +576,7 @@
   {
     "word": "スモールレッサータラテクト",
     "reading": "",
-    "meaning": null,
+    "meaning": "Small Lesser Taratect (spider species)",
     "frequency_in_section": 14,
     "kanji": []
   },
@@ -590,7 +590,7 @@
   {
     "word": "人族",
     "reading": "ひとぞく",
-    "meaning": null,
+    "meaning": "human race",
     "frequency_in_section": 13,
     "kanji": [
       {
@@ -617,7 +617,7 @@
   {
     "word": "クレベア",
     "reading": "",
-    "meaning": null,
+    "meaning": "Klevea (character name)",
     "frequency_in_section": 13,
     "kanji": []
   },
@@ -644,7 +644,7 @@
   {
     "word": "クモーニングスター",
     "reading": "",
-    "meaning": null,
+    "meaning": "Kumorning Star (sticky-thread flail weapon)",
     "frequency_in_section": 13,
     "kanji": []
   },
@@ -704,7 +704,7 @@
   {
     "word": "闘法",
     "reading": "",
-    "meaning": null,
+    "meaning": "combat technique",
     "frequency_in_section": 12,
     "kanji": [
       {
@@ -724,14 +724,14 @@
   {
     "word": "エルローランダネル",
     "reading": "",
-    "meaning": null,
+    "meaning": "Elro Randanel (monster)",
     "frequency_in_section": 12,
     "kanji": []
   },
   {
     "word": "フィンジゴアット",
     "reading": "",
-    "meaning": null,
+    "meaning": "Finzigoat (monster)",
     "frequency_in_section": 12,
     "kanji": []
   },
@@ -972,7 +972,7 @@
   {
     "word": "猿ども",
     "reading": "さるども",
-    "meaning": null,
+    "meaning": "those apes",
     "frequency_in_section": 11,
     "kanji": [
       {
@@ -1293,7 +1293,7 @@
   {
     "word": "公爵家",
     "reading": "こうしゃくか",
-    "meaning": null,
+    "meaning": "ducal family",
     "frequency_in_section": 9,
     "kanji": [
       {
@@ -1333,7 +1333,7 @@
   {
     "word": "麻痺",
     "reading": "まひ",
-    "meaning": null,
+    "meaning": "paralysis",
     "frequency_in_section": 9,
     "kanji": [
       {
@@ -1468,7 +1468,7 @@
   {
     "word": "一発",
     "reading": "いちはつ",
-    "meaning": null,
+    "meaning": "one shot",
     "frequency_in_section": 8,
     "kanji": [
       {
@@ -1542,7 +1542,7 @@
   {
     "word": "ゴム糸",
     "reading": "ごむいと",
-    "meaning": null,
+    "meaning": "rubber thread",
     "frequency_in_section": 8,
     "kanji": [
       {
@@ -1636,7 +1636,7 @@
   {
     "word": "エルローフェレクト",
     "reading": "",
-    "meaning": null,
+    "meaning": "Elro Ferect (monster)",
     "frequency_in_section": 8,
     "kanji": []
   },
@@ -1697,7 +1697,7 @@
   {
     "word": "粘着糸",
     "reading": "ねんちゃくいと",
-    "meaning": null,
+    "meaning": "sticky thread",
     "frequency_in_section": 8,
     "kanji": [
       {
